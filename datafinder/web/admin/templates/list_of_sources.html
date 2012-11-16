@@ -1,0 +1,73 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/base.html" />
+<%def name="head_tags()">
+  <title> List of Sources </title>
+</%def>
+
+% if message:
+	<p><span style="color:red;">${message}</span></p>
+% endif
+
+<%
+n = len(source_infos)
+%>
+<h1> List of  Registered Sources </h1>
+% if source_infos and n > 0:
+  <p>Number of sources: ${n}</p>
+  <div class="silo_list">
+  <table summary="list of sources in Databank" class="siloList">
+  <tr>
+    <th>Source title</th>
+    <th>Number of data packages in the source</th>
+    <th>Manage source</th>
+  </tr>
+  % for source in source_infos:
+    <tr>
+    <td><a href="/admin/${source}">${source_infos[source][0]}</a></td>
+    <td>${source_infos[source][1]}</td>
+    <td>
+	    <a href="/admin/${source}">
+	    <img src="/static/styles/images/silo-edit-icon-16.png" alt="Edit silo metadata" title="edit ${source}"/></a>
+	    <a class="delete" href="/admin/${source}/" data-remove="delete_${source}" data-url="/admin/list_sources/">
+	    <img src="/static/styles/images/delete-icon-16.png" alt="Delete silo" title="Delete ${source}"/></a>
+	</td>
+    </tr>
+  % endfor
+  </table>
+  </div>
+% else:
+  <p>Number of sources: ${n}</p>
+% endif
+
+
+<h1> List of Unregistered Sources </h1>
+% if unregistered_sources and len(unregistered_sources)> 0:
+  <p>Number of sources awaiting admin approval: ${len(unregistered_sources)}</p>
+  <div class="silo_list">
+  <table summary="list of sources awaiting admin approval" class="siloList">
+  <tr>
+    <th>Source title</th>
+    <th>Approve/Activate</th>
+  </tr>
+  % for source in unregistered_sources:
+    <tr>
+    <td>${source}</td>    
+    <td>
+	    <a href="/admin/${source}/approve_source"> 
+	    	<img src="/static/styles/images/silo-edit-icon-16.png" alt="Edit silo metadata" title="edit ${source}"/>
+	    </a>	    
+	</td>
+    </tr>
+  % endfor
+  </table>
+  </div>
+% else:
+  <p>Number of unregistered sources: ${len(unregistered_sources)}</p>
+% endif
+
+  <div id="editor_view">
+  <h2>Edit options</h2>
+  <ul class="stateInfo">
+  <li><a href="/admin/create_source" onclick="showhide('add_silo');">
+    <img src="/static/styles/images/silo-add-icon-24.png"/>Create new source</a></li>
+  </ul>

@@ -1,0 +1,114 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/base.html" />
+
+% if message:
+	<p><span style="color:red;">${message}</span></p>
+% endif
+
+<%def name="head_tags()">
+  <title> List of Sources </title>
+</%def>
+
+
+% if header== "create":
+	<h1>Create new Source</h1>
+% elif header == "approve":
+	<h1>Approve the Source</h1>
+% endif
+
+<form class="create_silo" id="form1" name="form1" method="POST" enctype="multipart/form-data" action="" accept-charset="UTF-8">
+% if kw:
+	<div><label for="newSilo">Source  name (eg 'a' -> /a/datasets/...) : </label>
+	% if header == "approve":
+		<input type="text" value="${kw.get('silo')}" disabled="true" />
+	% elif header == "create":
+		<input type="text" value="${kw.get('silo')}" />
+    % endif
+
+	<input type="hidden" name="silo" id="newSilo" value="${kw.get('silo')}"  />
+	</div>
+	<div class="form_helper">The machine readable name of the source, used by the system and in the urls. <br/>
+	<br/>For example the name <i>sourcea</i> will appear in the url as <i>http://databank/sourcea/...</i></div></li>
+	<div><label for="newSiloTitle">Title:</label>
+	<input type="text" id="newSiloTitle" name="title" value="${kw.get('title')}" /></div>	
+	<div><label for="oaipmhTitle">OAI-PMH:</label>
+	<input type ="checkbox" name="oaipmh"id="oaipmh"/> </div>
+	<div><label for="urlTitle">URL:</label>
+	<input type ="text" name="oaipmhurl"id="oaipmhurl" /> </div>
+	<div><label for="allowoverrideTitle">Allow override:</label>
+	<input type ="radio" name="yes" id="yes">Yes</input>
+	<input type ="radio" name="no" id="no">No</input></div>
+	<div><label for="newSiloDescription">Description:</label>
+	<input id="newSiloDescription" type="textbox" name="description"  value="${kw.get('description')}"/></div>
+	<div><label for="newSiloNotes">Notes:</label>
+	<input id="newSiloNotes" type="textbox" name="notes"  value="${kw.get('notes')}"/></div>
+	<div><label for="newSiloAdministrators">Administrators:</label>
+	<input id="newSiloAdministrators" type="textbox" name="administrators"  value="${kw.get('administrators')}"/></div>
+	<div class="form_helper">Separate multiple usernames with a comma</div>
+	<div><label for="newSiloManagers">Managers:</label>
+	<input id="newSiloManagers" type="textbox" name="managers" value="${kw.get('managers')}"/></div>
+	<div class="form_helper">Separate multiple usernames with a comma</div>
+	<div><label for="newSiloUsers">Submitters:</label>
+	<input id="newSiloUsers" type="textbox" name="users" value="${kw.get('users')}"/></div>
+	<div class="form_helper">Separate multiple usernames with a comma</div>
+	<div><label for="newSiloAllocation">Disk Allocation (in Kb):</label>
+	<input id="newSiloAllocation" type="textbox" name="disk_allocation" value="${kw.get('disk_allocation')}" /></div>
+% else:
+	<div><label for="newSilo">Source  name (eg 'a' -> /a/datasets/...)</label>
+	<input type="text" name="silo" id="newSilo" />
+	</div>
+	<div class="form_helper">The machine readable name of the source, used by the system and in the urls. <br/>
+	<br/>For example the name <i>sourcea</i> will appear in the url as <i>http://databank/sourcea/...</i></div></li>
+	<div><label for="newSiloTitle">Title:</label>
+	<input type="text" id="newSiloTitle" name="title" /></div>	
+	<div><label for="oaipmhTitle">OAI-PMH:</label>
+	<input type ="checkbox" name="oaipmh"id="oaipmh"/> </div>
+	<div><label for="urlTitle">URL:</label>
+	<input type ="text" name="oaipmhurl"id="oaipmhurl"/> </div>
+	<div><label for="allowoverrideTitle">Allow override:</label>
+	<input type ="radio" name="yes" id="yes">Yes</input>
+	<input type ="radio" name="no" id="no">No</input></div>
+	<div><label for="newSiloDescription">Description:</label>
+	<input id="newSiloDescription" type="textbox" name="description" /></div>
+	<div><label for="newSiloNotes">Notes:</label>
+	<input id="newSiloNotes" type="textbox" name="notes" /></div>
+	<div><label for="newSiloAdministrators">Administrators:</label>
+	<input id="newSiloAdministrators" type="textbox" name="administrators" /></div>
+	<div class="form_helper">Separate multiple usernames with a comma</div>
+	<div><label for="newSiloManagers">Managers:</label>
+	<input id="newSiloManagers" type="textbox" name="managers" /></div>
+	<div class="form_helper">Separate multiple usernames with a comma</div>
+	<div><label for="newSiloUsers">Submitters:</label>
+	<input id="newSiloUsers" type="textbox" name="users" /></div>
+	<div class="form_helper">Separate multiple usernames with a comma</div>
+	<div><label for="newSiloAllocation">Disk Allocation (in Kb):</label>
+	<input id="newSiloAllocation" type="textbox" name="disk_allocation" /></div>
+% endif
+
+<div>
+% if header == "approve":
+<input type="submit" name="save" id="save" value="Save" />
+% elif header== "create":
+	<div><input type="submit" name="register" id="register" value="Register"/>
+% endif
+
+% if activate == None:
+<div><input type="submit" name="activate" id="activate" value="Activate" style="display:none"/>
+% else:
+<div><input type="submit" name="activate" id="activate" value="Activate" />
+% endif
+</div>
+
+<div id="editor_view">
+  <h2>Edit options</h2>
+  <ul class="stateInfo">
+
+  <li><a href="/admin/list_sources">
+    <img src="/static/styles/images/silo-view-icon-24.png"/>View sources</a>
+  </li>
+
+  </ul>
+</div>
+
+
+</form>

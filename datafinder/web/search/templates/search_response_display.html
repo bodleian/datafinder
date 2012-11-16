@@ -1,0 +1,195 @@
+<%namespace name="options" file="/search_response_options.html" />
+##=============================================================================
+## Current search options
+${options.currentsearch()}
+##=============================================================================
+## Pagination and sort options
+% if numFound and numFound > 0:
+<div class="searchtop">
+  ${options.pagination()}
+  ${options.sortoptions()}
+</div>
+% endif
+##=============================================================================
+## Number of records, current span of records and items per page
+<div class="searchtop">
+
+<div class="searchleft numRecords">
+${ numFound} records found.
+</div>
+
+% if numFound > 0:
+<div class='searchmid'>Showing results ${start+1} to 
+%   if (start+rows) > numFound:
+${numFound}
+%   else:
+${start+rows}
+%   endif
+</div>
+% endif
+
+% if numFound > 0:
+${options.numresultspp("itemsppt")}
+% endif
+
+</div>
+##=============================================================================
+##Link to these results
+% if docs and add_facet:
+<div id="link_to_this_search">Link to these search results | 
+<a href="${add_facet}&format=html&sort=${sort}&rows=${rows}&start=${start}">
+  <img src="/static/styles/images/link.png" border="0" alt="HTML" /> This page'</a>
+<a href="${add_facet}&format=csv&sort=${sort}&rows=${rows}&start=${start}">
+  <img src="/static/styles/images/csv.png" border="0" alt="CSV Logo" /> CSV</a>
+<a href="${add_facet}&format=json&sort=${sort}&rows=${rows}&start=${start}">
+  <img src="/static/styles/images/json.png" border="0" alt="JSON Logo" />JSON</a>
+</div>
+% endif
+##=============================================================================
+##Search results
+% if docs:
+<div class="clear">&nbsp;</div>
+<div class="response_doc">
+<% cnt = 0 %>
+%   for doc_index in xrange(len(docs)):
+<% 
+cnt += 1 
+isSilo = False
+if 'type' in docs[doc_index] and docs[doc_index]['type']:
+    if not isinstance(docs[doc_index]['type'], list):
+        docs[doc_index]['type'] = [docs[doc_index]['type']]
+    for typ in docs[doc_index]['type']:
+        if typ.lower() == 'silo':
+            isSilo = True
+%>
+<h2 class="resultTitle">
+% if isSilo == True:
+<a href="${src}/${docs[doc_index]['silo']}" title="Silo"><img title="Silo" alt="Silo" src="/static/styles/images/silo-view-icon-24.png">
+% else:
+<a href="${src}/${docs[doc_index]['silo']}/datasets/${docs[doc_index]['id']}" title="Data package">
+<img title="Data package" alt="Data package" src="/static/styles/images/datapackage-24.png">
+% endif
+% if 'title' in docs[doc_index] and docs[doc_index]['title'] and docs[doc_index]['title'][0]:
+${docs[doc_index]['title'][0]}
+% else:
+${docs[doc_index]['id']}
+% endif
+</a></h2>
+<table class="searchresult" summary="Search result ${cnt}">
+% if isSilo == False:
+<tr><th>Identifier </th><td>${docs[doc_index]['id']}</td></tr>
+<tr><th>Silo </th><td>${docs[doc_index]['silo']}</td></tr>
+%     for field in chosen_fields:
+%       if field in docs[doc_index] and field not in ['silo', 'id', 'title']:
+<% 
+lbl = field
+if field in field_names:
+    lbl = field_names[field]
+%>
+<tr><th>${lbl}</th><td>
+%         if isinstance(docs[doc_index][field], list):
+%           for txt in docs[doc_index][field]:
+%             if isinstance(txt, basestring):
+<%
+todisplay = txt
+if truncate and len(txt) > truncate:
+    todisplay = txt[:truncate] + ' ...'
+%>
+%               if txt.startswith('http'):
+<a href="${txt}">${todisplay |n}</a>
+%               else:                
+${ todisplay |n}
+%               endif
+%             elif isinstance(txt, int) or isinstance(txt, bool):
+${str(txt)}
+%             else:
+${txt |n}
+%             endif
+%           endfor
+%         elif isinstance(docs[doc_index][field], basestring):
+<%
+    todisplay = docs[doc_index][field]
+    if truncate and len(docs[doc_index][field]) > truncate:
+        todisplay = docs[doc_index][field][:truncate] + ' ...'
+%>
+%           if docs[doc_index][field].startswith('http'):
+<a href= "docs[doc_index][field]">${todisplay |n}</a>
+%           else:
+${ todisplay |n}
+%           endif
+%         elif isinstance(docs[doc_index][field], int) or isinstance(docs[doc_index][field], bool):
+${str(docs[doc_index][field])}
+%         else:
+${docs[doc_index][field] |n}
+%         endif
+
+</td></tr>
+%       endif
+%     endfor
+% else:
+<tr><th>Silo identifier</th><td>${docs[doc_index]['silo']}</td></tr>
+% if 'description' in docs[doc_index] and docs[doc_index]['description'] and docs[doc_index]['description']:
+<tr>
+<th>Description</th><td>
+%   if isinstance(docs[doc_index]['description'], list):
+%     for txt in docs[doc_index]['description']:
+<%
+todisplay = txt
+if truncate and len(txt) > truncate:
+    todisplay = txt[:truncate] + ' ...'
+%>
+${ todisplay |n}
+%     endfor
+%   else:
+<%
+todisplay = docs[doc_index]['description']
+if truncate and len(todisplay) > truncate:
+    todisplay = todisplay[:truncate] + ' ...'
+%>
+${ todisplay |n}
+</td></tr>
+%   endif
+% endif
+% endif
+</table>
+%   endfor
+</div>
+<div class="clear"></div>
+% endif 
+##=============================================================================
+## Pagination and sort options
+%if numFound and numFound > 0:
+<div class="searchbottom">
+  ${options.pagination()}
+  ${options.sortoptions()}
+</div>
+% endif
+##=============================================================================
+## Number of records, current record start and end and items per page
+%if numFound and numFound > 0:
+<div class="searchbottom">
+
+<div class="searchleft">
+${ numFound} records found.
+</div>
+
+% if numFound > 0:
+<div class='searchmid'>Showing results ${start+1} to 
+%   if (start+rows) > numFound:
+${numFound}
+%   else:
+${start+rows}
+%   endif
+</div>
+% endif
+
+% if numFound > 0:
+${options.numresultspp("itemsppb")}
+% endif
+
+</div>
+% endif
+##=============================================================================
+<div class="clear"></div>
+
+

@@ -1,0 +1,7 @@
+#Fri Nov 16 14:28:59 GMT 2012
+eclipse.preferences.version=1
+encoding//datafinder/lib/app_globals.py=utf-8
+encoding//datafinder/lib/conneg.py=utf-8
+encoding//datafinder/lib/search_term.py=utf-8
+encoding//datafinder/web/admin/views.py=utf-8
+encoding//datafinder/web/oaipmh/create_source.py=utf-8

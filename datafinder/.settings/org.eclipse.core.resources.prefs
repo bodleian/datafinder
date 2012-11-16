@@ -1,0 +1,17 @@
+<<<<<<< HEAD
+#Fri Nov 09 17:21:15 GMT 2012
+=======
+#Fri Nov 16 12:26:21 GMT 2012
+>>>>>>> d133632df33af932d6ea5b77a506b69c657f633c
+eclipse.preferences.version=1
+encoding//datafinder/lib/app_globals.py=utf-8
+encoding//datafinder/lib/conneg.py=utf-8
+encoding//datafinder/lib/search_term.py=utf-8
+encoding//datafinder/web/admin/views.py=utf-8
+<<<<<<< HEAD
+encoding//datafinder/web/controllers/about.py=utf-8
+encoding//datafinder/web/controllers/home.py=utf-8
+encoding//datafinder/web/controllers/search.py=utf-8
+=======
+>>>>>>> d133632df33af932d6ea5b77a506b69c657f633c
+encoding//datafinder/web/oaipmh/create_source.py=utf-8

@@ -1,0 +1,409 @@
+##=============================================================================
+<%def name="pagination()">
+    % if len(permissible_offsets) > 0:
+<div class="paginated_results">
+        <%
+            jump = rows*10
+            lowerJump = start-jump
+            if lowerJump < 0:
+                lowerJump = 0;
+            higherJump = start+jump
+            if higherJump > lastPage:
+                higherJump = lastPage
+        %>
+
+<span class="numbers">
+        ## Goto to first page
+        % if start == 0:
+<span class="pagination_label highlighted_page">
+        % else:
+<span class="pagination_label">
+        % endif
+<a href="${add_facet}&start=0&rows=${rows}&sort=${sort}">&#171;</a>
+</span>
+        % if start != 0:
+<span class="ellipse">&#133;</span>
+        % endif
+		<%! import math %>
+		<% pagcount = 0.0 %>
+        % for offset in permissible_offsets:
+            % if start == offset:
+<span class="pagination_label highlighted_page">
+            % else:
+<span class="pagination_label">
+            % endif
+            <%
+                offset_start = offset+1
+                offset_end = offset+rows
+                if offset_end > numFound:
+                    offset_end = numFound
+            %>
+			<% pagcount = float(offset_end) / float(rows) %>
+			<% pagcount= math.ceil(pagcount) %>
+			<% pagcount= int(pagcount) %>
+##${h.link_to(pagcount, "%s&start=%d&rows=%d&sort=%s"%(add_facet, offset, rows, sort))}
+</span>
+        % endfor
+        % if start != lastPage:
+<span class="ellipse">&#133;</span>
+        % endif
+        ## Goto to last page
+        % if start == lastPage:
+<span class="pagination_label highlighted_page">
+        % else:
+<span class="pagination_label">
+        % endif
+<a href="${add_facet}&start=${lastPage}&rows=${rows}&sort=${sort}">&#187;</a>
+</span>
+</span><!--class=numbers-->
+
+</div><!--class=paginated_results-->
+    % endif
+## end pagination()
+</%def>
+##=============================================================================
+<%def name="sortoptions()">
+% if docs and add_facet:
+<div class="searchright">
+<span id="searchordering">Sort by: 
+	
+%	if (sort == "score desc"):
+<%
+	relstring = add_facet + "&start=%d&sort=score+desc&rows=%d"%(start, rows)
+	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
+        titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows, start)
+%>
+<a class="active" href="${relstring}">Relevance</a> | 
+<a href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/> |
+<a href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/>
+
+%	elif (sort == "publicationDate desc"):
+<%
+	relstring = add_facet + "&sort=score+desc&rows=%d&start=%d"%(rows, start)
+	datestring = add_facet + "&sort=publicationDate+asc&rows=%d&start=%d"%(rows, start)
+	titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows, start)
+%>
+<a href="${relstring}">Relevance</a> |
+<a class="active" href="${datestring}" title="Date ascending">Date </a><img src="/static/styles/images/down_arrow_black.png" height="10" alt="Ascending"/> | 
+<a href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/>
+
+%	elif (sort == "publicationDate asc"):
+<%
+	relstring = add_facet + "&sort=score+desc&rows=%d&start=%d"%(rows, start)
+	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
+	titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows, start)
+%>
+<a href="${relstring}">Relevance</a> |
+<a class="active" href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_black.png" height="10" alt="Descending"/> |
+<a href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/>
+
+%	elif (sort == "silo desc"):
+<%
+	relstring = add_facet + "&sort=score+desc&rows=%d&start=%d"%(rows, start)
+	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
+	titlestring = add_facet + "&sort=silo+asc&rows=%d&start=%d"%(rows, start)
+%>
+<a href="${relstring}">Relevance</a> | 
+<a href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/> |
+<a class="active" href="${titlestring}" title="Silo ascending">Silo </a><img src="/static/styles/images/down_arrow_black.png" height="10" alt="Ascending"/>
+
+%	elif (sort == "silo asc"):
+<%
+	relstring = add_facet + "&sort=score+desc&rows=%d&start=%d"%(rows, start)
+	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
+	titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows, start)
+%>
+<a href="${relstring}">Relevance</a> |
+<a href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/> |
+<a class="active" href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_black.png" height="10" alt="Descending"/>
+
+%	else:
+<%
+	relstring = add_facet + "&sort=score+desc&rows=%d&start=%d"%(rows,start)
+	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
+	titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows ,start)
+%>
+<a href="${relstring}">Relevance</a> |
+<a href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descecding"/> |
+<a href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descecding"/>
+
+%	endif
+</span>
+</div>
+% endif
+## end sortoptions()
+</%def>
+##=============================================================================
+<%def name="numresultspp(idname)">
+% if docs and add_facet:
+<div class="searchright">
+<div id="${idname}">
+<span>Items per page: </span>
+<%
+	twentyfstring = add_facet + "&rows=25&sort=%s"%sort
+	fiftystring = add_facet + "&rows=50&sort=%s"%sort
+	hundredstring = add_facet + "&rows=100&sort=%s"%sort
+%>
+%	if (rows == 25):
+<a class="active" href="${twentyfstring}">25</a>
+<a href="${fiftystring}">50</a>
+<a href="${hundredstring}">100</a>
+<form class="itemsppform" action="/search/detailed" method="GET">
+<input type="hidden" name="q" value="*:*">
+<input type="hidden" name="truncate" value="${truncate}">
+%    if chosen_facets:
+%      for chosen_facet in chosen_facets:
+          <%
+              current_items = []
+              if isinstance(chosen_facets[chosen_facet], list):
+                  current_items = chosen_facets[chosen_facet]
+              else:
+                  current_items = [chosen_facets[chosen_facet]]
+          %>
+%         for chosen_item in current_items:
+              <%
+              from urllib import quote
+              try:
+                  res = '"%s"'%quote(chosen_item.strip())
+              except:
+                  res = '"%s"'%chosen_item.strip()
+              %>
+<input type="hidden" name="filter${chosen_facet}" value="${res}"/>
+%         endfor
+%     endfor
+%    endif
+<input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/>
+</form>
+%	elif (rows == 50):
+<a href="${twentyfstring}">25</a>
+<a class="active" href="${fiftystring}">50</a>
+<a href="${hundredstring}">100</a>
+<form class="itemsppform" action="/search/detailed" method="GET">
+<input type="hidden" name="q" value="*:*">
+<input type="hidden" name="truncate" value="${truncate}">
+%    if chosen_facets:
+%      for chosen_facet in chosen_facets:
+          <%
+              current_items = []
+              if isinstance(chosen_facets[chosen_facet], list):
+                  current_items = chosen_facets[chosen_facet]
+              else:
+                  current_items = [chosen_facets[chosen_facet]]
+          %>
+%         for chosen_item in current_items:
+              <%
+              from urllib import quote
+              try:
+                  res = '"%s"'%quote(chosen_item.strip())
+              except:
+                  res = '"%s"'%chosen_item.strip()
+              %>
+<input type="hidden" name="filter${chosen_facet}" value="${res}"/>
+%         endfor
+%     endfor
+%    endif
+<input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/>
+</form>
+%	elif (rows == 100):
+<a href="${twentyfstring}">25</a>
+<a href="${fiftystring}">50</a>
+<a class="active" href="${hundredstring}">100</a>
+<form class="itemsppform" action="/search/detailed" method="GET">
+<input type="hidden" name="q" value="*:*">
+<input type="hidden" name="truncate" value="${truncate}">
+%    if chosen_facets:
+%      for chosen_facet in chosen_facets:
+          <%
+              current_items = []
+              if isinstance(chosen_facets[chosen_facet], list):
+                  current_items = chosen_facets[chosen_facet]
+              else:
+                  current_items = [chosen_facets[chosen_facet]]
+          %>
+%         for chosen_item in current_items:
+              <%
+              from urllib import quote
+              try:
+                  res = '"%s"'%quote(chosen_item.strip())
+              except:
+                  res = '"%s"'%chosen_item.strip()
+              %>
+<input type="hidden" name="filter${chosen_facet}" value="${res}"/>
+%         endfor
+%     endfor
+%    endif
+<input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/>
+</form>
+%	else:
+<a href="${twentyfstring}">25</a>
+<a href="${fiftystring}">50</a>
+<a href="${hundredstring}">100</a>
+<form class="itemsppform" action="/search/detailed" method="GET">
+<input type="hidden" name="q" value="*:*">
+<input type="hidden" name="truncate" value="${truncate}">
+%    if chosen_facets:
+%      for chosen_facet in chosen_facets:
+          <%
+              current_items = []
+              if isinstance(chosen_facets[chosen_facet], list):
+                  current_items = chosen_facets[chosen_facet]
+              else:
+                  current_items = [chosen_facets[chosen_facet]]
+          %>
+%         for chosen_item in current_items:
+              <%
+              from urllib import quote
+              try:
+                  res = '"%s"'%quote(chosen_item.strip())
+              except:
+                  res = '"%s"'%chosen_item.strip()
+              %>
+<input type="hidden" name="filter${chosen_facet}" value="${res}"/>
+%         endfor
+%     endfor
+%    endif
+<input class="itemsppformtext itemsppformchosen" type="text" name="rows" value="${rows}" onUnfocus="this.form.submit()"/>
+</form>
+%	endif
+</div>
+</div>
+% endif
+</%def>
+##=============================================================================
+<%def name="currentsearch()">
+## Current search
+<div class="current_search">
+<h2 class="current_search_header">Current Search</h2>
+
+##----q----
+<div class="current_facet">
+<div class="search_remove">
+% if q and q != "*:*":
+<form action="/search/detailed" method="GET">
+<input type="hidden" name="q" value="*:*">
+<input type="hidden" name="rows" value="${rows}">
+<input type="hidden" name="truncate" value="${truncate}">
+%   if chosen_facets:
+%     for chosen_facet in chosen_facets:
+        <%
+          current_items = []
+          if isinstance(chosen_facets[chosen_facet], list):
+            current_items = chosen_facets[chosen_facet]
+          else:
+            current_items = [chosen_facets[chosen_facet]]
+        %>
+%       for chosen_item in current_items:
+          <%
+            from urllib import quote
+            try:
+              res = '"%s"'%quote(chosen_item.strip())
+            except:
+              res = '"%s"'%chosen_item.strip()
+            %>
+<input type="hidden" name="filter${chosen_facet}" value="${res}"/>
+%       endfor
+%     endfor
+%   endif
+%   if typ:
+<input type="hidden" name="type" value="${typ}">
+%   endif
+<input type="submit" value="x">
+</form>
+% else:
+&nbsp;
+% endif
+</div>
+<div class="label">Text</div><div class="value"> ${q |n}</div>
+</div>
+
+##----typ filters (to be displayed only if search is not *:*)----
+% if typ and typ != 'all' and q != "*:*":
+<div class="current_facet">
+<div class="search_remove">
+<form action="/search/detailed" method="GET">
+<input type="hidden" name="q" value="${q}">
+<input type="hidden" name="rows" value="${rows}">
+<input type="hidden" name="truncate" value="${truncate}">
+%   if chosen_facets:
+%     for chosen_facet in chosen_facets:
+        <%
+          current_items = []
+          if isinstance(chosen_facets[chosen_facet], list):
+            current_items = chosen_facets[chosen_facet]
+          else:
+            current_items = [chosen_facets[chosen_facet]]
+        %>
+%        for chosen_item in current_items:
+          <%
+            from urllib import quote
+            try:
+              res = '"%s"'%quote(chosen_item.strip())
+            except:
+              res = '"%s"'%chosen_item.strip()
+          %>
+<input type="hidden" name="filter${chosen_facet}" value="${res}"/>
+%       endfor
+%     endfor
+%   endif
+<input type="hidden" name="type" value="all">
+<input type="submit" value="x">
+</form>
+</div>
+<div class="label">Search within</div>
+<div class="value">${types[typ] |n}</div>
+</div>
+% endif
+
+##----chosen_facets----
+% if chosen_facets:
+% for facet in chosen_facets:
+<%
+currentfacet = []
+if isinstance(chosen_facets[facet], list):
+  currentfacet = chosen_facets[facet]
+else:
+  currentfacet = [chosen_facets[facet]]
+%>
+%   for item in currentfacet:
+<div class="current_facet">
+<div class="search_remove">
+<form action="/search/detailed" method="GET">
+<input type="hidden" name="q" value="${q}">
+<input type="hidden" name="rows" value="${rows}">
+<input type="hidden" name="truncate" value="${truncate}">
+%     if typ:
+<input type="hidden" name="type" value="${typ}">
+%     endif
+%     for chosen_facet in chosen_facets:
+        <%
+          current_items = []
+          if isinstance(chosen_facets[chosen_facet], list):
+            current_items = chosen_facets[chosen_facet]
+          else:
+            current_items = [chosen_facets[chosen_facet]]
+        %>
+%       for chosen_item in current_items:
+%         if not (chosen_item==item):
+            <%
+              from urllib import quote
+              try:
+                res = '"%s"'%quote(chosen_item.strip())
+              except:
+                res = '"%s"'%chosen_item.strip()
+            %>
+<input type="hidden" name="filter${chosen_facet}" value="${res}"/>
+%         endif
+%       endfor
+%     endfor
+<input type="submit" value="x">
+</form>
+</div>
+<div class="label">${field_names[facet]|n}</div><div class="value">${ item |n}</div>
+</div>
+%   endfor
+% endfor
+% endif
+
+</div>
+</%def>
+##=============================================================================
