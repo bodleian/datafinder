@@ -1,0 +1,11 @@
+.withborder {
+   border: solid 2px #000000;
+  }
+  
+ .panel {
+   margin: 0px ;
+  }
+  
+  h5 .footer {
+  text-align:centre;
+  }
