@@ -6,7 +6,7 @@ import logging
 def home(request):
     context = { 
         #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,
+        #'STATIC_URL': settings.STATIC_URL,3
         'silo_name':"",
         'ident' : "",
         'id':"",
@@ -18,6 +18,8 @@ def home(request):
     return render_to_response('home.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
     
+    
+        #return render_to_response('home.html',context, context_instance=RequestContext(request))
     
 
 def about(request):

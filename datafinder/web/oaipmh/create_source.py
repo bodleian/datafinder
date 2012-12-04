@@ -73,10 +73,7 @@ class CreateSourceController(BaseController):
         c.header = "approve"
         c.kw={}
         text = "Approval needed for the registered source: '" + source +"'"
-        msg = MIMEText(text)
-        msg['Subject'] = msg
-        msg['From'] = "bhavana.ananda@bodleian.ox.ac.uk"
-        msg['To'] = "bhavana.ananda@bodleian.ox.ac.uk"
+
 
         try:
             s_q= meta.Session.query(SourceInfo).filter(SourceInfo.silo == c.source).filter(SourceInfo.activate == False)  

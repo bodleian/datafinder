@@ -5,10 +5,11 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # admin.autodiscover()
 
 urlpatterns = patterns('',       
-  url(r'^', include('core.urls', 'core')),
-  url(r'^contribute/$', include('contribute.urls', 'contribute')),
-  url(r'^search/', include('search.urls', 'search')),
-  url(r'^admin/', include('admin.urls', 'admin')),
+  url(r'^', include('datafinder.web.core.urls', 'core')),
+  url(r'^contribute/$', include('datafinder.web.contribute.urls', 'contribute')),
+  url(r'^search/', include('datafinder.web.search.urls', 'search')),
+  url(r'^admin/', include('datafinder.web.admin.urls', 'admin')),
+  url(r'^login/$', include('datafinder.web.webauth.urls', 'webauth')),
      )
 
 urlpatterns += staticfiles_urlpatterns()

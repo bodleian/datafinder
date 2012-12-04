@@ -1,15 +1,21 @@
 <div id="quicksearch">
   <form  id="quicksearchform" action="/search/detailed" method="get">
-    <input type="text" id="q" name="q" alt="Search" value>
-
-    <select id="ft" name="ft">
+    <div  class="row">
+     <div class="eight columns">
+     	<input type="text" id="q" name="q" alt="Search" value> </input>
+     </div>
+       <div class="four columns">
+     	<input type="submit" id="commit" name="search"  value="search"></input>
+     </div>
+    </div>
+    <!-- <select id="ft" name="ft" >
       <option value="silo">Silo</option>
       <option value="dataset">Data Packages</option>
       <option value="item">File Names</option>
       <option value="all">All</option>
     </select>
-    <input id="commit" name="search" type="submit" value="SEARCH">
-     <a href="/home" target="_blank">Help</a>
+    -->
+    <div><input type="radio" name="all" value="all"> search all fields </input></div>
+    <div><input type="radio" name="metadata" value="metadata"> only serch metadata </input></div>
   </form>
-
 </div>

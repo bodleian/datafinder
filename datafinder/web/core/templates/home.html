@@ -1,24 +1,60 @@
 # -*- coding: utf-8 -*-
-<%inherit file="/base.html" />
+<%inherit file="/newbase.html" />
 <%def name="head_tags()">
   <title> DataFinder </title>
 </%def>
 
-<h1>Welcome to DataFinder</h1>
-<div class="intro">
-	<p>Browse, search, discover metadata from disparate sources from the web using DataFinder and gain access to the data.</p>
+<div class="row"><div class="seven columns centered"><h5>Discover research data from university of Oxford scholars</h5></div></div>
+
+<div class="row">
+    <div class="six columns">
+	      	<div class="pleaseNote">
+<p>Brief description of DataFinder goes here, exploring what the system does, why you would want to use it, and what you need to do 
+to use it....  	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<a href="" > read more about the service</a></p>
+           </div>
+    </div>
+    <div class="six columns">
+	    <div class="panel withborder">
+	          <div class="two columns centered"><h5> Search </h5></div>
+	    	  <%include file="/quick_search_form.html"/> 
+	    	  <div><a href="/search/search_tips/"  onClick="return popup(this, 'Search tips')">?</a> Need any help with searching? </div>
+	    </div>
+	</div>
+</div>
+f
+
+
+<div class="row">
+    <div class="six columns">
+	      	<div class="pleaseNote">
+	      	<h6> Browse DataFinder </h6>
+<p>Brief explanation of how you are able to browse the site ( and why you'd want to ...)	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+</p>
+           </div>
+    </div>
+    <div class="six columns">
+	      	<div class="pleaseNote">
+	      	<h6> Contribute to DataFinder </h6>
+<p>Brief description of how you would add records to DataFinder ...	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+</p>
+           </div>
+    </div>
 </div>
 
-<div class="pleaseNote">
-<p>DataFinder is the hub of the technical infrastructure that will aggregate metadata from disparate sources, provide dataset registration ( through DOIs), and discovery, and location and access details. </p>
-<p>You can use DataFinder to Browse, search, discover metadata at any time, from anywhere on the web. You can accomplish these tasks using 
-a simple web interface of a hosted instance of DataFinder.</p>
-
-</div>
-
-<div class="pleaseNote">
-<h3>Using the web interface</h3>
-<p>To get started, <a href="https://github.com/bhavanaananda/DataFinder/wiki">read this document on the DataFinder wiki</a></p>
-</div>
-
-
+<SCRIPT TYPE="text/javascript">
+<!--
+function popup(link, windowname)
+{
+if (! window.focus)return true;
+var href;
+if (typeof(mylink) == 'string')
+   href=mylink;
+else
+   href=mylink.href;
+window.open(href, windowname, 'width=400,height=200,scrollbars=yes');
+return false;
+}
+//-->
+</SCRIPT>

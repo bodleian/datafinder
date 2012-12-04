@@ -4,6 +4,7 @@ from django.conf import settings
 import views
 urlpatterns = patterns('',
     url(r'^detailed/$',  views.detailed),
+    url(r'^search_tips/$',  views.searchtips),
   #  url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
   #     'document_root': 'static'}),
                          )

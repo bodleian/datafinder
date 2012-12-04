@@ -117,9 +117,10 @@ MAKO_TEMPLATE_DIRS = (
     os.path.join(ROOT_PATH,'core/templates'),
     os.path.join(ROOT_PATH,'contribute/templates'),
     os.path.join(ROOT_PATH,'admin/templates'),
+    os.path.join(ROOT_PATH,'admin/templates'),
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'datafinder.web.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'wsgi.application'
@@ -146,11 +147,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'contribute',
-    'login',
-    'oaipmh',
-    'search',
+    'datafinder.web.core',
+    'datafinder.web.contribute',
+    'datafinder.web.webauth',
+    'datafinder.web.oaipmh',
+    'datafinder.web.search',
+
     #'datafinder.web.core',
     #'datafinder.web.contribute',
     #'datafinder.web.login',
@@ -167,7 +169,7 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-LOGGING = {
+"""LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'filters': {
@@ -190,3 +192,8 @@ LOGGING = {
         },
     }
 }
+"""
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.RemoteUserBackend',
+)

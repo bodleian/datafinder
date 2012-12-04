@@ -10,6 +10,23 @@ from datafinder.config import settings
 from urllib import urlencode, unquote, quote
 import logging    
 
+
+def searchtips(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':"",
+        'q':"",
+        'typ':"",
+        }
+    return render_to_response('searchtips.html',context, context_instance=RequestContext(request))
+    #return render_to_response('home.html',context, context_instance=RequestContext(request))
+    
+    
 def raw(request):
         ident = request.environ.get('repoze.who.identity')  
         context['ident'] = ident
@@ -378,13 +395,13 @@ def detailed(request,query=None, additional_fields=[]):
             elif res_format == 'json':
                 #response.headers['Content-Type'] = 'application/json'
                 #response.charset = 'utf8'
-                return render(request,solr_response,content_type="application/json")
+                return render_to_response(request,solr_response,content_type="application/json")
                 #return solr_response
             elif res_format in ['csv', 'python', 'php']:
                 #response.headers['Content-Type'] = 'application/text'
                 #response.charset = 'utf8'
-                return render(request,solr_response,content_type="application/text")
-                return solr_response
+                return render_to_response(request,solr_response,content_type="application/text")
+            #return solr_response
                 
             search = json.loads(solr_response)
                 
