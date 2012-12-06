@@ -88,7 +88,7 @@ def listsources(request):
             #print context['unregistered_sources']
         except Exception:
             #logger.exception("Failed to mark submission as failed")
-            return False
+            return render_to_response('list_of_sources.html',context, context_instance=RequestContext(request))
         #print context
         return render_to_response('list_of_sources.html',context, context_instance=RequestContext(request))
  
