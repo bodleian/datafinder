@@ -10,6 +10,22 @@ from datafinder.config import settings
 from urllib import urlencode, unquote, quote
 import logging    
 
+def search(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':"",
+        'q':"",
+        'typ':"",
+        }
+    return render_to_response('index.html',context, context_instance=RequestContext(request))
+    #return render_to_response('home.html',context, context_instance=RequestContext(request))
+    
+    
 
 def searchtips(request):
     context = { 
@@ -342,12 +358,15 @@ def detailed(request,query=None, additional_fields=[]):
 
             solr_response = None 
             try:
+                print "before solr connection :"
                 solr_conn = settings.getSolrConnection()
                 solr_response = solr_conn.raw_query(**solr_params)
-                #print solr_response
+                print "solr response :"
+                print solr_response
             except:
+                print "in exception"
                 pass
-
+            print "after try block"
             context['add_finder_facet'] =  u"%ssearch/detailed?q=%s&" % (settings.get("main:granary.uri_root"), context['q'].encode('utf-8'))
                      
             context['add_finder_facet'] = context['add_finder_facet']+ urlencode(context['search']) + filter_url

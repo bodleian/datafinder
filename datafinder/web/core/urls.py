@@ -5,7 +5,12 @@ import views
 urlpatterns = patterns('',
     url(r'^home/$',  views.home),
     url(r'^about/$',  views.about),
+    url(r'^help/$',  views.help),
+    url(r'^contact/$',  views.contact),
     url(r'^cookies/$',  views.cookies),
+    url(r'^terms-conditions/$',  views.termsconditions),
+    url(r'^privacy/$',  views.privacy),
+    url(r'^accessibility/$',  views.accessibility),
   #  url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
   #     'document_root': 'static'}),
                          )

@@ -19,11 +19,11 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 	    <div class="panel withborder">
 	          <div class="two columns centered"><h5> Search </h5></div>
 	    	  <%include file="/quick_search_form.html"/> 
-	    	  <div><a href="/search/search_tips/"  onClick="return popup(this, 'Search tips')">?</a> Need any help with searching? </div>
+	    	  <div><a href="/search/search_tips/" class="popup">?</a> Need any help with searching? </div>
 	    </div>
 	</div>
 </div>
-f
+
 
 
 <div class="row">
@@ -42,19 +42,10 @@ f
            </div>
     </div>
 </div>
-
-<SCRIPT TYPE="text/javascript">
-<!--
-function popup(link, windowname)
-{
-if (! window.focus)return true;
-var href;
-if (typeof(mylink) == 'string')
-   href=mylink;
-else
-   href=mylink.href;
-window.open(href, windowname, 'width=400,height=200,scrollbars=yes');
-return false;
+<script type="text/javascript">
+ $(document).ready( function() {
+  $('.popup').popupWindow({ 
+	centerBrowser:1 
+	}); 
+</script>
 }
-//-->
-</SCRIPT>
