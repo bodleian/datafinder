@@ -1,15 +1,16 @@
 <div id="quicklogin">
-  <form  id="quickloginform" action="/" method="get">
 
- <div  class="row">
-    <!-- <div class="six columns">
-   		 User Name 
-    </div>
-    <div class="six columns">
-    	<input id="commit" name="login" type="submit" value="login"></input>
-    </div>
-    -->
-    <input id="commit" name="login" type="submit" value="login"></input>
+  % if login == "":
+  	<form  id="quickloginform" action="/login" method="get">
+  	 <div  class="row">
+  	 <input id="commit" name='login' type="submit" value="login"></input>
+  % endif  	 
+  % if logout == "":
+   <form  id="quickloginform" action="/logout" method="get">
+     <div  class="row">
+     <input id="commit" name= 'logout' type="submit" value="logout"></input>
+  % endif
+
  </div>    
     <div>
     	 <a href="/" target="_blank">My records</a> |

@@ -117,7 +117,7 @@ MAKO_TEMPLATE_DIRS = (
     os.path.join(ROOT_PATH,'core/templates'),
     os.path.join(ROOT_PATH,'contribute/templates'),
     os.path.join(ROOT_PATH,'admin/templates'),
-    os.path.join(ROOT_PATH,'admin/templates'),
+    os.path.join(ROOT_PATH,'webauth/templates'),
 )
 
 ROOT_URLCONF = 'datafinder.web.urls'
