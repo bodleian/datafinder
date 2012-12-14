@@ -14,6 +14,7 @@ def home(request):
         'user_logged_in_name':"",
         'q':"",
         'typ':"",
+        'login':"",
         }
     return render_to_response('home.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
