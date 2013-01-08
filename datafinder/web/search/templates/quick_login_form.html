@@ -1,21 +1,32 @@
-<div id="quicklogin">
-
+<div>
+<!-- id="quicklogin" -->
+  ${user_logged_in_name}
   % if login == "":
-  	<form  id="quickloginform" action="/login" method="get">
+  	<form  action="/login" method="get">
+  	<!-- id="quickloginform" -->
   	 <div  class="row">
-  	 <input id="commit" name='login' type="submit" value="login"></input>
+  	 	<input id="login" name='login' type="submit" value="login"/>
+  	 </div> 
   % endif  	 
   % if logout == "":
-   <form  id="quickloginform" action="/logout" method="get">
+     jbgkbggmfng
+     % if user_logged_in_name  and user_logged_in_name != None:
+     	${user_logged_in_name}
+     % endif
+   <form action="/logout" method="get"> 
+     <!-- id="quickloginform" -->
      <div  class="row">
-     <input id="commit" name= 'logout' type="submit" value="logout"></input>
+     	<input id="logout" name= 'logout' type="submit" value="logout"/>
+      </div> 
   % endif
 
- </div>    
+   
     <div>
     	 <a href="/" target="_blank">My records</a> |
     	 <a href="/" target="_blank">administration</a>
     </div>
-  </form>
-
+  % if login == "" or  logout == "":   
+  	</form>
+  % endif
+  
 </div>

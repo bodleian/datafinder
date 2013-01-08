@@ -1,11 +1,12 @@
-<div id="quicksearch">
-  <form  id="quicksearchform" action="/search/detailed" method="get">
+<div >
+  <form   action="/search/detailed" method="get">
+   <!-- id="quicksearchform" -->
     <div  class="row">
      <div class="eight columns">
-     	<input type="text" id="q" name="q" alt="Search" value> </input>
+     	<input type="text"  name="q"/><!-- id="q" -->
      </div>
        <div class="four columns">
-     	<input type="submit" id="commit" name="search"  value="search"></input>
+     	<input type="submit"  name="search"  value="search" /><!-- id="search" -->
      </div>
     </div>
     <!-- <select id="ft" name="ft" >
@@ -15,7 +16,8 @@
       <option value="all">All</option>
     </select>
     -->
-    <div><input type="radio" name="all" value="all"> search all fields </input></div>
-    <div><input type="radio" name="metadata" value="metadata"> only serch metadata </input></div>
+    <div><input type="radio" name="all" value="all"/> search all fields</div>
+    <div><input type="radio" name="metadata" value="metadata"/> only serch metadata</div>
   </form>
 </div>
+<!-- id="quicksearch" -->
