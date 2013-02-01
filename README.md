@@ -1,5 +1,5 @@
-datafinder
-==========
+Data Finder
+===========
 
 
 The DataFinder software is being developed by the University of Oxford to provide a searchable catalogue of research data generated or compiled by members of the University. 
@@ -9,10 +9,10 @@ The software should be useable (with minimal modifications) by other Higher Educ
 
 DataFinder can be used to:
 
-¥	Search and Browse for datasets in harvestable data repositories.
-¥	Find datasets that will be useful in particular research contexts: the DataFinder metadata schema includes fields for dataset descriptions, information about how the data was generated, subject disciplines, information about the people responsible for the data, links to publications, and much more.
-¥	Register the existence of datasets, whether in electronic or physical formats.
-¥	Provide information about how to access the data. Finding details of a dataset via Data Finder does not guarantee access to that dataset: each dataset will have its own access terms and conditions.
+-   Search and Browse for datasets in harvestable data repositories.
+-   Find datasets that will be useful in particular research contexts: the DataFinder metadata schema includes fields for dataset descriptions, information about how the data was generated, subject disciplines, information about the people responsible for the data, links to publications, and much more.
+-   Register the existence of datasets, whether in electronic or physical formats.
+-   Provide information about how to access the data. Finding details of a dataset via Data Finder does not guarantee access to that dataset: each dataset will have its own access terms and conditions.
 
 DataFinder is being designed in particular to act as a counterpart to the DataBank software (ADD LINK)that is being created by the University of Oxford to act as its research data archive, and this will be reflected in the similar interface designs.
 
