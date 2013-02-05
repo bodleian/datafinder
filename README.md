@@ -1,17 +1,21 @@
-datafinder
-==========
+Data Finder
+===========
 
 
-Data Finder is an online catalogue of data produced as a result of research by scholars at the University of Oxford. Use DataFinder to search for datasets. Datasets might comprise numerical data images, audio, text corpus, computational data or other form.
+The DataFinder software is being developed by the University of Oxford to provide a searchable catalogue of research data generated or compiled by members of the University. 
+It will form one part of a research data management infrastructure, enabling the University to comply with funder requirements regarding the preservation, curation, and re-use of data outputs.
+The software should be useable (with minimal modifications) by other Higher Education institutions as well, either to track their own research data assets or more broadly as a metadata catalogue.
 
-Use Data Finder to:
-- Search and Browse for Oxford datasets
-- Assess the relevance of the dataset to your needs: many records include a description and descriptive terms about the dataset.
-- Locate Data might be in digital or physical format. DataFinder will provide details of how to locate the data whatever the format. It might provide a UAL directly to the source of the data or contact details to request access to the datoset. Datasets are not necessarily located within the University of Oxford.
-- Access datasets (where permitted). Finding details of a dataset via Data Finder does not guarantee access to that dataset: each dataset will hove its own access terms and conditions.
 
-Data Finder is being developed with funding generously provided by JISC. Data Finder is managed and maintained by the Bodleian Libraries> as a part of the DaMaRo project
+DataFinder can be used to:
 
-The Data Management Rollout at Oxford (DaMaRO) Project is creating a research data management policy for the University and the infrastructure to enable researchers to comply with it.
+-   Search and Browse for datasets in harvestable data repositories.
+-   Find datasets that will be useful in particular research contexts: the DataFinder metadata schema includes fields for dataset descriptions, information about how the data was generated, subject disciplines, information about the people responsible for the data, links to publications, and much more.
+-   Register the existence of datasets, whether in electronic or physical formats.
+-   Provide information about how to access the data. Finding details of a dataset via Data Finder does not guarantee access to that dataset: each dataset will have its own access terms and conditions.
 
-The Datafinder enables the discovery of data hosted in various places around the University and beyond, including the 'DataBank' and 'VIDAAS'. DataFinder is freely available as a web service.
+DataFinder is being designed in particular to act as a counterpart to the DataBank software (https://github.com/dataflow/RDFDatabank) that is being created by the University of Oxford to act as its research data archive, and this will be reflected in the similar interface designs.
+
+DataFinder is being developed as part of the Data Management Roll-out at Oxford (Damaro) project (http://damaro.oucs.ox.ac.uk), which is funded by the JISC  as part of their Managing Research Data Programme (http://www.jisc.ac.uk/whatwedo/programmes/mrd.aspx).
+
+Questions about the Damaro Project should be addressed to damaro@it.oucs.ox.ac.
