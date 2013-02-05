@@ -1,7 +1,7 @@
 from djangomako.shortcuts import render_to_response, render_to_string
 from django.conf import settings
 from django.template import RequestContext
-import logging
+import logging, os
 
 def home(request):
     context = { 
@@ -11,11 +11,11 @@ def home(request):
         'ident' : "",
         'id':"",
         'path' :"",
-        'user_logged_in_name':"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
         'q':"",
         'typ':"",
         'login':"",
-        }
+       }
     return render_to_response('home.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
     
@@ -120,3 +120,18 @@ def cookies(request):
         'typ':"",
         }
     return render_to_response('cookies.html',context, context_instance=RequestContext(request))
+
+def myrecords(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'q':"",
+        'typ':"",
+        'login':"",
+       }
+    return render_to_response('myrecords.html',context, context_instance=RequestContext(request))

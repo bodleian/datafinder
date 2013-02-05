@@ -1,331 +1,203 @@
 # -*- coding: utf-8 -*-
 <%inherit file="/base.html" />
-
+<%def name="head_tags()">
+  <title> DataFinder </title>
+</%def> 
+ 
 % if message:
 	<p><span style="color:red;">${message}</span></p>
 % endif
 
-<%def name="head_tags()">
-  <title> List of Sources </title>
-</%def>
-
-
-% if header== "create":
-	<h1>Contribute</h1>
-% elif header == "approve":
-	<h1>Approve the Source</h1>
-% endif
+<h1>Contribute a record</h1>
 
 <form class="abau" id="form1" name="form1" method="POST" enctype="multipart/form-data" action="" accept-charset="UTF-8">
-% if kw:
-	<div><label for="newSilo">Source  name (eg 'a' -> /a/datasets/...) : </label>
-	% if header == "approve":
-		<input type="text" value="${kw.get('silo')}" disabled="true" />
-	% elif header == "create":
-		<input type="text" value="${kw.get('silo')}" />
-    % endif
 
-	<input type="hidden" name="silo" id="newSilo" value="${kw.get('silo')}"  />
-	</div>
-	<div class="form_helper">The machine readable name of the source, used by the system and in the urls. <br/>
-	<br/>For example the name <i>sourcea</i> will appear in the url as <i>http://databank/sourcea/...</i></div></li>
-	<div><label for="newSiloTitle">Title:</label>
-	<input type="text" id="newSiloTitle" name="title" value="${kw.get('title')}" /></div>	
-	<div><label for="oaipmhTitle">OAI-PMH:</label>
-	<input type ="checkbox" name="oaipmh"id="oaipmh"/> </div>
-	<div><label for="urlTitle">URL:</label>
-	<input type ="text" name="oaipmhurl"id="oaipmhurl" /> </div>
-	<div><label for="allowoverrideTitle">Allow override:</label>
-	<input type ="radio" name="yes" id="yes">Yes</input>
-	<input type ="radio" name="no" id="no">No</input></div>
-	<div><label for="newSiloDescription">Description:</label>
-	<input id="newSiloDescription" type="textbox" name="description"  value="${kw.get('description')}"/></div>
-	<div><label for="newSiloNotes">Notes:</label>
-	<input id="newSiloNotes" type="textbox" name="notes"  value="${kw.get('notes')}"/></div>
-	<div><label for="newSiloAdministrators">Administrators:</label>
-	<input id="newSiloAdministrators" type="textbox" name="administrators"  value="${kw.get('administrators')}"/></div>
-	<div class="form_helper">Separate multiple usernames with a comma</div>
-	<div><label for="newSiloManagers">Managers:</label>
-	<input id="newSiloManagers" type="textbox" name="managers" value="${kw.get('managers')}"/></div>
-	<div class="form_helper">Separate multiple usernames with a comma</div>
-	<div><label for="newSiloUsers">Submitters:</label>
-	<input id="newSiloUsers" type="textbox" name="users" value="${kw.get('users')}"/></div>
-	<div class="form_helper">Separate multiple usernames with a comma</div>
-	<div><label for="newSiloAllocation">Disk Allocation (in Kb):</label>
-	<input id="newSiloAllocation" type="textbox" name="disk_allocation" value="${kw.get('disk_allocation')}" /></div>
-% else:
-    <div class="boxhead">Would you like to deposit data in DataBank?
-         <input type="radio" name="depositDataYesNo" id="depositDataYes" value="yes"> Yes </input>
-         <input type="radio" name="depositDataYesNo" id="depositDataNo" value="no"> No </input>
+	<div><label>The title of this dataset(to use in citation)</label></div>
+    <div><input type="text" name="dataset_title" id="dataset_title"></input> </div>
+    <div><label>If there is an alternative title, please enter it here:</label></div>
+    <div><input type="text" name="alt_title" id="alt_title"></input></div>
+    
+    <div class="boxhead">Describe your data</label>
     </div>
     <div class="boxbody">
-	     <div>
-		         <label for="depositfileuploadLabel">Databank deposit inc file upload</label>
-		         <input type="file" name="depositfileupload" id="depositfileupload" />
-		</div>
+        <div><label>Please write a short description of your data (max chanracters?)</label></div>
+        <div><input type="text" name="data_description" id="data_description"></input> </div>
+        
+        <div><label>By what process was the data assembled/generated?</label></div>
+        <div><input type="text" name="" id=""></input> </div>
+        
+        <div><label>Please write a short description of the research project that the data forms part of:</label></div>
+        <div><input type="text" name="" id=""></input> </div>
+        
+        <div><label>If you have a website for this research project, please enter the URL:</label></div>
+        <div><input type="text" name="" id=""></input> </div>
+        
+        <div><label>Subject Ares(s)</label>
+        <input type="text" name="" id=""></input> </div>
+        
+        <div><label>Keyword(s)</label>
+        <input type="text" name="" id=""></input> </div>
+        
+        <div><label>Main Language</label>
+        <input type="text" name="" id=""></input> </div>       
     </div>
-
-	    <div class="boxhead">Data Creator</div>
-	    <div class="boxbody">
-		      <div>
-	            <label for="newFirstNameLabel">First name</label>
-	            <input type="text" name="newFirstName" id="newFirstName"/>
-	         </div>
-	         <div>
-	            <label for="newLastNameLabel">Last name</label>
-	            <input type="text" name="newLastName" id="newLastName"/>
-	         </div>
+    <div class="boxhead">Data creators & contributers</label>
+    </div>
+    <div class="boxbody">
+        <div><label>Please name the authors of the data being deposited</label></div>
+	    <div>    
+	        <span style="float:left">
+	            <div><label>First Name</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	        </span>
+	        <span style="float:left">
+	            <div><label>Last Name</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	        </span>
+	        <span style="float:left">
+	            <div><label>Role</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	        </span>   
+	        <span style="float:left">
+	            <div><label>Affiliation</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	        </span>
+	        <span>
+	            <div><input type="submit" name="add_author" id="add_author" value="add author"></input></div>
+	        </span>
         </div>
-    
-
-	    <div class="boxhead">Data Owner</div>
-	    <div class="boxbody">
-	       <div>
-	         <label for="newRoleLabel">Role</label>
-	         <input type="text" name="newRole" id="newRole"/>
+    </div>
+    <div class="boxhead">Contact details</label>
+    </div>
+    <div class="boxbody">
+    	  <div><label>Who should we contact in future with information and updates about the data you are depositing? 
+    	             (this will normally be your department or research group)</label></div>
+	      <div><input type="text" name="" id=""></input></div>
+    </div>
+    <div class="boxhead">About your data</label>
+    </div>
+    <div class="boxbody">
+    	  <div><label>Is your data in digital format? </label>
+    	        <input type ="radio" name="yes" id="yes">Yes</input>
+	            <input type ="radio" name="no" id="no">No</input>
+	      </div>
+	       <div class="boxhead">Digital data</label></div>
+	       <div class="boxbody">	        
+	            <div><label>Location of data</label></div>
+		        <div><input type="text" name="" id=""></input></div>
+		        
+		        <div><label>Resource type</label></div>
+		        <div><input type="text" name="" id=""></input></div>
+		        
+		        <div><label>Filesize</label></div>
+		        <div><input type="text" name="" id=""></input></div>
+		            
+		        <div><label>Format(s)</label></div>
+		        <div><input type="text" name="" id=""></input></div>
+		        
+		        <div><label>Version (if versioned)</label></div>
+		        <div><input type="text" name="" id=""></input></div>
+		        
+		        <div><label>Publisher</label></div>
+		        <div><input type="text" name="" id=""></input></div>
+		        
+		       	<div><label>Publication year</label></div>
+		        <div><input type="text" name="" id=""></input></div>
 	       </div>
-	       <div>
-	         <label for="newDeptLabel">Department or Research Institute</label>
-             <input type="text" name="newDept" id="newDeptLabel"/>
-           </div>
-	    </div>
-
-       <div class="boxhead">Is your data an output of funded research ?
-         <input type="checkbox" name="fundedResearch" id="fundedResearch"  />
-      </div>
-       <div class="boxbody">
-    	<div>
-    	  <label for="newFundingAgencyLabel">Funding Agency</label>
-          <input type="text" name="fundedAgency" id="fundedAgency"> </input>
-        </div>
-        <div>
-          <label for="newGrantNumberLabel">Grant Number</label>
-          <input type="text" name="grantNumber" id="grantNumber"> </input>
-        </div>
-        <div>
-          <label for="newGrantNumberLabel">A short description of the project or provide URL of the project web-page</label>
-          <input type="text" name="projectDesc" id="projectDesc"> </input>
-        </div>
-       </div>
-       
-       
-       
-    <div class="boxhead">The title of this dataset to be used in a citation</label>
-    </div>
-    <div class="boxbody">
-         <label for="newCitationSubTitleLabel">Sub-title</label>
-         <input type="text" name="newCitationSubTitle" id="newCitationSubTitle"> </input>
-    </div>
-    
-    
-    <div class="boxhead">Is your dataset in digital format or not?
-         <input type="radio" name="digitalFormatYesNo" id="digitalFormatYes" value="yes"> Digital </input>
-         <input type="radio" name="digitalFormatYesNo" id="digitalFormatNo" value="no"> Non-digital </input>
-    </div>
-    <div class="boxbody">
+	       
+	       <div class="boxhead">Non-digital data</label></div>
+	       <div class="boxbody">
+	       	    <div><label>Where is your data held</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	            
+	            <div><label>Format</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	            
+	            <div><label>Publisher</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	            
+	            <div><label>Publication year</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	       </div>       	       
+	       <div class="boxhead">Funding information</label></div>
+	       <div class="boxbody">
+	       		<div>
+		       		<label>Is your data an output of a funded research?</label>
+	    	        <input type ="radio" name="yes" id="yes">Yes</input>
+		            <input type ="radio" name="no" id="no">No</input>
+		        </div>
+	            <div>
+		            <label>Funding agency:</label>
+		            <input type="text" name="" id=""></input>
+		            <label>Grant number:</label>
+		            <input type="text" name="" id=""></input>
+	            </div>
+	       </div>     
+	       <div class="boxhead">Related information</label></div>
+	       <div class="boxbody">
+	        	<div><label>If you have a Data management Plan for the project for which this data was created, 
+	        	      please enterthe location where it can be accessed here:</label></div>
+		        <input type="text" name="" id=""></input>
+		        <div><label>If you are aware of any publications based  on this data, please add references to them here:</label></div>
+  
+	            <div><label>Relationship of Data</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	            
+	            <div><label>URl of publication</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	            
+	            <div><input type="submit" name="add_publication" id="add_publication" value="add publication"></input></div>
+	            
+	            
+	            <div><label>If this data was based on any previous datasets, or is in someway related to other datasets, please add
+	                 references to them here:</label></div>
+  
+	            <div><label>Relationship of Data</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	            
+	            <div><label>URl of the dataset or DataFinder record for the dataset</label></div>
+	            <div><input type="text" name="" id=""></input></div>
+	            
+	            <div><input type="submit" name="add_dataset" id="add_dataset" value="add dataset"></input></div>	            
+	       </div>
+	       
+	       <div class="boxhead">Access terms & conditions</label></div>
+	       <div class="boxbody">
+	       		<div><label>Please enter any terms and conditions regarding access to your data here:</label></div>
+	       		<div><input type="text" name="" id=""></input></div>
+	       		
+	       		<div><label>If your data is available under s standard license, please name the license here:</label></div>
+	       		<div><input type="text" name="" id=""></input></div>
+	       		
+	       		<div><label>If the data you are describing is currently under the embargo, please indicate its public release date below:</label></div>
+	       		<input type ="radio" name="embargo_not_under" id="embargo_not_under">Data not under embargo</input>
+	       		<input type ="radio" name="embargo_status_unknown" id="embargo_status_unknown">Embargo status unknown</input>
+	       		<input type ="radio" name="embargoed_indefinitely" id="embargoed_indefinitely">Embargoed indefinitely</input>
+	       		<input type ="radio" name="embargoed_until" id="embargoed_until">Embargoed until:</input>
+                <input type="text" name="" id=""></input>	       
+	       </div>
+	       
+	       <div class="boxhead">Subject-Specific metadata</label></div>
+	       <div class="boxbody">
+	       		<div><label>If you have any subject-specific metadata describing your data, 
+	       		we would like to include it in our record. You will need to have the metadata in a .xml file.
+	       		For more information about this, please get in touch with staff at the Bodleian Library.
+	       		<a href=""> ADD EMAIL ADDRESS</a>
+	       		</label></div>
+	       		
+	       		<div>
+		       		<label> File to upload: </label>
+		       		<input type="file" name="" value="Browse..."> </input>
+	       		</div>
+	       		<div>
+		       		<label>xml schema type</label>
+		       		<input type="text" name="" id=""></input>
+	       		</div>
+	       </div>
+	       
       <div>
-	     <label for="newLocationLabel">Location (Digital: dataset/URL/DOI/email   Non-digital: dataset/email)</label>    
-	     <input type="text" name="newLocation" id="newLocation"> </input>    
-	  </div>
-      <div>
-         <label for="newResourceTypeLabel">Resource Type</label>    
-         <input type="text" name="newResourceType" id="newResourceType"> </input>    
-      </div>
-      <div>
-         <label for="newSizeLabel">Size</label>    
-         <input type="text" name="newSize" id="newSize"> </input>    
-      </div>
-      <div>
-         <label for="newFormatLabel">Format</label>    
-         <input type="text" name="newFormat" id="newFormat"> </input>    
-      </div>
-      <div>
-         <label for="newVersionLabel">Version</label>    
-         <input type="text" name="newVersion" id="newVersion"> </input>    
-      </div>
-    </div>
-    <div><label for="newPublicationYearLabel">Publication tear</label>    
-         <input type="text" name="newPublication" id="newPublication"> </input>    
-    </div>
-    <div><label for="newPublisherLabel">Publisher</label>    
-         <input type="text" name="newPublisher" id="newPublisher"> </input>    
-    </div>
-     
-    <div><label for="newDateLabel">Date(other)</label></date>     
-    </div>
-    <div><label for="newTBCLabel">TBC</label>    
-         <input type="text" name="newTBC" id="newTBC"> </input>    
-    </div>    
-    
-    <div class="boxhead">What is the earliest date users can access this dataset?       
-    </div>    
-    <div class="boxbody">
-       <div>
-         <label for="newOpenLabel">Open</label>    
-         <input type="text" name="newOpen" id="newOpen"> </input>    
-       </div>    
-      <div>
-         <label for="newEmbargoedLabel">Embargoed</label>    
-         <input type="text" name="newEmbargoed" id="newEmbargoed"> </input>    
-      </div>
-      <div>
-         <label for="newDarkLabel">Dark</label>    
-         <input type="text" name="newDark" id="newDark"> </input>    
-      </div>
-      <div>
-         <label for="newInvisibleLabel">Invisible</label>    
-         <input type="text" name="newInvisible" id="newInvisible"> </input>    
-      </div> 
-      <div>
-         <label for="newReasonForEmbargoLabel">Reason for embargo</label>    
-         <input type="text" name="newReasonForEmbargo" id="newReasonForEmbargo"> </input>    
-      </div> 
-    </div>
-    <div class="boxhead"> Are the data subject to access T's and C's ?</div> 
-    <div class="boxbody">
-       <div>
-         <label for="newAccessTermsLabel">Access terms and conditions</label>    
-         <input type="text" name="newAccessTerms" id="newAccessTerms"> </input>    
-       </div>  
-       <div>   
-         <input type="checkbox" name="newAccessTermsYes" id="newAccessTermsYes" checked="checked">Yes</input>    
-       </div> 
-       <div>
-         <label for="newDefaultODLLabel">Default ODL? + options</label>    
-         <input type="text" name="newDefultODL" id="newDefultODL" ></input>
-       </div>    
-    </div> 
-    <
-
-    <div class="boxhead">Select subject headings taht most closely describe your data.</div> 
-    <div class="boxbody">
-       <div>
-         <label for="newFastSubLLabel">FAST subject headings</label>    
-         <input type="text" name="newFastSub" id="newFastSub"></input>    
-      </div>
-      <div>
-         <label for="newOtherSubLLabel">Options for other subject class</label>    
-         <input type="text" name="newOtherSub" id="newOtherSub"></input>    
-      </div> 
-      <div>
-         <label for="newNameSubClassSchemeLabel">Name of subject class scheme</label>    
-         <input type="text" name="newNameSubClassScheme" id="newNameSubClassScheme"></input>    
-      </div> 
-      <div>
-         <label for="newSubjectSpecificMetadataLabel">Subject specific Metadata</label>    
-         <input type="text" name="newNameSubClassScheme" id="newNameSubClassScheme"></input>    
-      </div> 
-      <div>
-         <label for="newNameOfSubjectSpecificMetadataLabel">Name of subject specific Metadata</label>    
-         <input type="text" name="newNameOfSubjectSpecificMetadata" id="newNameOfSubjectSpecificMetadataLabel"></input>    
-      </div> 
-      <div>
-         <label for="newKaywordsLabel">Keywords</label>    
-         <input type="text" name="newKaywords" id="newKeywords"></input>    
-      </div>
-    </div>
-
-
-    <div class="boxhead"> Do you have publications associated with this data?
-         <input type="radio" name="newAssociatedPublicationsYes" id="newAssociatedPublicationsYes"> Yes </input>
-         <input type="radio" name="newAssociatedPublicationsNo" id="newAssociatedPublicationsNo" > No </input>
-    </div>
-    <div class="boxbody"> 
-         <label for="newUrlLabel">URL/DOI</label>    
-         <input type="text" name="newUrlOrDoi" id="newUrlOrDoi"></input>  
-    </div>
-    
-    <div class="boxhead"> Do you have documentation about your data?
-        <input type="radio" name="newdatadocYesNo" id="newdatadocYes"> Yes </input>
-        <input type="radio" name="newdatadocYesNo" id="newdatadocNo" > No </input>
-    </div>
-    <div class="boxbody">
-      <div>
-         <label for="newDoc1Label">Documentation 1 (Text/Link/URI)</label>    
-         <input type="text" name="newDoc1" id="newDoc1"></input>    
-      </div>
-      <div>
-         <label for="newDoc2Label">Documentation 2 (Text/Link/URI)</label>    
-         <input type="text" name="newDoc2" id="newDoc2"></input>    
-      </div>
-    </div>
-    <div><label for="newDocLangLabel">What is the predominant language of the data/documentation?</label>
-         <input type="text" name="newDocLang" id="newDocLang"></input> 
-    </div>
-    <div><label for="newLastAccessReqDateLabel">Last access request Date?</label>
-         <input type="text" name="newLastAccessReqDate" id="newLastAccessReqDate"></input> 
-    </div>
-    <div><label for="newMatadataRightsLabel">Rights for metadata. Default. CC0? ODC?</label>
-         <input type="text" name="newMatadataRights" id="newMatadataRights"></input> 
-    </div>
-    <div><label for="newUUIDLabel">Record/digital object ID</label>
-         <input type="text" name="newUUID" id="newUUID"></input> 
-    </div>
-    <div><label for="newSourceLabel">Source (name)</label>
-         <input type="text" name="newSource" id="newSource"></input> 
-    </div>
-    <div><label for="newSourceUrlLabel">Source URL</label>
-         <input type="text" name="newSourceUrl" id="newSourceUrl"></input> 
-    </div>
-    
-    <!--
-    
-	<div><label for="newSilo">Source  name (eg 'a' -> /a/datasets/...)</label>
-	<input type="text" name="silo" id="newSilo" />
-	</div>
-	<div class="form_helper">The machine readable name of the source, used by the system and in the urls. <br/>
-	<br/>For example the name <i>sourcea</i> will appear in the url as <i>http://databank/sourcea/...</i></div></li>
-	<div><label for="newSiloTitle">Title:</label>
-	<input type="text" id="newSiloTitle" name="title" /></div>	
-	<div><label for="oaipmhTitle">OAI-PMH:</label>
-	<input type ="checkbox" name="oaipmh"id="oaipmh"/> </div>
-	<div><label for="urlTitle">URL:</label>
-	<input type ="text" name="oaipmhurl"id="oaipmhurl"/> </div>
-	<div><label for="allowoverrideTitle">Allow override:</label>
-	<input type ="radio" name="yes" id="yes">Yes</input>
-	<input type ="radio" name="no" id="no">No</input></div>
-	<div><label for="newSiloDescription">Description:</label>
-	<input id="newSiloDescription" type="textbox" name="description" /></div>
-	<div><label for="newSiloNotes">Notes:</label>
-	<input id="newSiloNotes" type="textbox" name="notes" /></div>
-	<div><label for="newSiloAdministrators">Administrators:</label>
-	<input id="newSiloAdministrators" type="textbox" name="administrators" /></div>
-	<div class="form_helper">Separate multiple usernames with a comma</div>
-	<div><label for="newSiloManagers">Managers:</label>
-	<input id="newSiloManagers" type="textbox" name="managers" /></div>
-	<div class="form_helper">Separate multiple usernames with a comma</div>
-	<div><label for="newSiloUsers">Submitters:</label>
-	<input id="newSiloUsers" type="textbox" name="users" /></div>
-	<div class="form_helper">Separate multiple usernames with a comma</div>
-	<div><label for="newSiloAllocation">Disk Allocation (in Kb):</label>
-	<input id="newSiloAllocation" type="textbox" name="disk_allocation" /></div>
-% endif
-
--->
-<div>
-% if header == "approve":
-<input type="submit" name="save" id="save" value="Save" />
-% elif header== "create":
-	<div><input type="submit" name="register" id="register" value="Register"/>
-% endif
-
-% if activate == None:
-<div><input type="submit" name="activate" id="activate" value="Activate" style="display:none"/>
-% else:
-<div><input type="submit" name="activate" id="activate" value="Activate" />
-% endif
-</div>
-
-<div id="editor_view">
-  <h2>Edit options</h2>
-  <ul class="stateInfo">
-
-  <li><a href="/list_sources">
-    <img src="/static/styles/images/silo-view-icon-24.png"/>View sources</a>
-  </li>
-
-  </ul>
-</div>
-
+      		<input type="submit" name="submit_for_approval" id="submit_for_approval" value="submit for approval"></input>	 
+      		<input type="submit" name="save_as_a_draft" id="save_as_a_draft" value="save as a draft"></input>
+      </div>	 
 
 </form>

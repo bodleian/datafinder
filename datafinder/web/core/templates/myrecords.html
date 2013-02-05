@@ -1,0 +1,89 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title>DataFinder:My records</title>
+</%def>
+
+
+<div class="row"><div class="three columns centered"><h4>My Records</h4></div></div>
+
+<div class="row">
+This page lists your records within the system. You can sort the listing using arrow buttons in the column headings,
+filter the listing by status or search within your records.
+</div>
+
+<div class="row">
+  <div class="1 column">
+   <input type="checkbox" name="select" value="select"> </input>
+</form> 
+       select all
+  </div>
+   <div class="2 columns">
+
+  </div>
+  <div class="2 columns">
+    apply to selected
+  </div>
+  <div class="2 columns">
+	 <select>
+	 	<option value="submitselected">submit for approval, unpublish?, delete?</option>
+	</select>
+  </div>
+  <div class="6 columns">
+  </div>
+</div>
+<div class="row">
+	<table>
+		<thead>
+			<tr>
+			    <th>select</th>
+			    <th>Title</th>
+			    <th>Filesize</th>
+			    <th>Date submitted</th>
+			    <th>Last modified</th>
+			    <th>status</th>
+			    <th>edit</th>                         
+			</tr>
+			<tr>
+			    <td>  <input type="checkbox" name="select" value="select"> </input></td>
+			    <td>A record</td>
+			    <td>36KB</td>
+			    <td>16/04/2012</td>
+			    <td>17/04/2012</td>
+			    <td>requires attention</td>
+			    <th><a href="">edit</a></th>                           
+			</tr>
+			<tr>
+			    <td>  <input type="checkbox" name="select" value="select"> </input></td>
+			    <td>some record</td>
+			    <td>36KB</td>
+			    <td>06/07/2007</td>
+			    <td>17/04/2012</td>
+			    <td>submited for approval</td>
+			    <th><a href="">edit</a></th>                        
+			</tr>
+			<tr>
+			    <td>  <input type="checkbox" name="select" value="select"> </input></td>
+			    <td>another record</td>
+			    <td>36KB</td>
+			    <td>16/04/2012</td>
+			    <td>17/04/2012</td>
+			    <td>draft</td>
+			    <th><a href="">edit</a></th>                          
+			</tr>
+			<tr>
+			    <td>  <input type="checkbox" name="select" value="select"> </input></td>
+			    <td>this is a record</td>
+			    <td>36KB</td>
+			    <td>16/04/2012</td>
+			    <td>17/04/2012</td>
+			    <td>published</td>
+			    <th><a href="">edit</a></th>                           
+			</tr>
+			
+		</thead>
+	</table>
+</div>
+
+</div>
+f

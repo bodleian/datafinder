@@ -2,7 +2,7 @@ from djangomako.shortcuts import render_to_response, render_to_string
 from django.shortcuts import redirect
 from django.conf import settings
 from django.template import RequestContext
-import logging
+import logging,os 
 
 def login(request):
     context = { 
@@ -12,7 +12,7 @@ def login(request):
         'ident' : "",
         'id':"",
         'path' :"",
-        'user_logged_in_name':"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
         'q':"",
         'typ':"",
         'logout':''

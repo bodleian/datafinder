@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^terms-conditions/$',  views.termsconditions),
     url(r'^privacy/$',  views.privacy),
     url(r'^accessibility/$',  views.accessibility),
+    url(r'^myrecords/$',  views.myrecords),
   #  url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
   #     'document_root': 'static'}),
                          )
