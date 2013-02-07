@@ -66,7 +66,9 @@
 
 <div class="row">
 	<h5>Metadata sources</h5>
-	<input type="submit" id="addsource" name ="addsource" value="addsource"> </input>
+	<form method="GET"  action="/admin/source/add/" >
+     	<input type="submit" id="addsource" name ="addsource" value="addsource"> </input>
+	</form>
 </div>
 
 <div class="row">
@@ -81,25 +83,25 @@
 			<tr>
 			    <td>source 1</td>
 			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="">edit</a></td>
+			    <td><a href="/admin/source/edit/">edit</a></td>
 			    <td><a href="">delete</a></td>
 			</tr>
             <tr>
 			    <td>source 2</td>
 			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="">edit</a></td>
+			    <td><a href="/admin/source/edit/">edit</a></td>
 			    <td><a href="">delete</a></td>
 			</tr>
 			<tr>
 			    <td>source 3</td>
 			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="">edit</a></td>
+			    <td><a href="/admin/source/edit/">edit</a></td>
 			    <td><a href="">delete</a></td>
 			</tr>
 			<tr>
 			    <td>source 4</td>
 			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="">edit</a></td>
+			    <td><a href="/admin/source/edit/">edit</a></td>
 			    <td><a href="">delete</a></td>
 			</tr>
 		</thead>
@@ -118,7 +120,7 @@
 		<thead>
 			<tr>
 			    <th>name</th>
-			    <th>usernmae</th>
+			    <th>username</th>
 			    <th>role</th>
 			    <th>edit</th>
 			    <th>delete</th>
@@ -127,14 +129,14 @@
 			    <td>Joseph Talbot</td>
 			    <td>talbotj</td>
 			    <td>admin</td>
-			    <td><a href="/admin/users/edit">edit</a></td>
+			    <td><a href="/admin/users/edit/">edit</a></td>
 			    <td><a href="">delete</a></td>
 			</tr>
             <tr>
 				<td>JBob Quest</td>
 			    <td>BQ0012</td>
 			    <td>reviewer</td>
-                <td><a href="/admin/users/edit">edit</a></td>
+                <td><a href="/admin/users/edit/">edit</a></td>
 			    <td><a href="">delete</a></td>
 			</tr>
 			</tr>
@@ -142,14 +144,14 @@
 			    <td>Kelvin Kilbone</td>
 			    <td>BQ0012</td>
 			    <td>proxy</td>
-                <td><a href="/admin/users/edit">edit</a></td>
+                <td><a href="/admin/users/edit/">edit</a></td>
 			    <td><a href="">delete</a></td>
 			</tr>
 			<tr>
 			    <td>Rob Roy</td>
 			    <td>KB2445</td>
 			    <td>proxy</td>
-                <td><a href="/admin/users/edit">edit</a></td>
+                <td><a href="/admin/users/edit/">edit</a></td>
 			    <td><a href="">delete</a></td>
 			</tr>
 		</thead>

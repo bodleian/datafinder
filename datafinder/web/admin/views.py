@@ -611,3 +611,37 @@ def edituser(request):
         'login':"",
        }
     return render_to_response('edit_user.html',context, context_instance=RequestContext(request))
+
+
+def addsource(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'q':"",
+        'typ':"",
+        'login':"",
+       }
+    return render_to_response('add_metadata_source.html',context, context_instance=RequestContext(request))
+
+
+
+
+def editsource(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'q':"",
+        'typ':"",
+        'login':"",
+       }
+    return render_to_response('edit_metadata_source.html',context, context_instance=RequestContext(request))

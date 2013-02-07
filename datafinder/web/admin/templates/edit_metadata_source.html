@@ -1,0 +1,41 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title>DataFinder:Administration-Edit metadata source</title>
+</%def>
+
+
+<div class="row"><div class="three columns centered"><h4>Edit metadata source</h4></div></div>
+
+<div class="row">Please supply a uri for the source and give it a sensible name:</div>
+
+<div class="row">
+	<form method="GET"  action="/admin/users/add" >
+	    <div class="four columns centered">
+	        <div class="row">
+	           <div class="two columns "> name </div>
+	           <div class="ten columns "> 
+	               <input type="text" id="username" name ="username"> </input>
+	           </div>	           	        
+	        </div>
+           <div class="row">
+	           <div class="two columns "> uri </div>
+	           <div class="ten columns "> 
+	               <input type="text" id="uri" name ="uri"> </input>
+	           </div>	           	        
+	        </div>
+	    	<div  class="row">
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns ">
+	    	   		<input type="submit" id="editsource" name ="editsource" value="editsource"> </input>
+	    	   </div>
+	    	</div>
+	    </div>
+	    
+   </form>
+</div>
+
+</div>
+f
