@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title>DataFinder:Administration-AddUser</title>
+</%def>
+
+
+<div class="row"><div class="three columns centered"><h4>Add user</h4></div></div>
+
+<div class="row">
+	<form method="GET"  action="/admin/users/add" >
+	    <div class="four columns centered">
+	        <div class="row">enter Oxford Username:</div>
+	        <div class="row"><input type="text" id="username" name ="username"> </input></div>
+            <div class="row">
+	              <div class="six columns "> </div>
+	              <div class="two columns ">    role:  </div>
+	              <div class="four columns ">
+	                   <select><option value="role">Select a role</option>
+				      </select>
+				  </div>
+	    	</div>
+	    	<div  class="row">
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns ">
+	    	   		<input type="submit" id="adduser" name ="adduser" value="adduser"> </input>
+	    	   </div>
+	    	</div>
+	    </div>
+	    
+   </form>
+</div>
+
+</div>
+f

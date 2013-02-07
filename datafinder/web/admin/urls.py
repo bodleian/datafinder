@@ -3,6 +3,10 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 import views
 urlpatterns = patterns('',
+    url(r'^$',  views.administration),
+    url(r'^users/$',  views.manageusers),
+    url(r'^users/add$',  views.adduser),
+    url(r'^users/edit',  views.edituser),
     url(r'^list_sources/$',  views.listsources),
     url(r'^create_source/$',  views.createsource),
     url(r'^register_source/$',  views.registersource),

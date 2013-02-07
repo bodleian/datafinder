@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title>DataFinder:Administration-EditUser</title>
+</%def>
+
+
+<div class="row"><div class="three columns centered"><h4>Edit user</h4></div></div>
+
+	<div class="row">
+		<form method="GET"  action="/admin/users/edit" >
+		    <div class="four columns centered">
+		       <div class="row"> name : Joseph talbot </div>
+	           <div class="row"> username : talbotj </div>
+	           <div class="row"> primary email : joseph.talbot@it.ox.ac.uk </div>
+	           <div class="row">
+	              <div class="six columns "> </div>
+	              <div class="two columns ">    role:  </div>
+	              <div class="four columns ">
+	                   <select><option value="role">Select a role</option>
+				      </select>
+				  </div>
+	    	   </div>
+	           <div  class="row">
+		    	   <div class="three columns "> </div>
+		    	   <div class="three columns "> </div>
+		    	   <div class="three columns "> </div>
+		    	   <div class="three columns ">
+		    	   		<input type="submit" id="save" name ="save" value="save"> </input>
+		    	   </div>
+	    	   </div>
+		    </div>	    
+	   </form>
+	</div>
+

@@ -1,0 +1,160 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title>DataFinder:Administration</title>
+</%def>
+
+
+<div class="row"><div class="three columns centered"><h4>Administration</h4></div></div>
+
+<div class="row"><h5>Records for review</h5></div>
+
+<div class="row">
+	<table>
+		<thead>
+			<tr>
+			    <th>Title</th>
+			    <th>Filesize</th>
+			    <th>Date submitted</th>
+			    <th>Last modified</th>
+			    <th>owner</th>
+			    <th>status</th>
+			    <th>action</th>                  
+			</tr>
+			<tr>
+			    <td>A record</td>
+			    <td>36KB</td>
+			    <td>16/04/2012</td>
+			    <td>17/04/2012</td>
+			    <td>another researcher</td>
+			    <td>awaiting review</td>   
+			    <td>review</td>                     
+			</tr>
+			<tr>
+			    <td>some record</td>
+			    <td>36KB</td>
+			    <td>06/07/2007</td>
+			    <td>17/04/2012</td>
+			    <td>some researcher</td>
+			    <td>referred to contributor</td>   
+			    <td></td>       			    		                 
+			</tr>
+			<tr>
+			    <td>another record</td>
+			    <td>36KB</td>
+			    <td>16/04/2012</td>
+			    <td>17/04/2012</td>
+			    <td>a researcher</td>
+			    <td>escalated</td>   
+			    <td>review (only shown to admin users)</td>       			                     
+			</tr>
+			<tr>
+			    <td>this is a record</td>
+			    <td>36KB</td>
+			    <td>16/04/2012</td>
+			    <td>17/04/2012</td>
+			    <td>a researcher</td>
+			    <td>lockedforreview</td>   
+			    <td></td>       			                        
+			</tr>
+			
+		</thead>
+	</table>
+</div>
+
+
+
+<div class="row">
+	<h5>Metadata sources</h5>
+	<input type="submit" id="addsource" name ="addsource" value="addsource"> </input>
+</div>
+
+<div class="row">
+	<table>
+		<thead>
+			<tr>
+			    <th>name</th>
+			    <th>url</th>
+			    <th>edit</th>
+			    <th>delete</th>
+			</tr>
+			<tr>
+			    <td>source 1</td>
+			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
+			    <td><a href="">edit</a></td>
+			    <td><a href="">delete</a></td>
+			</tr>
+            <tr>
+			    <td>source 2</td>
+			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
+			    <td><a href="">edit</a></td>
+			    <td><a href="">delete</a></td>
+			</tr>
+			<tr>
+			    <td>source 3</td>
+			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
+			    <td><a href="">edit</a></td>
+			    <td><a href="">delete</a></td>
+			</tr>
+			<tr>
+			    <td>source 4</td>
+			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
+			    <td><a href="">edit</a></td>
+			    <td><a href="">delete</a></td>
+			</tr>
+		</thead>
+	</table>
+</div>
+
+<div class="row">
+	<h5>Permissions</h5>
+	<form method="GET"  action="/admin/users/" >
+	   <input type="submit" id="adduser" name ="adduser" value="adduser"> </input>
+	</form>
+</div>
+
+<div class="row">
+	<table>
+		<thead>
+			<tr>
+			    <th>name</th>
+			    <th>usernmae</th>
+			    <th>role</th>
+			    <th>edit</th>
+			    <th>delete</th>
+			</tr>
+			<tr>
+			    <td>Joseph Talbot</td>
+			    <td>talbotj</td>
+			    <td>admin</td>
+			    <td><a href="/admin/users/edit">edit</a></td>
+			    <td><a href="">delete</a></td>
+			</tr>
+            <tr>
+				<td>JBob Quest</td>
+			    <td>BQ0012</td>
+			    <td>reviewer</td>
+                <td><a href="/admin/users/edit">edit</a></td>
+			    <td><a href="">delete</a></td>
+			</tr>
+			</tr>
+			<tr>
+			    <td>Kelvin Kilbone</td>
+			    <td>BQ0012</td>
+			    <td>proxy</td>
+                <td><a href="/admin/users/edit">edit</a></td>
+			    <td><a href="">delete</a></td>
+			</tr>
+			<tr>
+			    <td>Rob Roy</td>
+			    <td>KB2445</td>
+			    <td>proxy</td>
+                <td><a href="/admin/users/edit">edit</a></td>
+			    <td><a href="">delete</a></td>
+			</tr>
+		</thead>
+	</table>
+</div>
+
+</div>
+f

@@ -25,7 +25,7 @@ from djangomako.shortcuts import render_to_response, render_to_string
 from django.conf import settings
 from django.template import RequestContext
 import logging, json
-import sys, urllib2, base64, urllib
+import sys, urllib2, base64, urllib, os
 
 sys.path.append("../..")
 print str(sys.path)
@@ -548,3 +548,66 @@ def sourceinfo(request, source):
             
             return render_to_response('list_of_sources.html', context, context_instance=RequestContext(request))
 
+
+def administration(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'q':"",
+        'typ':"",
+        'login':"",
+       }
+    return render_to_response('administration.html',context, context_instance=RequestContext(request))
+
+
+def manageusers(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'q':"",
+        'typ':"",
+        'login':"",
+       }
+    return render_to_response('manage_users.html',context, context_instance=RequestContext(request))
+
+
+def adduser(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'q':"",
+        'typ':"",
+        'login':"",
+       }
+    return render_to_response('add_user.html',context, context_instance=RequestContext(request))
+
+
+def edituser(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'q':"",
+        'typ':"",
+        'login':"",
+       }
+    return render_to_response('edit_user.html',context, context_instance=RequestContext(request))
