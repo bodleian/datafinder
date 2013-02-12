@@ -5,6 +5,10 @@ from django.template import RequestContext
 import logging,os 
 
 def login(request):
+    user_logged_in_name = None
+    if os.environ.has_key('DF_REMOTE_USER'):
+        user_logged_in_name = os.environ.get('DF_REMOTE_USER')
+    #user_logged_in_name = repr(os.environ)
     context = { 
         #'DF_VERSION':settings.DF_VERSION,
         #'STATIC_URL': settings.STATIC_URL,
@@ -12,7 +16,7 @@ def login(request):
         'ident' : "",
         'id':"",
         'path' :"",
-        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'user_logged_in_name': user_logged_in_name,
         'q':"",
         'typ':"",
         'logout':''

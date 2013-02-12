@@ -9,5 +9,10 @@ if path not in sys.path:
 os.environ['DJANGO_SETTINGS_MODULE'] = 'datafinder.web.settings'
 
 
-application = django.core.handlers.wsgi.WSGIHandler()
+_application = django.core.handlers.wsgi.WSGIHandler()
 
+
+def application(environ, start_response):
+    if environ.has_key('REMOTE_USER'):
+       os.environ['DF_REMOTE_USER'] = environ['REMOTE_USER']
+    return _application(environ, start_response)
