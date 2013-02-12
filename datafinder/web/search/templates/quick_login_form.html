@@ -1,15 +1,14 @@
 <div>
 <!-- id="quicklogin" -->
-  ${user_logged_in_name}
+
   % if login == "":
   	<form  action="/login" method="get">
   	<!-- id="quickloginform" -->
   	 <div  class="row">
-  	 	<input id="login" name='login' type="submit" value="login"/>
+  	 	 <input id="login" name='login' type="submit" value="login"/>
   	 </div> 
   % endif  	 
   % if logout == "":
-     jbgkbggmfng
      % if user_logged_in_name  and user_logged_in_name != None:
      	${user_logged_in_name}
      % endif
