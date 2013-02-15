@@ -62,7 +62,7 @@ class CUDRequest():
         lastname = root.findtext('.//cudAttribute[name="cud:cas:lastname"]/value')
         return lastname 
     
-    def get_Email(self):
+    def get_email(self):
         root=self.root
         lastname = root.findtext('.//cudAttribute[name="cud:cas:oxford_email"]/value')
         return lastname

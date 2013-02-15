@@ -550,19 +550,58 @@ def sourceinfo(request, source):
 
 
 def administration(request):
-    context = { 
+        context = { 
         #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,3
+        #'STATIC_URL': settings.STATIC_URL,
         'silo_name':"",
         'ident' : "",
         'id':"",
         'path' :"",
-        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        'user_logged_in_name':"",
         'q':"",
         'typ':"",
-        'login':"",
-       }
-    return render_to_response('administration.html',context, context_instance=RequestContext(request))
+        'message':"",
+        'source_infos':{},
+        'unregistered_sources':[],
+        }
+
+        src = settings.get("main:granary.uri_root")
+        host = settings.get("main:granary.host")
+        
+        context['message']=""
+        user_name = 'admin'
+        password = 'test'
+        #host = "192.168.2.230"
+        datastore = HTTPRequest(endpointhost=host)
+        datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password)
+
+        (resp, respdata) = datastore.doHTTP_GET(resource="/silos", expect_type="application/JSON")
+        sources =  json.loads(respdata)
+        
+        source_infos ={}
+        for source in sources:
+            (resp, respdata) = datastore.doHTTP_GET(resource='/' + source + '/states', expect_type="application/JSON")
+            state_info =  json.loads(respdata)
+            source_infos[source] = [source, len(state_info['datasets'])]
+        #print "sourceinfos:"
+        #print source_infos
+        
+        context['source_infos']=source_infos
+
+        print context
+        try:
+            #s_q= meta.Session.query(SourceInfo.silo).filter(SourceInfo.activate == False)
+            s_q= SourceInfo.objects.filter(activate = False)
+            for source in s_q:
+                context['unregistered_sources'].append(source.silo)
+            #print "Unregistered sources"
+            #print context['unregistered_sources']
+        except Exception:
+            #logger.exception("Failed to mark submission as failed")
+            return render_to_response('administration.html',context, context_instance=RequestContext(request))
+
+        #print context
+        return render_to_response('administration.html',context, context_instance=RequestContext(request))
 
 
 def manageusers(request):
