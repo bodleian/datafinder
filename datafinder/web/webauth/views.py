@@ -53,7 +53,7 @@ def logout(request):
         'login':''
         }
 
-    if request.session.has_key['DF_USER_SSO_ID']:
+    if request.session.has_key('DF_USER_SSO_ID'):
         del request.session['DF_USER_SSO_ID']
         del request.session['DF_USER_FULL_NAME']
         del request.session['DF_USER_ROLE']
