@@ -53,10 +53,11 @@ def logout(request):
         'login':''
         }
 
-    del request.session['DF_USER_SSO_ID']
-    del request.session['DF_USER_FULL_NAME']
-    del request.session['DF_USER_ROLE']
-    del request.session['DF_USER_EMAIL']
+    if request.session.has_key['DF_USER_SSO_ID']:
+        del request.session['DF_USER_SSO_ID']
+        del request.session['DF_USER_FULL_NAME']
+        del request.session['DF_USER_ROLE']
+        del request.session['DF_USER_EMAIL']
     
     request.session.modified = True
     #return render_to_response('login.html',context, context_instance=RequestContext(request))
