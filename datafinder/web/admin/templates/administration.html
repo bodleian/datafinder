@@ -4,10 +4,32 @@
   <title>DataFinder:Administration</title>
 </%def>
 
+<%
+n = len(source_infos)
+%>
 
 <div class="row"><div class="three columns centered"><h4>Administration</h4></div></div>
 
 <div class="row"><h5>Records for review</h5></div>
+
+
+<div class="row">
+	<table>
+		<thead>
+			<tr>
+			    <th>Title</th>
+			    <th>Filesize</th>
+			    <th>Date submitted</th>
+			    <th>Last modified</th>
+			    <th>owner</th>
+			    <th>status</th>
+			    <th>action</th>                  
+			</tr>
+		</thead>
+	</table>
+</div>
+
+
 
 <div class="row">
 	<table>
@@ -80,6 +102,18 @@
 			    <th>edit</th>
 			    <th>delete</th>
 			</tr>
+			% if source_infos and n > 0:
+				 % for source in source_infos:
+				    <tr>
+					    <td><a href="/admin/${source}">${source_infos[source][0]}</a></td>
+					    <td>${source_infos[source][1]}</td>
+				        <td><a href="/admin/source/edit/">edit</a></td>
+				        <td><a href="">delete</a></td>
+			        </tr>
+				    </tr>
+				  % endfor
+			% endif
+			
 			<tr>
 			    <td>source 1</td>
 			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>

@@ -1,5 +1,8 @@
 # Django settings for datafinder project.
 import os
+import logging
+import logging.config
+
 ROOT_PATH = os.path.dirname(__file__)
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -13,7 +16,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'datafinder.db',                      # Or path to database file if using sqlite3.
+        'NAME': '/var/www/datafinder/datafinder/web/datafinder.db',                      # Or path to database file if using sqlite3.
         #'USER': '',                      # Not used with sqlite3.
         #'PASSWORD': '',                  # Not used with sqlite3.
         #'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -162,6 +165,19 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+)
+
+
+# Create datastage.log for general logging
+        
+#genlogfile = open("/var/log/datastage/datastage.log",'w')
+#genlogfile.close()
+        
+logging.basicConfig(
+    level = logging.DEBUG,
+    format = '%(asctime)s %(levelname)s %(message)s',
+    filemode = 'w',
+    filename = '/var/log/datafinder/datafinder.log',
 )
 
 # A sample logging configuration. The only tangible logging
