@@ -28,6 +28,7 @@ from django.template import RequestContext
 import logging, json
 import sys, urllib2, base64, urllib, os
 from django.http import HttpResponseRedirect
+from django.contrib.sessions.backends.db import SessionStore
 sys.path.append("../..")
 print str(sys.path)
 from datafinder.config import settings
@@ -35,7 +36,8 @@ from datafinder.lib.HTTP_request import HTTPRequest
 from datafinder.lib import SparqlQueryTestCase
 from datafinder.lib.conneg import MimeType as MT, parse as conneg_parse
 #sys.path.append("./..")
-from datafinder.web.core.models import SourceInfo, Users
+from datafinder.web.core.models import SourceInfo, Users, DFSessions
+
 
 logger = logging.getLogger(__name__)
 
@@ -749,7 +751,7 @@ def edituser(request):
         'logout' : "",
         'q':"",
         'typ':"",
-        'login':"",
+        'logout':"",
         'message':"",
        }
     
@@ -781,8 +783,24 @@ def edituser(request):
                     user = Users.objects.get(sso_id=request.POST.get("user_sso_id"))                 
                     user.role = request.POST.get("user_role") 
                     user.save()
-                    # reset the value of the role in the session
-                    request.session['DF_USER_ROLE'] = request.POST.get("user_role") 
+                    # Update any active  user session with the admin changes made so that the changes start to reflect straight away
+                    try:
+                        dfusersession = DFSessions.objects.get(sso_id=request.POST.get("user_sso_id"))      
+                        session=SessionStore(session_key=dfusersession.session_id)                
+                        #session = Session.objects.get(session_key=usersession.session_id)
+                        session['DF_USER_ROLE']=request.POST.get("user_role")
+                        session.save()
+                        #session.modified = True 
+                    except DFSessions.DoesNotExist,e :
+                        logger.error("No active DF user sessions.")
+                        raise
+                    except Session.DoesNotExist, e:
+                        raise
+                        logger.error("No active user sessions.")
+                    except Exception,e:
+                        raise
+                        logger.error("User session could not be found in DF.")
+                    
                     context['message']="User information updated successfully!"
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
                except Users.DoesNotExist,e:
@@ -793,7 +811,24 @@ def edituser(request):
                     logger.error("User details could not be updated.")
                     context['message']="User details could not be updated!" 
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
-
+    elif http_method == "DELETE": 
+        if request.GET.has_key('user_sso_id'):
+               context["user_sso_id"] = request.GET["user_sso_id"]  
+               try:
+                    user= Users.objects.get(sso_id=context["user_sso_id"])                      
+                    #user = userslist[0]
+                    user.delete()
+                    context['message']="User information updated successfully!"
+                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
+                    return render_to_response('edit_user.html',context, context_instance=RequestContext(request)) 
+               except Users.DoesNotExist,e:
+                   context['message']="Unable to delete the user. User not found in the DataFinder! "
+                   return redirect("/admin?message="+context['message'])              
+               except Exception,e:
+                    raise
+                    logger.error("Unable to delete the user.User details could not be retrieved.")
+                    context['message']="Unable to delete the user. User details could not be retrieved."
+               return redirect("/admin?message="+context['message'])              
     #return render_to_response('edit_user.html',context, context_instance=RequestContext(request))
 
 

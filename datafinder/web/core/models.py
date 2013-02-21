@@ -28,3 +28,12 @@ class Users(models.Model):
     username =  models.TextField()
     role =  models.TextField()
     email =  models.TextField()
+    
+
+class DFSessions(models.Model):
+    """
+    Table to store the data-finder's user session key information 
+    """
+    
+    sso_id = models.TextField(primary_key=True)
+    session_id =   models.TextField()

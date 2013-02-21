@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.template import RequestContext
 import logging,os, sys
+from datafinder.web.core.models import DFSessions
 
 sys.path.append("../..")
 print str(sys.path)
@@ -54,12 +55,19 @@ def logout(request):
         }
 
     if request.session.has_key('DF_USER_SSO_ID'):
+        try:
+            usersession= DFSessions.objects.get(sso_id=request.session['DF_USER_SSO_ID'])                      
+            usersession.delete()
+        except DFSessions.DoesNotExist,e:
+            pass
+        except Exception,e:
+            logger.error("Error while deleting the DF User session")        
+    
         del request.session['DF_USER_SSO_ID']
         del request.session['DF_USER_FULL_NAME']
         del request.session['DF_USER_ROLE']
         del request.session['DF_USER_EMAIL']
-    
-    request.session.modified = True
+        request.session.modified = True
     #return render_to_response('login.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
     #return  redirect('https://webauth.ox.ac.uk/logout')

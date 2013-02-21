@@ -27,7 +27,7 @@ from django.conf import settings
 from datafinder.lib.CUD_request import CUDRequest
 from datafinder.web.core.models import Users
 from datafinder.config import settings
-
+from datafinder.web.core.models import DFSessions
 
 logger = logging.getLogger('DF Auth')
 
@@ -67,9 +67,21 @@ class DFAuthSession():
                     for user in users:
                         request.session['DF_USER_ROLE'] = user.role           
             except Exception:
-               self.authenticated=False
-            
+               self.authenticated=False           
+           
             request.session.modified = True
+             # Save the session key in DFSessions
+            try:
+                    usersession= DFSessions.objects.get(sso_id=request.session['DF_USER_SSO_ID'])                      
+                    usersession.session_id = request.session.session_key
+                    usersession.save()
+            except DFSessions.DoesNotExist,e:
+                    usersession =  DFSessions()
+                    usersession.sso_id= request.session['DF_USER_SSO_ID']
+                    usersession.session_id = request.session.session_key
+                    usersession.save()
+            except Exception,e:
+                    logger.error("User session could not be saved in DF.")
         
         self.authenticated=True
 
