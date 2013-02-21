@@ -787,27 +787,28 @@ def edituser(request):
                     try:
                         dfusersession = DFSessions.objects.get(sso_id=request.POST.get("user_sso_id"))      
                         session=SessionStore(session_key=dfusersession.session_id)                
-                        #session = Session.objects.get(session_key=usersession.session_id)
                         session['DF_USER_ROLE']=request.POST.get("user_role")
                         session.save()
                         #session.modified = True 
                     except DFSessions.DoesNotExist,e :
                         logger.error("No active DF user sessions.")
-                        raise
-                    except Session.DoesNotExist, e:
-                        raise
+                        pass
+                    except SessionStore.DoesNotExist, e:
+                        pass
                         logger.error("No active user sessions.")
                     except Exception,e:
-                        raise
+                        pass
                         logger.error("User session could not be found in DF.")
                     
                     context['message']="User information updated successfully!"
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
+               
                except Users.DoesNotExist,e:
                     context['message']="The chosen user is currently not a DataFinder user. Would you like to add the user instead? "
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
+               
                except Exception,e:
-                    raise
+                    pass
                     logger.error("User details could not be updated.")
                     context['message']="User details could not be updated!" 
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
