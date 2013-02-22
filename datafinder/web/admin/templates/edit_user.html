@@ -6,26 +6,35 @@
 
 
 <div class="row"><div class="three columns centered"><h4>Edit user</h4></div></div>
+% if message:
+	<div class="row"><span style="color:red;">${message}</span></p></div>
+% endif
+
 
 	<div class="row">
-		<form method="GET"  action="/admin/users/edit" >
+		<form method="POST"  action="/admin/users/edit/" >
 		    <div class="four columns centered">
-		       <div class="row"> name : Joseph talbot </div>
-	           <div class="row"> username : talbotj </div>
-	           <div class="row"> primary email : joseph.talbot@it.ox.ac.uk </div>
+		       <div class="row"> SSO Id :  ${user_sso_id} </div>
+	           <div class="row"> username : ${user_sso_name} </div>
+	           <div class="row"> primary email : ${user_sso_email}</div>
 	           <div class="row">
 	              <div class="six columns "> </div>
 	              <div class="two columns ">    role:  </div>
 	              <div class="four columns ">
-	                   <select><option value="role">Select a role</option>
-				      </select>
+	                  <select id="user_role" name="user_role">
+			             % for role in ("user","admin","proxy","reviewer"):
+			             	%  if role == user_role:
+			                  <option  selected value="${role}"> ${role}</option>
+			                % else:
+			                  <option  value="${role}">${role}</option>
+			                % endif
+		                 % endfor
+               		  </select>
 				  </div>
 	    	   </div>
 	           <div  class="row">
-		    	   <div class="three columns "> </div>
-		    	   <div class="three columns "> </div>
-		    	   <div class="three columns "> </div>
-		    	   <div class="three columns ">
+	           
+		    	        <input type="hidden" id="user_sso_id" name ="user_sso_id" value="${user_sso_id}"/>
 		    	   		<input type="submit" id="save" name ="save" value="save"/>
 		    	   </div>
 	    	   </div>
@@ -33,3 +42,11 @@
 	   </form>
 	</div>
 
+
+<script>
+$(document).ready( function() {
+  $(function() {
+    $("#user_role").val('admin');
+});
+}
+</script>

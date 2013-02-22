@@ -1,21 +1,19 @@
 <div class="user-panel">
 <!-- id="quicklogin" -->
- 
+
   % if login == "":
   	<form  class="user-form" action="/login" method="get">
-  	<!-- id="quickloginform" -->
-  	 <div  >
-  	 	<input id="login" name='login' type="submit" value="login"/>
-  	 </div> 
-  	   	</form>
+	  	<!-- id="quickloginform" -->
+	  	 <div >
+	  	 	<input id="login" name='login' type="submit" value="login"/>
+	  	 </div> 
+  	 </form>
   % endif  	 
   % if logout == "":
-   <span class="df-user" > ${user_logged_in_name}</span>
-
      % if user_logged_in_name  and user_logged_in_name != None:
      	<span class="df-user" >${user_logged_in_name}</span>
-     	     % endif
-   <form  class="user-form"  action="/logout" method="get"> 
+     % endif
+    <form  class="user-form"  action="/logout" method="get"> 
      <!-- id="quickloginform" -->
      <div >
      	<input id="logout" name= 'logout' type="submit" value="logout"/>
@@ -27,7 +25,4 @@
     	 <li><a href="/admin" >administration</a></li>
     	 </ul>
   % endif
-
-  
-  
 </div>

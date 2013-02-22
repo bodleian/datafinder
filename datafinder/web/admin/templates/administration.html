@@ -4,10 +4,36 @@
   <title>DataFinder:Administration</title>
 </%def>
 
+<%
+n = len(source_infos)
+%>
 
 <div class="row"><div class="three columns centered"><h4>Administration</h4></div></div>
 
+% if message:
+	<div class="row"><span style="color:red;">${message}</span></p></div>
+% endif
+
 <div class="row"><h5>Records for review</h5></div>
+
+
+<div class="row">
+	<table>
+		<thead>
+			<tr>
+			    <th>Title</th>
+			    <th>Filesize</th>
+			    <th>Date submitted</th>
+			    <th>Last modified</th>
+			    <th>owner</th>
+			    <th>status</th>
+			    <th>action</th>                  
+			</tr>
+		</thead>
+	</table>
+</div>
+
+
 
 <div class="row">
 	<table>
@@ -80,6 +106,18 @@
 			    <th>edit</th>
 			    <th>delete</th>
 			</tr>
+			% if source_infos and n > 0:
+				 % for source in source_infos:
+				    <tr>
+					    <td><a href="/admin/${source}">${source_infos[source][0]}</a></td>
+					    <td>${source_infos[source][1]}</td>
+				        <td><a href="/admin/source/edit/">edit</a></td>
+				        <td><a href="">delete</a></td>
+			        </tr>
+				    </tr>
+				  % endfor
+			% endif
+			
 			<tr>
 			    <td>source 1</td>
 			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
@@ -111,48 +149,37 @@
 <div class="row">
 	<h5>Permissions</h5>
 	<form method="GET"  action="/admin/users/" >
-	   <input type="submit" id="adduser" name ="adduser" value="adduser"/>
+	   <input type="submit" id="adduser" name ="adduser" value="add user"/>
 	</form>
 </div>
 
 <div class="row">
-	<table>
-		<thead>
-			<tr>
-			    <th>name</th>
-			    <th>username</th>
-			    <th>role</th>
-			    <th>edit</th>
-			    <th>delete</th>
-			</tr>
-			<tr>
-			    <td>Joseph Talbot</td>
-			    <td>talbotj</td>
-			    <td>admin</td>
-			    <td><a href="/admin/users/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-            <tr>
-				<td>JBob Quest</td>
-			    <td>BQ0012</td>
-			    <td>reviewer</td>
-                <td><a href="/admin/users/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-			<tr>
-			    <td>Kelvin Kilbone</td>
-			    <td>BQ0012</td>
-			    <td>proxy</td>
-                <td><a href="/admin/users/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-			<tr>
-			    <td>Rob Roy</td>
-			    <td>KB2445</td>
-			    <td>proxy</td>
-                <td><a href="/admin/users/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-		</thead>
-	</table>
+	<form method="GET"  action="/admin/users/edit" >
+		<table>
+				<tr>
+				    <td><input type="text" name="user_sso_id" id="user_sso_id"/></td>
+	                <td> <input type="submit" id="edituser" name ="edituser" value="edit user"/></td>
+				    <td> <input type="submit" id="deluser" name ="deluser" value="del user"/></td>
+				</tr>
+		</table>
+	</form>
 </div>
+
+
+<script>
+$(document).ready( function() {
+  $('#edituser').click( function()
+	{   var user_sso_id =   $('#user_sso_id').val()
+	    var actionURL = "/admin/users/edit/?user_sso_id=" + user_sso_id;
+	    $('#form1').attr('action', actionURL);  
+	    $("#form1")[0].submit();    
+	});
+	
+  $('#deluser').click( function()
+	{
+	    var actionURL = "/admin/users/del/";
+	    $('#form1').attr('action', actionURL);  
+	    $("#form1")[0].submit();    
+	});
+}
+</script>

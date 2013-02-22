@@ -4,18 +4,28 @@ from django.template import RequestContext
 import logging, os
 
 def home(request):
+    username = ""
     context = { 
         #'DF_VERSION':settings.DF_VERSION,
         #'STATIC_URL': settings.STATIC_URL,3
+      
         'silo_name':"",
         'ident' : "",
         'id':"",
         'path' :"",
-        'user_logged_in_name':os.environ.get('REMOTE_USER'),
+        #'user_logged_in_name': username,
         'q':"",
         'typ':"",
-        'login':"",
-       }
+        #'login':"",
+       }    
+    
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
+
     return render_to_response('home.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
     
