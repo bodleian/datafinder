@@ -4,49 +4,92 @@
   <title> DataFinder </title>
 </%def>
 
-<div class="row"><div class="seven columns centered"><h5>Discover research data from University of Oxford scholars</h5></div></div>
+<div class="homepage home-wrapper">
+    <div class="homepage intro ">
 
-<div class="row">
-    <div class="six columns">
-	      	<div class="pleaseNote">
-<p>Brief description of DataFinder goes here, exploring what the system does, why you would want to use it, and what you need to do 
-to use it....  	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-<a href="" > read more about the service</a></p>
-           </div>
+        <h1>Welcome to DataFinder</h1>
+                <div class="inner">
+
+        <p>A brief introduction to DataFinder goes here, explaining 
+    why it’s such a great service and a Good Thing why 
+    people should use it and what’s in it for them. This 
+    will probably the longest bit of text on the home page, 
+    so I’m stringing out this piece of holding text a bit...</p>
+    <a class="go read-more" href="about.html">read more</a>
     </div>
-    <div class="six columns">
-	    <div class="panel withborder">
-	          <div class="two columns centered"><h5> Search </h5></div>
-	    	  <%include file="/quick_search_form.html"/> 
-	    	  <div><a href="/search/search_tips/" class="popup">?</a> Need any help with searching? </div>
-	    </div>
-	</div>
-</div>
-
-
-
-<div class="row">
-    <div class="six columns">
-	      	<div class="pleaseNote">
-	      	<h6> Browse DataFinder </h6>
-<p>Brief explanation of how you are able to browse the site ( and why you'd want to ...)	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-</p>
-           </div>
     </div>
-    <div class="six columns">
-	      	<div class="pleaseNote">
-	      	<h6> Contribute to DataFinder </h6>
-<p>Brief description of how you would add records to DataFinder ...	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-</p>
+    
+    <div class="homepage stats ">
+        <h2>DataFinder in numbers</h2>
+                <div class="inner">
+
+       <dl>
+       <dt>number of records</dt><dd>36,693</dd>
+       <dt>records added in the last week</dt><dd>42</dd>
+       </dl>
+       </div>
+    </div>  
+    
+    
+    <div class="homepage search ">
+        <h2>Search DataFinder</h2>
+        <div class="inner">
+
+        <div class="search-intro">
+        <p>Some encouraging text on why you might to 
+    search the site and a brief words on how to 
+    (e.g. by author, department etc...).  It’ll
+    probably a bit more text than this though.</p>
+    
+        <p>Maybe this much.  Or this much. Or maybe 
+    even this much, who knows, it might even 
+    include a link to <a href="#" >help with searching</a> or 
+    something like that.
+        
+        </p>
+        </div>
+        
+        <div class="search-form">
+        <form   action="/search/detailed" method="get">
+            <div class="home-search">
+               <div class="label-field-pair"><label for="search-keyword">keyword</label><input id="search-keyword" type="text"  name="q"/><!-- id="q" --></div>
+               
+                              <div class="label-field-pair"><label for="search-author">author</label><input id="search-author" type="text"  name="author"/></div>
+                              
+<div class="label-field-pair"><label for="search-department">department</label>               
+        <select id="search-department" >
+             <option value="all">all</option>
+            <option value="Anthropology">Anthropology</option>
+            <option value="English">English</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Physics">Physics</option>
+
+        </select>                              
+</div>                         
+                              
+           <div class="form-submit">     <input type="submit"  name="search"  value="search" /><!-- id="search" -->
            </div>
-    </div>
-</div>
+            </div>
+          </form>
+          <a href="#" class="go help" >help with searching</a>
+          <a href="#" class="go" >advanced search</a>
+
+          </div>
+          
+                      <div class="clear-fix"></div>
+
+         </div>
+         
+         
+         </div>
+         
+</div>    
+
+     
 
 <script type="text/javascript">
  $(document).ready( function() {
   $('.popup').popupWindow({ 
 	centerBrowser:1 
-	}); 
+	}); }
 </script>
-}

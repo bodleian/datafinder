@@ -1,34 +1,41 @@
 # -*- coding: utf-8 -*-
-  <div class="header">
-    <div class="row">
-
-					<a id="dflogo" href="/home">
-						<img src="${ STATIC_URL }images/df-logo.png"    alt="Data Finder" />
+  <div class="row header">
+    <div class="three columns">
+	      <div class="panel">
+	      	<span id="dflogo">
+					<a href="">
+						<img src="${ STATIC_URL }data_finder_oxblue.jpg" alt="Data Finder" />
 					</a>
-		<div class="header-forms" >   
-			    	  <%include file="/quick_login_form.html"/> 
-		   
+		    </span>
+	      </div>    
+    </div>
+    <div class="three columns">
+	    <div class="panel withborder">
 	    	  <%include file="/quick_search_form.html"/> 
-	  
-	  
-
-	
-		</div>
-		<div class="header-logos">
-					<a id="bodlogo" href="http://www.bodleian.ox.ac.uk">
+	    </div>
+	</div>
+	<div class="two columns">
+	    <div class="panel withborder">
+	    	  <%include file="/quick_login_form.html"/> 
+	    </div>
+	</div>
+	<div class="two columns">
+	    <span id="bodlogo">
+					<a href="http://www.bodleian.ox.ac.uk">
 						<img src="${ STATIC_URL }images/bod.png" alt="Bodleian Library" />
 					</a>
-	
-	
-					<a id="unilogo" href="http://www.bodleian.ox.ac.uk">
+		</span>
+	</div>
+	<div class="two columns">
+	    <span id="unilogo">
+					<a href="http://www.bodleian.ox.ac.uk">
 						<img src="${ STATIC_URL }images/ox_brand1_rev.gif" alt="University of Oxford" />
 					</a>
-		</div>
-		
-  </div>
+		</span>
+	</div>
   </div>
   
-
+  <div> </div>
   
   <div class="row nav">
 	 
