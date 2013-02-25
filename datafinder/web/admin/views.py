@@ -739,7 +739,7 @@ def adduser(request):
 
                try:
                     user= Users.objects.get(sso_id=context["user_sso_id"])                      
-                    context['message']="Sorry, the user " + request.POST.get("user_sso_id") +" already exists." 
+                    context['message']="Sorry, the user " + context["user_sso_id"] +" already exists." 
                     return redirect("/admin?message="+context['message'])              
  
                except Users.DoesNotExist,e:
@@ -748,11 +748,16 @@ def adduser(request):
             
                     context["user_sso_name"]  = str(cudReq.get_fullName())
                     context["user_sso_email"] = str(cudReq.get_email())
+                    
+                    if cudReq.get_fullName() == None or cudReq.get_email() == None:
+                        context['message']=" Please enter a valid Oxford SSO ID" 
+                        return redirect("/admin?"+"message="+context['message']) 
                     # Set the role to default to 'user'
                     context["user_role"] = "user"
                     
                     return render_to_response('add_user.html',context, context_instance=RequestContext(request))              
                except Exception,e:
+                    raise
                     logger.error("Oops, an error occurred, sorry...")
                     context['message']="Oops, an error occurred, sorry..." 
                     return redirect("/admin?"+"message="+context['message'])       
@@ -778,7 +783,7 @@ def adduser(request):
                     newuser.email = context["user_sso_email"] 
                     newuser.save()
                     
-                    context['message']="Thanks,"+ context["user_sso_id"] +" has been successfully added."
+                    context['message']="Thanks, "+ context["user_sso_id"] +" has been successfully added."
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
                            
                except Exception,e:
@@ -842,7 +847,7 @@ def deluser(request):
                             user= Users.objects.get(sso_id=context["user_sso_id"])                      
                             #user = userslist[0]
                             user.delete()
-                            context['message']="Thanks,"+ context["user_sso_id"] +" has been successfully deleted."
+                            context['message']="Thanks, "+ context["user_sso_id"] +" has been successfully deleted."
                             return redirect("/admin?user_sso_id="+"&message="+context['message'])        
                        except Users.DoesNotExist,e:
                            context['message']="Sorry, that user doesn't exist."
@@ -923,17 +928,19 @@ def edituser(request):
                         pass
                         logger.error("User session could not be found in DF.")
                     
-                    context['message']="Thanks,"+ context["user_sso_id"] +" has been successfully updated."
+                    context['message']="Thanks, "+ request.POST.get("user_sso_id") +" has been successfully updated."
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
                
                except Users.DoesNotExist,e:
                     context['message']="Sorry, that user doesn't exist."
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
                
-               except Exception,e:                                     
+               except Exception,e:  
+                    raise                                   
                     logger.error("Oops, an error occurred, sorry...")
                     context['message']="Oops, an error occurred, sorry..." 
                     return redirect("/admin?"+"message="+context['message'])   
+                
     return render_to_response('edit_user.html',context, context_instance=RequestContext(request))
 
 
