@@ -739,7 +739,7 @@ def adduser(request):
 
                try:
                     user= Users.objects.get(sso_id=context["user_sso_id"])                      
-                    context['message']="Oxford SSO user is already registered with data finder" 
+                    context['message']="Sorry, the user " + request.POST.get("user_sso_id") +" already exists." 
                     return redirect("/admin?message="+context['message'])              
  
                except Users.DoesNotExist,e:
@@ -753,13 +753,14 @@ def adduser(request):
                     
                     return render_to_response('add_user.html',context, context_instance=RequestContext(request))              
                except Exception,e:
-                    logger.error("Oxford SSO user information could not be retrieved. Please try again later.")
-                    context['message']="Oxford SSO user information could not be retrieved. Please try again later" 
-                    return redirect("/admin?message="+context['message'])              
+                    logger.error("Oops, an error occurred, sorry...")
+                    context['message']="Oops, an error occurred, sorry..." 
+                    return redirect("/admin?"+"message="+context['message'])       
+             
         elif http_method == "POST":               
                try:
                     user = Users.objects.get(sso_id=request.POST.get("user_sso_id"))         
-                    context['message']="Oxford SSO user is already registered with data finder" 
+                    context['message']="Sorry, the user " + request.POST.get("user_sso_id") +" already exists." 
                     return redirect("/admin?message="+context['message'])              
                except Users.DoesNotExist,e:
                     cud_authenticator = settings.get('main:cud_proxy.host')
@@ -777,13 +778,12 @@ def adduser(request):
                     newuser.email = context["user_sso_email"] 
                     newuser.save()
                     
-                    context['message']="New user has been added successfully!"
+                    context['message']="Thanks,"+ context["user_sso_id"] +" has been successfully added."
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
                            
                except Exception,e:
-                    pass
-                    logger.error("User details could not be updated.")
-                    context['message']="User details could not be updated!" 
+                    logger.error("Oops, an error occurred, sorry...")
+                    context['message']="Oops, an error occurred, sorry..." 
                     return redirect("/admin?"+"message="+context['message'])       
 
             
@@ -829,12 +829,12 @@ def deluser(request):
                         context["user_role"] = user.role  
                         return render_to_response('delete_user.html',context, context_instance=RequestContext(request)) 
                    except Users.DoesNotExist,e:
-                        context['message']="Unable to delete the user. User not found in the DataFinder! "
+                        context['message']="Sorry, that user doesn't exist."
                         return redirect("/admin?message="+context['message'])              
-                   except Exception,e:
-                        logger.error("Oxford SSO user information could not be retrieved. Please try again later.")
-                        context['message']="Oxford SSO user information could not be retrieved. Please try again later" 
-                        return redirect("/admin?message="+context['message'])                
+                   except Exception,e:                                         
+                        logger.error("Oops, an error occurred, sorry...")
+                        context['message']="Oops, an error occurred, sorry..." 
+                        return redirect("/admin?"+"message="+context['message'])                
         elif http_method == "POST":               
                if request.POST.has_key('user_sso_id'):
                        context["user_sso_id"] = request.POST.get("user_sso_id")
@@ -842,16 +842,16 @@ def deluser(request):
                             user= Users.objects.get(sso_id=context["user_sso_id"])                      
                             #user = userslist[0]
                             user.delete()
-                            context['message']="User " + context["user_sso_id"]  +" deleted successfully!"
+                            context['message']="Thanks,"+ context["user_sso_id"] +" has been successfully deleted."
                             return redirect("/admin?user_sso_id="+"&message="+context['message'])        
                        except Users.DoesNotExist,e:
-                           context['message']="Unable to delete the user. User not found in the DataFinder! "
+                           context['message']="Sorry, that user doesn't exist."
                            return redirect("/admin?message="+context['message'])              
-                       except Exception,e:
-                            raise
-                            logger.error("Unable to delete the user. User details could not be retrieved.")
-                            context['message']="Unable to delete the user. User details could not be retrieved."
-                       return redirect("/admin?message="+context['message'])              
+                       except Exception,e:                                         
+                           logger.error("Oops, an error occurred, sorry...")
+                           context['message']="Oops, an error occurred, sorry..." 
+                           return redirect("/admin?"+"message="+context['message'])   
+                                        
 
         return render_to_response('delete_user.html',context, context_instance=RequestContext(request))
     
@@ -895,13 +895,12 @@ def edituser(request):
                     context["user_role"] = user.role  
                     return render_to_response('edit_user.html',context, context_instance=RequestContext(request)) 
                except Users.DoesNotExist,e:
-                   context['message']="The chosen user is currently not a DataFinder user. Would you like to add the user instead? "
+                   context['message']="Sorry, that user doesn't exist."
                    return redirect("/admin?message="+context['message'])              
-               except Exception,e:
-                    raise
-                    logger.error("User could not be retrieved.")
-                    context['message']="User information could not be retrieved !" 
-               return redirect("/admin?message="+context['message'])              
+               except Exception,e:                                        
+                   logger.error("Oops, an error occurred, sorry...")
+                   context['message']="Oops, an error occurred, sorry..." 
+                   return redirect("/admin?"+"message="+context['message'])          
     elif http_method == "POST":               
                try:
                     user = Users.objects.get(sso_id=request.POST.get("user_sso_id"))                 
@@ -924,19 +923,17 @@ def edituser(request):
                         pass
                         logger.error("User session could not be found in DF.")
                     
-                    context['message']="User information updated successfully!"
+                    context['message']="Thanks,"+ context["user_sso_id"] +" has been successfully updated."
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
                
                except Users.DoesNotExist,e:
-                    context['message']="The chosen user is currently not a DataFinder user. Would you like to add the user instead? "
+                    context['message']="Sorry, that user doesn't exist."
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
                
-               except Exception,e:
-                    pass
-                    logger.error("User details could not be updated.")
-                    context['message']="User details could not be updated!" 
-                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
-
+               except Exception,e:                                     
+                    logger.error("Oops, an error occurred, sorry...")
+                    context['message']="Oops, an error occurred, sorry..." 
+                    return redirect("/admin?"+"message="+context['message'])   
     return render_to_response('edit_user.html',context, context_instance=RequestContext(request))
 
 
