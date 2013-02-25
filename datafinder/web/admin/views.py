@@ -632,7 +632,6 @@ def administration(request):
         'path' :"",
         'q':"",
         'typ':"",
-        'message':"",
         'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
         'logout' : "",
         'source_infos':{},
@@ -641,6 +640,9 @@ def administration(request):
 
         if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
+            
+        if request.GET.has_key('status'):    
+            context["status"]=request.GET['status']
        # Need to have an 'admin' role within DF to be able to administer the DataFinder
 
         src = settings.get("main:granary.uri_root")
@@ -731,7 +733,9 @@ def adduser(request):
             
         if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
-        
+        if request.GET.has_key('status'):    
+            context["status"]=request.GET['status']
+            
         http_method = request.environ['REQUEST_METHOD'] 
         if http_method == "GET": 
             if request.GET.has_key('user_sso_id'):
@@ -740,7 +744,8 @@ def adduser(request):
                try:
                     user= Users.objects.get(sso_id=context["user_sso_id"])                      
                     context['message']="Sorry, the user " + context["user_sso_id"] +" already exists." 
-                    return redirect("/admin?message="+context['message'])              
+                    context['status']="error"
+                    return redirect("/admin?message="+context['message']+"&status="+context['status'])              
  
                except Users.DoesNotExist,e:
                     cud_authenticator = settings.get('main:cud_proxy.host')
@@ -751,22 +756,24 @@ def adduser(request):
                     
                     if cudReq.get_fullName() == None or cudReq.get_email() == None:
                         context['message']=" Please enter a valid Oxford SSO ID" 
-                        return redirect("/admin?"+"message="+context['message']) 
+                        context['status']="error"
+                        return redirect("/admin?"+"message="+context['message']+"&status="+context['status']) 
                     # Set the role to default to 'user'
                     context["user_role"] = "user"
                     
                     return render_to_response('add_user.html',context, context_instance=RequestContext(request))              
                except Exception,e:
-                    raise
                     logger.error("Oops, an error occurred, sorry...")
                     context['message']="Oops, an error occurred, sorry..." 
-                    return redirect("/admin?"+"message="+context['message'])       
+                    context['status']="error"
+                    return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])       
              
         elif http_method == "POST":               
                try:
                     user = Users.objects.get(sso_id=request.POST.get("user_sso_id"))         
                     context['message']="Sorry, the user " + request.POST.get("user_sso_id") +" already exists." 
-                    return redirect("/admin?message="+context['message'])              
+                    context['status']="error"
+                    return redirect("/admin?message="+context['message']+"&status="+context['status'])              
                except Users.DoesNotExist,e:
                     cud_authenticator = settings.get('main:cud_proxy.host')
                     context["user_sso_id"] = request.POST.get("user_sso_id")                 
@@ -784,12 +791,14 @@ def adduser(request):
                     newuser.save()
                     
                     context['message']="Thanks, "+ context["user_sso_id"] +" has been successfully added."
-                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
+                    context['status']="success"
+                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message']+"&status="+context['status'])       
                            
-               except Exception,e:
+               except Exception,e:                
                     logger.error("Oops, an error occurred, sorry...")
                     context['message']="Oops, an error occurred, sorry..." 
-                    return redirect("/admin?"+"message="+context['message'])       
+                    context['status']="error"
+                    return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])       
 
             
         return render_to_response('add_user.html',context, context_instance=RequestContext(request))
@@ -835,11 +844,13 @@ def deluser(request):
                         return render_to_response('delete_user.html',context, context_instance=RequestContext(request)) 
                    except Users.DoesNotExist,e:
                         context['message']="Sorry, that user doesn't exist."
-                        return redirect("/admin?message="+context['message'])              
+                        context['status']="error"
+                        return redirect("/admin?message="+context['message']+"&status="+context['status'])              
                    except Exception,e:                                         
                         logger.error("Oops, an error occurred, sorry...")
                         context['message']="Oops, an error occurred, sorry..." 
-                        return redirect("/admin?"+"message="+context['message'])                
+                        context['status']="error"
+                        return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])                
         elif http_method == "POST":               
                if request.POST.has_key('user_sso_id'):
                        context["user_sso_id"] = request.POST.get("user_sso_id")
@@ -848,14 +859,17 @@ def deluser(request):
                             #user = userslist[0]
                             user.delete()
                             context['message']="Thanks, "+ context["user_sso_id"] +" has been successfully deleted."
-                            return redirect("/admin?user_sso_id="+"&message="+context['message'])        
+                            context['status']="success"
+                            return redirect("/admin?user_sso_id="+"&message="+context['message']+"&status="+context['status'])        
                        except Users.DoesNotExist,e:
                            context['message']="Sorry, that user doesn't exist."
-                           return redirect("/admin?message="+context['message'])              
+                           context['status']="error"
+                           return redirect("/admin?message="+context['message']+"&status="+context['status'])              
                        except Exception,e:                                         
                            logger.error("Oops, an error occurred, sorry...")
                            context['message']="Oops, an error occurred, sorry..." 
-                           return redirect("/admin?"+"message="+context['message'])   
+                           context['status']="error"
+                           return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])   
                                         
 
         return render_to_response('delete_user.html',context, context_instance=RequestContext(request))
@@ -881,12 +895,13 @@ def edituser(request):
         'q':"",
         'typ':"",
         'logout':"",
-        'message':"",
        }
     
     if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
-            
+    if request.GET.has_key('status'):    
+            context["status"]=request.GET['status']    
+           
     http_method = request.environ['REQUEST_METHOD'] 
     if http_method == "GET": 
         if request.GET.has_key('user_sso_id'):
@@ -901,11 +916,13 @@ def edituser(request):
                     return render_to_response('edit_user.html',context, context_instance=RequestContext(request)) 
                except Users.DoesNotExist,e:
                    context['message']="Sorry, that user doesn't exist."
-                   return redirect("/admin?message="+context['message'])              
+                   context['status']="error"
+                   return redirect("/admin?message="+context['message']+"&status="+context['status'])              
                except Exception,e:                                        
                    logger.error("Oops, an error occurred, sorry...")
                    context['message']="Oops, an error occurred, sorry..." 
-                   return redirect("/admin?"+"message="+context['message'])          
+                   context['status']="error"
+                   return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])          
     elif http_method == "POST":               
                try:
                     user = Users.objects.get(sso_id=request.POST.get("user_sso_id"))                 
@@ -929,17 +946,20 @@ def edituser(request):
                         logger.error("User session could not be found in DF.")
                     
                     context['message']="Thanks, "+ request.POST.get("user_sso_id") +" has been successfully updated."
-                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
+                    context['status']="success"
+                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message']+"&status="+context['status'])       
                
                except Users.DoesNotExist,e:
                     context['message']="Sorry, that user doesn't exist."
-                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
+                    context['status']="error"
+                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message']+"&status="+context['status'])       
                
                except Exception,e:  
                     raise                                   
                     logger.error("Oops, an error occurred, sorry...")
                     context['message']="Oops, an error occurred, sorry..." 
-                    return redirect("/admin?"+"message="+context['message'])   
+                    context['status']="error"
+                    return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])   
                 
     return render_to_response('edit_user.html',context, context_instance=RequestContext(request))
 
