@@ -44,6 +44,12 @@ def accessibility(request):
         'q':"",
         'typ':"",
         }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('accessibility.html',context, context_instance=RequestContext(request))
 
 def privacy(request):
@@ -58,6 +64,12 @@ def privacy(request):
         'q':"",
         'typ':"",
         }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('privacy.html',context, context_instance=RequestContext(request))
 
 def termsconditions(request):
@@ -72,6 +84,12 @@ def termsconditions(request):
         'q':"",
         'typ':"",
         }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('terms-conditions.html',context, context_instance=RequestContext(request))
 
 def about(request):
@@ -86,6 +104,12 @@ def about(request):
         'q':"",
         'typ':"",
         }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('about.html',context, context_instance=RequestContext(request))
 
 def contact(request):
@@ -100,6 +124,12 @@ def contact(request):
         'q':"",
         'typ':"",
         }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('contact.html',context, context_instance=RequestContext(request))
 
 def help(request):
@@ -114,6 +144,12 @@ def help(request):
         'q':"",
         'typ':"",
         }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('help.html',context, context_instance=RequestContext(request))
 
 
@@ -129,6 +165,12 @@ def cookies(request):
         'q':"",
         'typ':"",
         }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('cookies.html',context, context_instance=RequestContext(request))
 
 def myrecords(request):
@@ -144,5 +186,11 @@ def myrecords(request):
         'typ':"",
         'login':"",
        }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('myrecords.html',context, context_instance=RequestContext(request))
 

@@ -148,38 +148,15 @@ n = len(source_infos)
 
 <div class="row">
 	<h5>Permissions</h5>
-	<form method="GET"  action="/admin/users/" >
-	   <input type="submit" id="adduser" name ="adduser" value="add user"/>
-	</form>
-</div>
-
-<div class="row">
-	<form method="GET"  action="/admin/users/edit" >
+	<form id="manageusers" name="manageusers" method="GET"  action="/admin/users/edit" >
 		<table>
 				<tr>
 				    <td><input type="text" name="user_sso_id" id="user_sso_id"/></td>
-	                <td> <input type="submit" id="edituser" name ="edituser" value="edit user"/></td>
-				    <td> <input type="submit" id="deluser" name ="deluser" value="del user"/></td>
+				    <td><input type="submit" id="adduser" name ="adduser" value="add user"/></td>
+	                <td><input type="submit" id="edituser" name ="edituser" value="edit user"/></td>
+				    <td><input type="submit" id="deluser" name ="deluser" value="del user"/></td>
 				</tr>
 		</table>
 	</form>
 </div>
 
-
-<script>
-$(document).ready( function() {
-  $('#edituser').click( function()
-	{   var user_sso_id =   $('#user_sso_id').val()
-	    var actionURL = "/admin/users/edit/?user_sso_id=" + user_sso_id;
-	    $('#form1').attr('action', actionURL);  
-	    $("#form1")[0].submit();    
-	});
-	
-  $('#deluser').click( function()
-	{
-	    var actionURL = "/admin/users/del/";
-	    $('#form1').attr('action', actionURL);  
-	    $("#form1")[0].submit();    
-	});
-}
-</script>

@@ -6,6 +6,7 @@
 
 
 <div class="row"><div class="three columns centered"><h4>Edit user</h4></div></div>
+
 % if message:
 	<div class="row"><span style="color:red;">${message}</span></p></div>
 % endif
@@ -14,7 +15,7 @@
 	<div class="row">
 		<form method="POST"  action="/admin/users/edit/" >
 		    <div class="four columns centered">
-		       <div class="row"> SSO Id :  ${user_sso_id} </div>
+		       <div class="row"> Oxford SSO ID :  ${user_sso_id} </div>
 	           <div class="row"> username : ${user_sso_name} </div>
 	           <div class="row"> primary email : ${user_sso_email}</div>
 	           <div class="row">

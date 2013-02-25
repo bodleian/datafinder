@@ -22,6 +22,12 @@ def search(request):
         'q':"",
         'typ':"",
         }
+    if  request.session.has_key('DF_USER_SSO_ID'):    
+        username = request.session['DF_USER_FULL_NAME']     
+        context['user_logged_in_name']=username
+        context['logout']=""
+    else:
+        context['login']=""
     return render_to_response('index.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
     

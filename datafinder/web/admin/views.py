@@ -37,7 +37,7 @@ from datafinder.lib import SparqlQueryTestCase
 from datafinder.lib.conneg import MimeType as MT, parse as conneg_parse
 #sys.path.append("./..")
 from datafinder.web.core.models import SourceInfo, Users, DFSessions
-
+from datafinder.lib.CUD_request import CUDRequest
 
 logger = logging.getLogger(__name__)
 
@@ -726,11 +726,135 @@ def adduser(request):
         'logout' : "",
         'q':"",
         'typ':"",
-        'login':"",
-       }
+         }
+        
+            
+        if request.GET.has_key('message'):    
+            context["message"]=request.GET['message']
+        
+        http_method = request.environ['REQUEST_METHOD'] 
+        if http_method == "GET": 
+            if request.GET.has_key('user_sso_id'):
+               context["user_sso_id"] = request.GET["user_sso_id"]  
+
+               try:
+                    user= Users.objects.get(sso_id=context["user_sso_id"])                      
+                    context['message']="Oxford SSO user is already registered with data finder" 
+                    return redirect("/admin?message="+context['message'])              
+ 
+               except Users.DoesNotExist,e:
+                    cud_authenticator = settings.get('main:cud_proxy.host')
+                    cudReq = CUDRequest(cud_proxy_host=cud_authenticator, sso_id=context["user_sso_id"])
+            
+                    context["user_sso_name"]  = str(cudReq.get_fullName())
+                    context["user_sso_email"] = str(cudReq.get_email())
+                    # Set the role to default to 'user'
+                    context["user_role"] = "user"
+                    
+                    return render_to_response('add_user.html',context, context_instance=RequestContext(request))              
+               except Exception,e:
+                    logger.error("Oxford SSO user information could not be retrieved. Please try again later.")
+                    context['message']="Oxford SSO user information could not be retrieved. Please try again later" 
+                    return redirect("/admin?message="+context['message'])              
+        elif http_method == "POST":               
+               try:
+                    user = Users.objects.get(sso_id=request.POST.get("user_sso_id"))         
+                    context['message']="Oxford SSO user is already registered with data finder" 
+                    return redirect("/admin?message="+context['message'])              
+               except Users.DoesNotExist,e:
+                    cud_authenticator = settings.get('main:cud_proxy.host')
+                    context["user_sso_id"] = request.POST.get("user_sso_id")                 
+                    context["user_role"] = request.POST.get("user_role")                    
+                    cudReq = CUDRequest(cud_proxy_host=cud_authenticator, sso_id=context["user_sso_id"])            
+                    context["user_sso_name"]  = str(cudReq.get_fullName())
+                    context["user_sso_email"] = str(cudReq.get_email())
+                    # Set the role to default to 'user'
+                                       
+                    newuser = Users()
+                    newuser.sso_id = context["user_sso_id"]
+                    newuser.username = context["user_sso_name"]  
+                    newuser.role = context["user_role"] 
+                    newuser.email = context["user_sso_email"] 
+                    newuser.save()
+                    
+                    context['message']="New user has been added successfully!"
+                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
+                           
+               except Exception,e:
+                    pass
+                    logger.error("User details could not be updated.")
+                    context['message']="User details could not be updated!" 
+                    return redirect("/admin?"+"message="+context['message'])       
+
             
         return render_to_response('add_user.html',context, context_instance=RequestContext(request))
 
+def deluser(request):
+        # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
+        # Test if the user is now a university authenticated user
+        if 'DF_USER_SSO_ID' not in request.session:                          
+            return redirect("/login?redirectPath=admin")
+            # Test if the user is Data Finder authorised user
+        if  request.session['DF_USER_ROLE'] != "admin" :
+            return redirect("/home")
+        
+        context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
+        'logout' : "",
+        'q':"",
+        'typ':"",
+         }
+        
+            
+        if request.GET.has_key('message'):    
+            context["message"]=request.GET['message']
+        
+        http_method = request.environ['REQUEST_METHOD'] 
+        
+        if http_method == "GET": 
+            if request.GET.has_key('user_sso_id'):
+                   context["user_sso_id"] = request.GET["user_sso_id"]  
+                   try:
+                        user= Users.objects.get(sso_id=context["user_sso_id"])                      
+                        #user = userslist[0]
+                        context["user_sso_id"] = user.sso_id 
+                        context["user_sso_name"] = user.username  
+                        context["user_sso_email"] = user.email
+                        context["user_role"] = user.role  
+                        return render_to_response('delete_user.html',context, context_instance=RequestContext(request)) 
+                   except Users.DoesNotExist,e:
+                        context['message']="Unable to delete the user. User not found in the DataFinder! "
+                        return redirect("/admin?message="+context['message'])              
+                   except Exception,e:
+                        logger.error("Oxford SSO user information could not be retrieved. Please try again later.")
+                        context['message']="Oxford SSO user information could not be retrieved. Please try again later" 
+                        return redirect("/admin?message="+context['message'])                
+        elif http_method == "POST":               
+               if request.POST.has_key('user_sso_id'):
+                       context["user_sso_id"] = request.POST.get("user_sso_id")
+                       try:
+                            user= Users.objects.get(sso_id=context["user_sso_id"])                      
+                            #user = userslist[0]
+                            user.delete()
+                            context['message']="User " + context["user_sso_id"]  +" deleted successfully!"
+                            return redirect("/admin?user_sso_id="+"&message="+context['message'])        
+                       except Users.DoesNotExist,e:
+                           context['message']="Unable to delete the user. User not found in the DataFinder! "
+                           return redirect("/admin?message="+context['message'])              
+                       except Exception,e:
+                            raise
+                            logger.error("Unable to delete the user. User details could not be retrieved.")
+                            context['message']="Unable to delete the user. User details could not be retrieved."
+                       return redirect("/admin?message="+context['message'])              
+
+        return render_to_response('delete_user.html',context, context_instance=RequestContext(request))
+    
 def edituser(request):
     # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
     # Test if the user is now a university authenticated user
@@ -739,7 +863,7 @@ def edituser(request):
     # Test if the user is Data Finder authorised user
     if  request.session['DF_USER_ROLE'] != "admin" :
         return redirect("/home")
-    
+
     context = { 
         #'DF_VERSION':settings.DF_VERSION,
         #'STATIC_URL': settings.STATIC_URL,3
@@ -765,8 +889,8 @@ def edituser(request):
                try:
                     user= Users.objects.get(sso_id=context["user_sso_id"])                      
                     #user = userslist[0]
-                    context["user_sso_id"] =user.sso_id 
-                    context["user_sso_name"] =user.username  
+                    context["user_sso_id"] = user.sso_id 
+                    context["user_sso_name"] = user.username  
                     context["user_sso_email"] = user.email
                     context["user_role"] = user.role  
                     return render_to_response('edit_user.html',context, context_instance=RequestContext(request)) 
@@ -812,25 +936,8 @@ def edituser(request):
                     logger.error("User details could not be updated.")
                     context['message']="User details could not be updated!" 
                     return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
-    elif http_method == "DELETE": 
-        if request.GET.has_key('user_sso_id'):
-               context["user_sso_id"] = request.GET["user_sso_id"]  
-               try:
-                    user= Users.objects.get(sso_id=context["user_sso_id"])                      
-                    #user = userslist[0]
-                    user.delete()
-                    context['message']="User information updated successfully!"
-                    return redirect("/admin/users/edit?user_sso_id="+ request.POST.get("user_sso_id")+"&message="+context['message'])       
-                    return render_to_response('edit_user.html',context, context_instance=RequestContext(request)) 
-               except Users.DoesNotExist,e:
-                   context['message']="Unable to delete the user. User not found in the DataFinder! "
-                   return redirect("/admin?message="+context['message'])              
-               except Exception,e:
-                    raise
-                    logger.error("Unable to delete the user.User details could not be retrieved.")
-                    context['message']="Unable to delete the user. User details could not be retrieved."
-               return redirect("/admin?message="+context['message'])              
-    #return render_to_response('edit_user.html',context, context_instance=RequestContext(request))
+
+    return render_to_response('edit_user.html',context, context_instance=RequestContext(request))
 
 
 def addsource(request):

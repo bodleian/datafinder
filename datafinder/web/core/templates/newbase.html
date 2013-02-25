@@ -130,6 +130,26 @@
       });
     return false;
   });
+  
+  $('#adduser').click( function()
+	{   var user_sso_id =   $('#user_sso_id').val()
+	    var actionURL = "/admin/users/add/?user_sso_id=" + user_sso_id;
+	    $('#manageusers').attr('action', actionURL);  
+	    $("#manageusers")[0].submit();    
+	});
+  $('#edituser').click( function()
+	{   var user_sso_id =   $('#user_sso_id').val()
+	    var actionURL = "/admin/users/edit/?user_sso_id=" + user_sso_id;
+	    $('#manageusers').attr('action', actionURL);  
+	    $("#manageusers")[0].submit();    
+	});
+	
+  $('#deluser').click( function()
+	{
+	    var actionURL = "/admin/users/del/?user_sso_id=" + user_sso_id;
+	    $('#manageusers').attr('action', actionURL);  
+	    $("#manageusers")[0].submit();    
+	});
 });
   </script>
   
