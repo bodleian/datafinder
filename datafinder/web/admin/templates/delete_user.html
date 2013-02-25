@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title>DataFinder:Administration-DeleteUser</title>
+</%def>
+
+
+<div class="row"><div class="three columns centered"><h4>Delete user</h4></div></div>
+
+% if message:
+	<div class="row"><span style="color:red;">${message}</span></p></div>
+% endif
+
+
+	<div class="row">
+		<form method="POST"  action="/admin/users/del/" >
+		    <div class="four columns centered">
+		       <div class="row"> Oxford SSO ID :  ${user_sso_id} </div>
+	           <div class="row"> username : ${user_sso_name} </div>
+	           <div class="row"> primary email : ${user_sso_email}</div>
+	           <div class="row"> role : ${user_role}</div>
+	           <div  class="row">	           
+		    	        <input type="hidden" id="user_sso_id" name ="user_sso_id" value="${user_sso_id}"/>
+		    	   		<input type="submit" id="save" name ="save" value="delete user"/>
+		    	   </div>
+	    	   </div>
+		    </div>	    
+	   </form>
+	</div>
+
+
+<script>
+$(document).ready( function() {
+  $(function() {
+    $("#user_role").val('admin');
+});
+}
+</script>
