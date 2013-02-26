@@ -20,9 +20,13 @@
       </div> 
     </form>
     
-        	<ul class="user-options" >
+       <ul class="user-options" >
     	 <li><a href="/myrecords" >My records</a></li>
-    	 <li><a href="/admin" >administration</a></li>
-    	 </ul>
+    	 % if 'DF_USER_ROLE' in request.session:  
+    	   % if request.session['DF_USER_ROLE'] == 'admin':  
+    	 	  <li><a href="/admin" >administration</a></li>
+    	  % endif
+    	 % endif
+    	</ul>
   % endif
 </div>
