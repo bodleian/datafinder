@@ -1,32 +1,23 @@
-<div class="user-panel">
 <!-- id="quicklogin" -->
-
-  % if login == "":
-  	<form  class="user-form" action="/login" method="get">
-	  	<!-- id="quickloginform" -->
-	  	 <div >
-	  	 	<input id="login" name='login' type="submit" value="login"/>
-	  	 </div> 
-  	 </form>
-  % endif  	 
-  % if logout == "":
-     % if user_logged_in_name  and user_logged_in_name != None:
-     	<span class="df-user" >${user_logged_in_name}</span>
-     % endif
-    <form  class="user-form"  action="/logout" method="get"> 
-     <!-- id="quickloginform" -->
-     <div >
-     	<input id="logout" name= 'logout' type="submit" value="logout"/>
-      </div> 
-    </form>
-    
-       <ul class="user-options" >
-    	 <li><a href="/myrecords" >My records</a></li>
-    	 % if 'DF_USER_ROLE' in request.session:  
-    	   % if request.session['DF_USER_ROLE'] == 'admin':  
-    	 	  <li><a href="/admin" >administration</a></li>
-    	  % endif
-    	 % endif
-    	</ul>
-  % endif
+<div class="user-panel">
+	% if 'DF_USER_SSO_ID' in request.session:  
+	  % if 'DF_USER_FULL_NAME' in request.session:  
+	  	<span class="df-user" >${request.session['DF_USER_FULL_NAME']}</span>
+	  	<form  class="user-form"  action="/logout" method="get"> 
+	       	<div ><input id="logout" name= 'logout' type="submit" value="logout"/></div> 
+	    </form>
+	    <ul class="user-options" >
+	    	 <li><a href="/myrecords" >My records</a></li>
+	    	 % if 'DF_USER_ROLE' in request.session:  
+	    	   % if request.session['DF_USER_ROLE'] == 'admin':  
+	    	 	  <li><a href="/admin" >administration</a></li>
+	    	  % endif
+	    	 % endif
+	    </ul>
+	  % endif 
+	% else:
+	    <form  class="user-form" action="/login" method="get">
+		  	 <div ><input id="login" name='login' type="submit" value="login"/></div> 
+	  	</form>     
+	% endif  	 
 </div>

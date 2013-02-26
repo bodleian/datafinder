@@ -724,8 +724,6 @@ def adduser(request):
         'ident' : "",
         'id':"",
         'path' :"",
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
         'q':"",
         'typ':"",
          }
@@ -818,9 +816,7 @@ def deluser(request):
         'silo_name':"",
         'ident' : "",
         'id':"",
-        'path' :"",
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
+        'path' :"",    
         'q':"",
         'typ':"",
          }
@@ -890,11 +886,8 @@ def edituser(request):
         'ident' : "",
         'id':"",
         'path' :"",
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
         'q':"",
         'typ':"",
-        'logout':"",
        }
     
     if request.GET.has_key('message'):    
@@ -978,12 +971,9 @@ def addsource(request):
             'silo_name':"",
             'ident' : "",
             'id':"",
-            'path' :"",
-            'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-            'logout' : "",
+            'path' :"",           
             'q':"",
             'typ':"",
-            'login':"",
            }
         return render_to_response('add_metadata_source.html',context, context_instance=RequestContext(request))
 
@@ -1004,12 +994,9 @@ def editsource(request):
             'silo_name':"",
             'ident' : "",
             'id':"",
-            'path' :"",
-            'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-            'logout' : "",
+            'path' :"",        
             'q':"",
             'typ':"",
-            'login':"",
            }
         return render_to_response('edit_metadata_source.html',context, context_instance=RequestContext(request))
 
