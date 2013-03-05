@@ -6,9 +6,7 @@ class SourceInfo(models.Model):
     """
     Table to store the source registration information for oaipmh
     """
-    
-    id = models.AutoField(primary_key=True)
-    silo =  models.TextField()
+    source =  models.TextField(primary_key=True)
     title =  models.TextField()
     description =  models.TextField()
     uri = models.TextField()

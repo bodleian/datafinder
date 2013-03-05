@@ -33,9 +33,9 @@
 
   <!-- IE Fix for HTML5 Tags -->
   <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  
+   <script src="http://datafinder-d2v.bodleian.ox.ac.uk:8080/js/piwik.js></script>
   <!-- Included JS Files (Compressed) -->
   <script src="/static/foundation/javascripts/jquery.js"></script>
   <script src="/static/foundation/javascripts/foundation.min.js"></script>
@@ -45,16 +45,18 @@
 
   
     <script>
-    $(window).load(function(){
-      $("#featured").orbit();
-    });
+     <!-- $(window).load(function(){
+ $("#featured").orbit();
+    }); -->
     </script> 
   <script type="text/javascript" src="/static/jquery.js"></script>
 
   ${self.head_tags()}
-  <script type="text/javascript">
-  $(document).ready( function() {
   
+ <script type="text/javascript">
+  
+  $(document).ready( function() {
+
   $('#save').click( function()
 	{
 	    var actionURL = "/admin/save_source/";
@@ -151,10 +153,10 @@
 	    $("#manageusers")[0].submit();    
 	});
 });
-  </script>
-  
-  
-  <!--[if lt IE 9]>
+
+
+</script>
+ <!--[if lt IE 9]>
 
   <script type="text/javascript" src="/static/js/html5.js" />
   <![endif]-->
@@ -290,5 +292,19 @@ path_url = "/%s/datasets/%s"%(silo_name,id)
   <%include file="/newfooter.html"/>
 </footer>
  </div> <!-- end page --> 
+ 
+ <!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = "http://datafinder-d2v.bodleian.ox.ac.uk:8080/";
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://datafinder-d2v.bodleian.ox.ac.uk:8080/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
   </body>
 </html>

@@ -157,11 +157,11 @@ INSTALLED_APPS = (
     'datafinder.web.oaipmh',
     'datafinder.web.search',
 
-    #'datafinder.web.core',
-    #'datafinder.web.contribute',
-    #'datafinder.web.login',
-    #'datafinder.web.oaipmh',
-    #'datafinder.web.search',
+    #'core',
+    #'contribute',
+    #'webauth',
+    #'oaipmh',
+    #'search'
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

@@ -91,7 +91,7 @@ n = len(source_infos)
 
 
 <div class="row">
-	<h5>Metadata sources</h5>
+	<h5>Metadata sources - Registered</h5>
 	<form method="GET"  action="/admin/source/add/" >
      	<input type="submit" id="addsource" name ="addsource" value="addsource"/>
 	</form>
@@ -106,45 +106,54 @@ n = len(source_infos)
 			    <th>edit</th>
 			    <th>delete</th>
 			</tr>
+	     </thead>
+	     <tbody>
 			% if source_infos and n > 0:
 				 % for source in source_infos:
 				    <tr>
 					    <td><a href="/admin/${source}">${source_infos[source][0]}</a></td>
 					    <td>${source_infos[source][1]}</td>
-				        <td><a href="/admin/source/edit/">edit</a></td>
+				        <td><a href="/admin/source/edit?source=${source_infos[source][0]}">edit</a></td>
 				        <td><a href="">delete</a></td>
 			        </tr>
 				    </tr>
 				  % endfor
 			% endif
-			
-			<tr>
-			    <td>source 1</td>
-			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="/admin/source/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-            <tr>
-			    <td>source 2</td>
-			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="/admin/source/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-			<tr>
-			    <td>source 3</td>
-			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="/admin/source/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-			<tr>
-			    <td>source 4</td>
-			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="/admin/source/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-		</thead>
+		 </tbody>
 	</table>
 </div>
+
+
+<div class="row">
+	<h5>Metadata sources - Unregistered</h5>	
+  		<p>Number of sources awaiting admin approval: ${len(unregistered_sources)}</p>
+		<table>
+			<thead>
+				<tr>
+				    <th>name</th>
+				    <th>url</th>
+				    <th>edit</th>
+				    <th>delete</th>
+				    <th>approve</th>
+				</tr>
+		     </thead>
+		     <tbody>
+		     % if unregistered_sources and len(unregistered_sources)> 0:
+				 % for source in unregistered_sources:
+				    <tr>
+				    <td>${source}</td>    
+				    <td>
+					    <a href="/admin/${source}/approve_source"> 
+					    	<img src="/static/styles/images/silo-edit-icon-16.png" alt="Edit silo metadata" title="edit ${source}"/>
+					    </a>	    
+					</td>
+				    </tr>
+				 % endfor	
+			% endif
+			 </tbody>
+		</table>	
+  </div>
+
 
 <div class="row">
 	<h5>Permissions</h5>

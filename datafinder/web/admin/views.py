@@ -115,13 +115,11 @@ def createsource(request):
             return redirect("/home")
         
         context = { 
-            'silo_name':'',
-            
+            'silo_name':'',           
             'ident':'',
             'id':"",
             'path':"",
             'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-            'logout' : "",
             'q':"",
             'typ':"",
             'src':settings.get("main:granary.uri_root"),
@@ -134,7 +132,8 @@ def createsource(request):
             'header':"create",
             'kw':{},
         }
-        return render_to_response('create_new_source.html', context, context_instance=RequestContext(request))
+        return render_to_response('add_metadata_source.html', context, context_instance=RequestContext(request))
+        #return render_to_response('create_new_source.html', context, context_instance=RequestContext(request))
 
 
 def registersource(request):
@@ -975,10 +974,44 @@ def addsource(request):
             'q':"",
             'typ':"",
            }
+        
+        if request.GET.has_key('message'):    
+            context["message"]=request.GET['message']
+        if request.GET.has_key('status'):    
+            context["status"]=request.GET['status']    
+        http_method = request.environ['REQUEST_METHOD'] 
+        if http_method == "GET":
+            return render_to_response('add_metadata_source.html',context, context_instance=RequestContext(request))
+        if http_method == "POST": 
+            if request.POST.has_key('source'):
+               context["source"] = request.POST["source"]  
+               context["title"] = request.POST["title"]  
+               context["description"] = request.POST["description"] 
+               context["uri"] = request.POST["uri"] 
+               context["notes"] = request.POST["notes"] 
+               context["activate"] = False
+               try:
+                    sourceinfo= SourceInfo.objects.get(source=context["source"])                                        
+                    context['message']="Sorry, the source " + context["source"] +" already exists." 
+                    context['status']="error"
+                    return redirect("/admin?message="+context['message']+"&status="+context['status'])              
+               except SourceInfo.DoesNotExist,e:
+                    sourceinfo = SourceInfo()
+                    sourceinfo.title = context["source"]
+                    sourceinfo.description = context["description"]
+                    sourceinfo.uri = context["uri"]                   
+                    sourceinfo.notes = context["notes"] 
+                    sourceinfo.save()   
+                    context['message']="Thanks, "+ request.POST.get("source") +" has been successfully added."
+                    context['status']="success"                                    
+                    return render_to_response('edit_metadata_source.html',context, context_instance=RequestContext(request))              
+               except Exception,e:
+                    logger.error("Oops, an error occurred, sorry...")
+                    context['message']="Oops, an error occurred, sorry..." 
+                    context['status']="error"
+                    return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])       
+                  
         return render_to_response('add_metadata_source.html',context, context_instance=RequestContext(request))
-
-
-
 
 def editsource(request):
         # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
@@ -998,6 +1031,62 @@ def editsource(request):
             'q':"",
             'typ':"",
            }
+        
+        
+        if request.GET.has_key('message'):    
+            context["message"]=request.GET['message']
+        if request.GET.has_key('status'):    
+            context["status"]=request.GET['status']    
+           
+        http_method = request.environ['REQUEST_METHOD'] 
+        if http_method == "GET": 
+          if request.GET.has_key('source'):
+               context["source"] = request.GET["source"]  
+               try:
+                    sourceinfo= SourceInfo.objects.get(source=context["source"])                      
+                    #user = userslist[0]
+                    context["title"] = sourceinfo.title 
+                    context["description"] = sourceinfo.description  
+                    context["uri"] =  sourceinfo.uri
+                    context["notes"] = sourceinfo.notes
+                    return render_to_response('edit_metadata_source.html',context, context_instance=RequestContext(request)) 
+               except SourceInfo.DoesNotExist,e:
+                   raise
+                   context['message']="Sorry, that source doesn't exist."
+                   context['status']="error"
+                   return redirect("/admin?message="+context['message']+"&status="+context['status'])              
+               except Exception,e:                                        
+                   logger.error("Oops, an error occurred, sorry...")
+                   context['message']="Oops, an error occurred, sorry..." 
+                   context['status']="error"
+                   return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])          
+        elif http_method == "POST":    
+          if request.POST.has_key('source'):
+               context["source"] = request.POST["source"]
+               context["title"] = request.POST["title"]  
+               context["description"] = request.POST["description"] 
+               context["uri"] = request.POST["uri"] 
+               context["notes"] = request.POST["notes"]          
+               try:                    
+                   sourceinfo= SourceInfo.objects.get(source=context["source"])  
+                   sourceinfo.title = context["title"]              
+                   sourceinfo.description = context["description"]
+                   sourceinfo.uri = context["uri"]
+                   sourceinfo.notes = context["notes"]
+                   sourceinfo.save()
+                   context['message']="Thanks, "+ request.POST.get("source") +" has been successfully updated."
+                   context['status']="success"
+               except SourceInfo.DoesNotExist,e:                   
+                   context['message']="Sorry, that source doesn't exist."
+                   context['status']="error"
+                   return redirect("/admin?message="+context['message']+"&status="+context['status'])              
+               except Exception,e:          
+                   raise                              
+                   logger.error("Oops, an error occurred, sorry...")
+                   context['message']="Oops, an error occurred, sorry..." 
+                   context['status']="error"
+                   return redirect("/admin?"+"message="+context['message']+"&status="+context['status']) 
+                    
         return render_to_response('edit_metadata_source.html',context, context_instance=RequestContext(request))
 
 
