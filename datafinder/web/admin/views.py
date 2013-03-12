@@ -41,9 +41,7 @@ from datafinder.lib.CUD_request import CUDRequest
 
 logger = logging.getLogger(__name__)
 
-
-
-def listsources(request):
+def approvesource(request):
         # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
         # Test if the user is now a university authenticated user
         if 'DF_USER_SSO_ID' not in request.session:                          
@@ -52,389 +50,65 @@ def listsources(request):
         if  request.session['DF_USER_ROLE'] != "admin" :
             return redirect("/home")
         
-        context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        'message':"",
-        'source_infos':{},
-        'unregistered_sources':[],
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
-        }
-
-        src = settings.get("main:granary.uri_root")
-        host = settings.get("main:granary.host")
-        
-        context['message']=""
-        user_name = 'admin'
-        password = 'test'
-        #host = "192.168.2.230"
-        datastore = HTTPRequest(endpointhost=host)
-        datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password)
-
-        (resp, respdata) = datastore.doHTTP_GET(resource="/silos", expect_type="application/JSON")
-        sources =  json.loads(respdata)
-        
-        source_infos ={}
-        for source in sources:
-            (resp, respdata) = datastore.doHTTP_GET(resource='/' + source + '/states', expect_type="application/JSON")
-            state_info =  json.loads(respdata)
-            source_infos[source] = [source, len(state_info['datasets'])]
-        #print "sourceinfos:"
-        #print source_infos
-        
-        context['source_infos']=source_infos
-
-        print context
+        context = {}
+        if request.GET.has_key('source'):
+               context["source"] = request.GET["source"]  
+     
         try:
-            #s_q= meta.Session.query(SourceInfo.silo).filter(SourceInfo.activate == False)
-            s_q= SourceInfo.objects.filter(activate = False)
-            for source in s_q:
-                context['unregistered_sources'].append(source.silo)
-            #print "Unregistered sources"
-            #print context['unregistered_sources']
-        except Exception:
-            #logger.exception("Failed to mark submission as failed")
-            return render_to_response('list_of_sources.html',context, context_instance=RequestContext(request))
-        #print context
-        return render_to_response('list_of_sources.html',context, context_instance=RequestContext(request))
- 
-def createsource(request):
-        # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
-        # Test if the user is now a university authenticated user
-        if 'DF_USER_SSO_ID' not in request.session:                          
-            return redirect("/login?redirectPath=admin")
-            # Test if the user is Data Finder authorised user
-        if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+                sourceinfo= SourceInfo.objects.get(source=context["source"])                      
+                #user = userslist[0]
+                context["title"] = sourceinfo.title 
+                context["description"] = sourceinfo.description  
+                context["uri"] =  sourceinfo.uri
+                context["notes"] = sourceinfo.notes
+                            
+                #Modify the source entry in the sqllite database in the data finder. Change activate = True. 
+                sourceinfo.activate = True
+                sourceinfo.save()
+        except SourceInfo.DoesNotExist,e:
+                context['message']="Sorry, that source doesn't exist."
+                context['status']="error"
+                return redirect("/admin?message="+context['message']+"&status="+context['status'])              
+        except Exception,e:                                        
+                logger.error("Oops, an error occurred, sorry...")
+                context['message']="Oops, an error occurred, sorry..." 
+                context['status']="error"
+                return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])          
         
-        context = { 
-            'silo_name':'',           
-            'ident':'',
-            'id':"",
-            'path':"",
-            'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-            'q':"",
-            'typ':"",
-            'src':settings.get("main:granary.uri_root"),
-            'host':settings.get("main:granary.host"),
-            'silo':"",
-            'source':"",
-            'kw':{},       
-            'activate':None,
-            'message':None,
-            'header':"create",
-            'kw':{},
-        }
-        return render_to_response('add_metadata_source.html', context, context_instance=RequestContext(request))
-        #return render_to_response('create_new_source.html', context, context_instance=RequestContext(request))
-
-
-def registersource(request):
-        # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
-        # Test if the user is now a university authenticated user
-        if 'DF_USER_SSO_ID' not in request.session:                          
-            return redirect("/login?redirectPath=admin")
-            # Test if the user is Data Finder authorised user
-        if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
-        
-        context = { 
-            'silo_name':'',
-            'ident':'',
-            'id':"",
-            'path':"",
-            'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-            'logout' : "",
-            'q':"",
-            'typ':"",
-            'src':settings.get("main:granary.uri_root"),
-            'host':settings.get("main:granary.host"),
-            'message':None,
-            'sourceinfo':SourceInfo(),
-            #'unregistered_sources':[]
-        }
-        sourceinfo = SourceInfo()
-        #srcurl = ag.root +'/admin'
-        sourceinfo.silo = request.REQUEST.get('silo', "qwerty")
-        sourceinfo.title = request.REQUEST.get('title', "")
-        sourceinfo.description = request.REQUEST.get('description', "")
-        sourceinfo.notes = request.REQUEST.get('notes', "")
-        sourceinfo.administrators = request.REQUEST.get('administrators', "")
-        sourceinfo.managers = request.REQUEST.get('managers', "")
-        sourceinfo.users = request.REQUEST.get('users', "")
-        sourceinfo.disk_allocation = request.REQUEST.get('disk_allocation', 0)
-        context['sourceinfo'] = sourceinfo
-        context['kw'] = {'silo':sourceinfo.silo, 
-                            'title':sourceinfo.title,                       
-                            'description':sourceinfo.description,
-                            'notes':sourceinfo.notes,
-                            'users':sourceinfo.users,
-                            'disk_allocation':sourceinfo.disk_allocation
-                           }
-        try:
-            #s_q= meta.Session.query(SourceInfo).filter(SourceInfo.silo == sourceinfo.silo)
-            s_q= SourceInfo.objects.filter(silo = sourceinfo.silo) 
-            print "s_q" + repr(len(s_q))
-            #print s_q[0].silo + " " + sourceinfo.silo
-            #sinfos = SourceInfo.objects.all()
-            #print([p.silo for p in sinfos])
-            if len(s_q) == 0:
-                sourceinfo.activate =  False
-                #uns_q= SourceInfo.objects.filter(activate = False)
-                #for source in uns_q:
-                #    context['unregistered_sources'].append(source.silo)
-
-            else:
-                context['message'] = "Source with the chosen name already exists. Choose another"
-                print context['message']
-                context['header']="create"
-                context['activate']=None    
-                return render_to_response('create_new_source.html', context, context_instance=RequestContext(request))
-        except Exception, e:
-            print "Exception"
-            context['message'] = str(e)
-            return render_to_response('create_new_source.html', context, context_instance=RequestContext(request))
-            #logger.exception("Failed to mark submission as failed")
-            #return render_to_response('list_of_sources.html', context, context_instance=RequestContext(request))
-        #return False
-        #print context
-        #return render_to_response('list_of_sources.html', context, context_instance=RequestContext(request))
-        #return redirect(url(controller='list_sources', action='index')) 
-        return listsources(request)  
-    
-    
-def approvesource(request,source):
-        # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
-        # Test if the user is now a university authenticated user
-        if 'DF_USER_SSO_ID' not in request.session:                          
-            return redirect("/login?redirectPath=admin")
-            # Test if the user is Data Finder authorised user
-        if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
-        
-        context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
-        'q':"",
-        'src':settings.get("main:granary.uri_root"),
-        'host':settings.get("main:granary.host"),
-        'typ':"",
-        'message':"",
-        'silo':"",
-        'source_infos':{},
-        'unregistered_sources':[],
-        'kw':{},
-        }
-
-        state_info = None       
-        print "source requested: "
-        print source 
-        context['header'] = "create"
-        context['activate']=None
-        context['kw']={}
-        text = "Approval needed for the registered source: '" + source +"'"
+        #srcurl = settings.get("main:granary.uri_root") +'/admin'
        
-        try:
-            #s_q= meta.Session.query(SourceInfo).filter(SourceInfo.silo == c.source).filter(SourceInfo.activate == False)  
-            s_q = SourceInfo.objects.filter(activate = False).filter(silo = source)
-            for src in s_q:
-                context['header'] = "approve"
-                context['activate']=""
-                context['kw'] = {'silo':src.silo, 
-                        'title':src.title,                       
-                        'description':src.description,
-                        'notes':src.notes,
-                        'administrators': src.administrators,
-                        'managers':src.managers,
-                        'users':src.users,
-                        'disk_allocation':src.disk_allocation,
-                        'activate':src.activate
-                       }       
-        except Exception, e:
-            print "Exception"
-            context['message'] = str(e)
-            return createsource(request)  
-    
-        return render_to_response('create_new_source.html', context, context_instance=RequestContext(request))
-
-def activatesource(request):
-        # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
-        # Test if the user is now a university authenticated user
-        if 'DF_USER_SSO_ID' not in request.session:                          
-            return redirect("/login?redirectPath=admin")
-            # Test if the user is Data Finder authorised user
-        if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
-        
-        context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
-        'q':"",
-        'src':settings.get("main:granary.uri_root"),
-        'host':settings.get("main:granary.host"),
-        'typ':"",
-        'message':"",
-        'silo':"",
-        'source_infos':{},
-        'header':"",
-        'activate':"",
-        'unregistered_sources':[],
-        'kw':{},
-        }
-
-        srcurl = settings.get("main:granary.uri_root") +'/admin'
-        siloN = request.REQUEST.get('silo', "")
-        title = request.REQUEST.get('title', "")
-        description = request.REQUEST.get('description', "")
-        notes = request.REQUEST.get('notes', "")
-        administrators = request.REQUEST.get('administrators', "")
-        managers = request.REQUEST.get('managers', "")
-        users = request.REQUEST.get('users', "")
-        disk_allocation = request.REQUEST.get('disk_allocation', 0)
-
-        user_name = 'admin'
-        password = 'test'
-        datastore = HTTPRequest(endpointhost=context['host'])
-        
+        user_name = settings.get("main:granary.uri_root_name") 
+        password = settings.get("main:granary.uri_root_pass") 
+        datastore = HTTPRequest(endpointhost=settings.get("main:granary.host"))       
         datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password)
         fields = \
-            [ ("silo", siloN),
-              ("title", title),
-              ("description", description),
-              ("notes", notes),
-              ("administrators", administrators),
-              ("managers", managers),
-              ("users", users),
-              ("disk_allocation", disk_allocation)
+            [ ("silo", context["source"]),
+              ("title", context["title"]),
+              ("description", context["description"]),
+              ("notes", context["notes"]),
+              ("uri", context["uri"]),
+              ("administrators", settings.get("main:granary.uri_root_name") ),
+              ("managers", settings.get("main:granary.uri_root_name") ),
+              ("users",settings.get("main:granary.uri_root_name") ),
+              #("disk_allocation", "disk_allocation")
             ]
-        print fields
         files =[]
         (reqtype, reqdata) = SparqlQueryTestCase.encode_multipart_formdata(fields, files)
         
         (resp,respdata) = datastore.doHTTP_POST(reqdata, reqtype, resource="/admin", expect_type="application/JSON")
-        print 'respdata', respdata
-        print 'msg', resp.msg
-        print 'reason', resp.reason
-        print 'status',resp.status
-        print resp.read()
-##            print "response data for update metadata"
+
         if  resp.status== 204 or resp.status==201:
-            context['message'] = "Source successfully created."
-            
-            #Modify the source entry in the sqllite database in the data finder. Change activate = True.
-            
-            try:
-                s_q= SourceInfo.objects.filter(silo = siloN) 
-                if len(s_q) == 1:
-                    sourceinfo = s_q[0]
-                    sourceinfo.activate = True
-                    sourceinfo.save()
-                #else:   
-                #   s_q.update({
-                #                   'title':title,
-                #                   'description':description,
-                #                   'notes':notes,
-                #                   'administrators':administrators,
-                #                   'managers':managers,
-                #                   'users':users,
-                #                   'disk_allocation':disk_allocation,
-                #                   'activate':True
-                #                })     
-                #    meta.Session.commit()
-            except Exception, e:
-                print "Exception"
-                context['message'] = str(e)
-                context['header']="approve"
-                context['activate']=""    
-                return render_to_response('create_new_source.html', context, context_instance=RequestContext(request))
-
-            return listsources(request)
+            context['message']="Thanks, "+ context["source"] +" has been successfully approved."
+            context['status']="success"     
+            return redirect("/admin?message="+context['message']+"&status="+context['status'])
         else:
-            context['message'] = "Source could not be successfully activated"
-            context['message']  =  context['message']  + " status: " + repr(resp.status) + " " + resp.reason
-            context['kw']= {   'silo':siloN, 
-                        'title':title,                       
-                        'description':description,
-                        'notes':notes,
-                        'administrators': administrators,
-                        'managers':managers,
-                        'users':users,
-                        'disk_allocation':disk_allocation
-                       }
-            context['header']="approve"
-            context['activate']=None    
-            return render_to_response('create_new_source.html', context, context_instance=RequestContext(request))
-  
-  
-def savesource(request):
-        # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
-        # Test if the user is now a university authenticated user
-        if 'DF_USER_SSO_ID' not in request.session:                          
-            return redirect("/login?redirectPath=admin")
-            # Test if the user is Data Finder authorised user
-        if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+                sourceinfo.activate = False
+                sourceinfo.save()
+                context['message']="Oops, an error occurred, sorry..." 
+                context['status']="error"
+                return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])          
         
-        context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
-        'q':"",
-        'src':settings.get("main:granary.uri_root"),
-        'host':settings.get("main:granary.host"),
-        'typ':"",
-        'message':"",
-        'silo':"",
-        'source_infos':{},
-        'header':"",
-        'activate':"",
-        'unregistered_sources':[],
-        'kw':{},
-        'sourceinfo':SourceInfo(),
-        }
-        sourceinfo=SourceInfo()
-        #srcurl = ag.root +'/admin'
-        
-        try:
-            sourceinfo.silo = request.REQUEST.get('silo', "")
-            sourceinfo.title = request.REQUEST.get('title', "")
-            sourceinfo.description = request.REQUEST.get('description', "")
-            sourceinfo.notes = request.REQUEST.get('notes', "")
-            sourceinfo.administrators = request.REQUEST.get('administrators', "")
-            sourceinfo.managers = request.REQUEST.get('managers', "")
-            sourceinfo.users = request.REQUEST.get('users', "")
-            sourceinfo.disk_allocation = request.REQUEST.get('disk_allocation', 0)
-            sourceinfo.save()
-            context['message'] = "Updates saved ..."
-        except Exception, e:
-            context['message'] = "Save failed !"
-            return createsource(request)  
-        return approvesource(request,sourceinfo.silo)
-
+  
 
     #@rest.restrict('GET', 'POST', 'DELETE')
 def sourceinfo(request, source):
@@ -453,8 +127,6 @@ def sourceinfo(request, source):
         'ident' : "",
         'id':"",
         'path' :"",
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
         'q':"",
         'src':settings.get("main:granary.uri_root"),
         'host':settings.get("main:granary.host"),
@@ -623,17 +295,7 @@ def administration(request):
             return redirect("/home")
         
         context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-        'logout' : "",
-        'source_infos':{},
+        'registered_sources':[],
         'unregistered_sources':[],
         }
 
@@ -642,70 +304,48 @@ def administration(request):
             
         if request.GET.has_key('status'):    
             context["status"]=request.GET['status']
-       # Need to have an 'admin' role within DF to be able to administer the DataFinder
+        # Need to have an 'admin' role within DF to be able to administer the DataFinder
 
-        src = settings.get("main:granary.uri_root")
-        host = settings.get("main:granary.host")
+        #src = settings.get("main:granary.uri_root")
+        #host = settings.get("main:granary.host")
 
-        user_name = 'admin'
-        password = 'test'
+        #user_name = 'admin'
+        #password = 'test'
         #host = "192.168.2.230"
-        datastore = HTTPRequest(endpointhost=host)
-        datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password)
+        #datastore = HTTPRequest(endpointhost=host)
+        #datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password)
 
-        (resp, respdata) = datastore.doHTTP_GET(resource="/silos", expect_type="application/JSON")
-        sources =  json.loads(respdata)
+        #(resp, respdata) = datastore.doHTTP_GET(resource="/silos", expect_type="application/JSON")
+        #sources =  json.loads(respdata)
         
-        source_infos ={}
-        for source in sources:
-            (resp, respdata) = datastore.doHTTP_GET(resource='/' + source + '/states', expect_type="application/JSON")
-            state_info =  json.loads(respdata)
-            source_infos[source] = [source, len(state_info['datasets'])]
-        #print "sourceinfos:"
-        #print source_infos
-        
-        context['source_infos']=source_infos
+        #registered_sources ={}
+        #for source in sources:
+        #    (resp, respdata) = datastore.doHTTP_GET(resource='/' + source + '/states', expect_type="application/JSON")
+        #    state_info =  json.loads(respdata)
+        #    registered_sources[source] = [source, len(state_info['datasets'])]
 
+        
+        #context['source_infos']=source_infos
+
+        #unregistered_sources ={}
         print context
         try:
             #s_q= meta.Session.query(SourceInfo.silo).filter(SourceInfo.activate == False)
-            s_q= SourceInfo.objects.filter(activate = False)
-            for source in s_q:
-                context['unregistered_sources'].append(source.silo)
+            sources= SourceInfo.objects.all()
+            for src in sources:
+                if src.activate == True:
+                    context['registered_sources'].append(src)                                       
+                else:                
+                    context['unregistered_sources'].append(src)
             #print "Unregistered sources"
             #print context['unregistered_sources']
         except Exception:
+            raise
             #logger.exception("Failed to mark submission as failed")
             return render_to_response('administration.html',context, context_instance=RequestContext(request))
 
         #print context
         return render_to_response('administration.html',context, context_instance=RequestContext(request))
-
-
-def manageusers(request):
-        # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
-        # Test if the user is now a university authenticated user
-        if 'DF_USER_SSO_ID' not in request.session:                          
-            return redirect("/login?redirectPath=admin")
-            # Test if the user is Data Finder authorised user
-        if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
-        
-        context = { 
-            #'DF_VERSION':settings.DF_VERSION,
-            #'STATIC_URL': settings.STATIC_URL,3
-            'silo_name':"",
-            'ident' : "",
-            'id':"",
-            'path' :"",
-            'user_logged_in_name' : request.session['DF_USER_FULL_NAME'],   
-            'logout' : "",
-            'q':"",
-            'typ':"",
-            'login':"",
-           }
-        return render_to_response('manage_users.html',context, context_instance=RequestContext(request))
-
 
 def adduser(request):
         # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
@@ -716,18 +356,8 @@ def adduser(request):
         if  request.session['DF_USER_ROLE'] != "admin" :
             return redirect("/home")
         
-        context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,3
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-         }
-        
-            
+        context = {}
+                   
         if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
         if request.GET.has_key('status'):    
@@ -809,20 +439,12 @@ def deluser(request):
         if  request.session['DF_USER_ROLE'] != "admin" :
             return redirect("/home")
         
-        context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,3
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",    
-        'q':"",
-        'typ':"",
-         }
-        
+        context = {}        
             
         if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
+        if request.GET.has_key('status'):    
+            context["status"]=request.GET['status']
         
         http_method = request.environ['REQUEST_METHOD'] 
         
@@ -878,16 +500,7 @@ def edituser(request):
     if  request.session['DF_USER_ROLE'] != "admin" :
         return redirect("/home")
 
-    context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,3
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-       }
+    context = {}
     
     if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
@@ -964,21 +577,14 @@ def addsource(request):
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
             return redirect("/home")
-        context = { 
-            #'DF_VERSION':settings.DF_VERSION,
-            #'STATIC_URL': settings.STATIC_URL,3
-            'silo_name':"",
-            'ident' : "",
-            'id':"",
-            'path' :"",           
-            'q':"",
-            'typ':"",
-           }
+        
+        context = {}
         
         if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
         if request.GET.has_key('status'):    
             context["status"]=request.GET['status']    
+            
         http_method = request.environ['REQUEST_METHOD'] 
         if http_method == "GET":
             return render_to_response('add_metadata_source.html',context, context_instance=RequestContext(request))
@@ -997,7 +603,8 @@ def addsource(request):
                     return redirect("/admin?message="+context['message']+"&status="+context['status'])              
                except SourceInfo.DoesNotExist,e:
                     sourceinfo = SourceInfo()
-                    sourceinfo.title = context["source"]
+                    sourceinfo.source = context["source"]
+                    sourceinfo.title = context["title"]
                     sourceinfo.description = context["description"]
                     sourceinfo.uri = context["uri"]                   
                     sourceinfo.notes = context["notes"] 
@@ -1013,6 +620,68 @@ def addsource(request):
                   
         return render_to_response('add_metadata_source.html',context, context_instance=RequestContext(request))
 
+
+def delsource(request):
+ # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
+        # Test if the user is now a university authenticated user
+        if 'DF_USER_SSO_ID' not in request.session:                          
+            return redirect("/login?redirectPath=admin")
+            # Test if the user is Data Finder authorised user
+        if  request.session['DF_USER_ROLE'] != "admin" :
+            return redirect("/home")
+        
+        context = {}        
+            
+        if request.GET.has_key('message'):    
+            context["message"]=request.GET['message']
+        if request.GET.has_key('status'):    
+            context["status"]=request.GET['status']
+            
+        http_method = request.environ['REQUEST_METHOD'] 
+        
+        if http_method == "GET": 
+            if request.GET.has_key('source'):
+                   context["source"] = request.GET["source"]  
+                   try:
+                        src= SourceInfo.objects.get(source=context["source"])                      
+                        context["source"] = src.source 
+                        context["title"] = src.title
+                        context["description"] = src.description
+                        context["uri"] = src.uri
+                        context["notes"] = src.notes
+                        return render_to_response('delete_source.html',context, context_instance=RequestContext(request)) 
+                   except SourceInfo.DoesNotExist,e:
+                        context['message']="Sorry, that source doesn't exist."
+                        context['status']="error"
+                        return redirect("/admin?message="+context['message']+"&status="+context['status'])              
+                   except Exception,e:                                         
+                        logger.error("Oops, an error occurred, sorry...")
+                        context['message']="Oops, an error occurred, sorry..." 
+                        context['status']="error"
+                        return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])                
+        elif http_method == "POST":               
+               if request.POST.has_key('source'):
+                       context["source"] = request.POST.get("source")
+                       try:
+                           src= SourceInfo.objects.get(source=context["source"])           
+                           src.delete()
+                           context['message']="Thanks, "+ context["source"] +" has been successfully deleted."
+                           context['status']="success"
+                           return redirect("/admin?message="+"&message="+context['message']+"&status="+context['status'])        
+                       except SourceInfo.DoesNotExist,e:
+                           context['message']="Sorry, that user doesn't exist."
+                           context['status']="error"
+                           return redirect("/admin?message="+context['message']+"&status="+context['status'])              
+                       except Exception,e:                                         
+                           logger.error("Oops, an error occurred, sorry...")
+                           context['message']="Oops, an error occurred, sorry..." 
+                           context['status']="error"
+                           return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])   
+                                        
+
+        return render_to_response('delete_user.html',context, context_instance=RequestContext(request))
+
+
 def editsource(request):
         # A user needs to be authenticated and authorized  to be able to administer the DataFinder                          
         # Test if the user is now a university authenticated user
@@ -1021,18 +690,9 @@ def editsource(request):
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
             return redirect("/home")
-        context = { 
-            #'DF_VERSION':settings.DF_VERSION,
-            #'STATIC_URL': settings.STATIC_URL,3
-            'silo_name':"",
-            'ident' : "",
-            'id':"",
-            'path' :"",        
-            'q':"",
-            'typ':"",
-           }
         
-        
+        context = {}
+                
         if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
         if request.GET.has_key('status'):    
@@ -1051,7 +711,6 @@ def editsource(request):
                     context["notes"] = sourceinfo.notes
                     return render_to_response('edit_metadata_source.html',context, context_instance=RequestContext(request)) 
                except SourceInfo.DoesNotExist,e:
-                   raise
                    context['message']="Sorry, that source doesn't exist."
                    context['status']="error"
                    return redirect("/admin?message="+context['message']+"&status="+context['status'])              
