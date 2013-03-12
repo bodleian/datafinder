@@ -641,38 +641,62 @@ def delsource(request):
         
         if http_method == "GET": 
             if request.GET.has_key('source'):
-                   context["source"] = request.GET["source"]  
-                   try:
-                        src= SourceInfo.objects.get(source=context["source"])                      
-                        context["source"] = src.source 
-                        context["title"] = src.title
-                        context["description"] = src.description
-                        context["uri"] = src.uri
-                        context["notes"] = src.notes
-                        return render_to_response('delete_source.html',context, context_instance=RequestContext(request)) 
-                   except SourceInfo.DoesNotExist,e:
-                        context['message']="Sorry, that source doesn't exist."
-                        context['status']="error"
-                        return redirect("/admin?message="+context['message']+"&status="+context['status'])              
-                   except Exception,e:                                         
-                        logger.error("Oops, an error occurred, sorry...")
-                        context['message']="Oops, an error occurred, sorry..." 
-                        context['status']="error"
-                        return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])                
+                    context["source"] = request.GET["source"]     
+            try:
+                src= SourceInfo.objects.get(source=context["source"])                      
+                context["source"] = src.source 
+                context["title"] = src.title
+                context["description"] = src.description
+                context["uri"] = src.uri
+                context["notes"] = src.notes
+                return render_to_response('delete_metadata_source.html',context, context_instance=RequestContext(request)) 
+            except SourceInfo.DoesNotExist,e:
+                context['message']="Sorry, that source doesn't exist."
+                context['status']="error"
+                return redirect("/admin?message="+context['message']+"&status="+context['status'])              
+            except Exception,e:                                         
+                logger.error("Oops, an error occurred, sorry...")
+                context['message']="Oops, an error occurred, sorry..." 
+                context['status']="error"
+                return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])                
         elif http_method == "POST":               
                if request.POST.has_key('source'):
                        context["source"] = request.POST.get("source")
                        try:
-                           src= SourceInfo.objects.get(source=context["source"])           
+                           src= SourceInfo.objects.get(source=context["source"])
+                           context["activate"] = src.activate  
                            src.delete()
-                           context['message']="Thanks, "+ context["source"] +" has been successfully deleted."
+                           if context["activate"]:
+                                user_name = settings.get("main:granary.uri_root_name") 
+                                password = settings.get("main:granary.uri_root_pass") 
+                                datastore = HTTPRequest(endpointhost=settings.get("main:granary.host"))       
+                                datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password)
+                                fields = \
+                                    [ ("silo", context["source"]),
+                                    ]
+                                files =[]
+                                (reqtype, reqdata) = SparqlQueryTestCase.encode_multipart_formdata(fields, files)
+                                
+                                (resp,respdata) = datastore.doHTTP_DELETE(resource="/admin")
+            
+                                if  resp.status== 200:
+                                    context['message']="Thanks, the registered source: "+ context["source"] +" has been successfully deleted."
+                                    context['status']="success"     
+                                    return redirect("/admin?message="+context['message']+"&status="+context['status'])
+                                else:
+                                    context['message']="Oops, an error occurred, sorry..." + str(resp.status) 
+                                    context['status']="error"
+                                    return redirect("/admin?"+"message="+context['message']+"&status="+context['status'])          
+                                                             
+                           context['message']="Thanks, the unregistered source: "+ context["source"] +" has been successfully deleted."
                            context['status']="success"
                            return redirect("/admin?message="+"&message="+context['message']+"&status="+context['status'])        
                        except SourceInfo.DoesNotExist,e:
                            context['message']="Sorry, that user doesn't exist."
                            context['status']="error"
                            return redirect("/admin?message="+context['message']+"&status="+context['status'])              
-                       except Exception,e:                                         
+                       except Exception,e:   
+                           raise                                      
                            logger.error("Oops, an error occurred, sorry...")
                            context['message']="Oops, an error occurred, sorry..." 
                            context['status']="error"

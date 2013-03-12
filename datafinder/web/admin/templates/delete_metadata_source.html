@@ -1,0 +1,59 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title>DataFinder:Administration-Delete metadata source</title>
+</%def>
+
+
+<div class="row"><div class="four columns centered"><h4>Delete metadata source</h4></div></div>
+
+% if message:
+	<div class="usermessage ${status}">${message}</div>
+% endif
+
+<div class="row">Please supply a uri for the source and give it a sensible name:</div>
+
+<div class="row">
+	<form method="POST"  action="/admin/source/del/" >
+	 <div class="four columns centered">
+	        <div class="row">
+	           <div class="two columns "> name </div>
+	           <div class="ten columns "> 
+	               <input type="text" id="source" name ="source" value="${source}" readonly="readonly"/>
+	           </div>	           	        
+	        </div>
+	        <div class="row">
+	           <div class="two columns "> title </div>
+	           <div class="ten columns "> 
+	               <input type="text" id="title" name ="title"  value="${title}"/>
+	           </div>	           	        
+	        </div>
+	        <div class="row">
+	           <div class="two columns "> Description </div>
+	           <div class="ten columns "> 
+	               <input type="text" id="description" name ="description" value="${description}"/>
+	           </div>	           	        
+	        </div>
+            <div class="row">
+	           <div class="two columns "> uri </div>
+	           <div class="ten columns "> 
+	               <input type="text" id="uri" name ="uri" value="${uri}"/>
+	           </div>	           	        
+	        </div>
+	        <div class="row">
+	           <div class="two columns "> notes </div>
+	           <div class="ten columns "> 
+	               <input type="text" id="notes" name ="notes" value="${notes}"/>
+	           </div>	           	        
+	        </div>
+	    	<div  class="row">
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns "> </div>
+	    	   <div class="three columns ">
+	    	   		<input type="submit" id="delsource" name ="delsource" value="delsource"/>
+	    	   </div>
+	    	</div>
+	    </div>	    
+   </form>
+</div>
