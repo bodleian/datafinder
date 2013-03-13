@@ -161,9 +161,14 @@ textarea
     
 }
  
- form   input[type="text"] {
+ 
+ 
+ 
+ 
+ form   input[type="text"],
+ form textarea {
     
-    background: #f9f3f3;
+    background: #fff;
     color: #333;
     border-color: #869eb8;
 
@@ -177,12 +182,94 @@ textarea
      
  }
  
-  div.label-field-pair input[type="text"]{
+ 
+ 
+ 
+ #mainContent input[type="submit"] {
+     
+     font-size: 1.2em;
+     margin: 0px 0 1em 0px;
+     padding: 0.3em 0.6em;
+     
+ }
+ 
+  div.radio-set  {
+     
+     border: 1px solid #ccc;
+     clear: both;
+     padding: 10px;
+ }
+ 
+ div.radio label {
+     
+ }
+ 
+  div.radio input {
+          float: left;
+          margin: 0px 10px;
+
+
+     }
+ 
+ #mainContent #mainContent form  legend{
+    
+    color: #555;
+    font-size: 1.4em;
+        
+}
+
+#mainContent form  fieldset{
+    
+    
+    margin: 3em 0px;    
+    
+}
+
+
+#mainContent form  label{
+    
+  color: #333;  
+  font-weight: 400;
+  font-size: 1.2em; 
+    
+}
+
+
+#mainContent textarea {
+    
+    min-height: 10em;
+    
+}
+#mainContent form  input[type="text"],
+#mainContent textarea{
+    
+    background-color: #fff;
+    border: 1px solid #bbb;
+    margin: 5px 0px 1em 0px;
+    
+
+    
+}
+
+#mainContent form input:focus[type="text"],
+#mainContent textarea:focus{
+    
+   background: #f9f3f3;
+
+    
+
+    
+}
+
+
+ 
+ 
+div.homepage.search  div.label-field-pair input[type="text"]{
      
     margin-left: 6.5em;
  }
  
-   div.label-field-pair label {
+div.homepage.search div.label-field-pair label {
        
 
 width: 6em;
@@ -190,7 +277,7 @@ float: left;
 text-align: right;
 margin: 0 1em 0 0;
 padding: 5px 0px 0px 0px;
-display: block
+display: block;
        
    }
   
@@ -463,7 +550,31 @@ div.footer {
 
 
 
-/* general style for lclearing after floats*/
+
+
+
+
+/* contribute form */
+
+
+#embargo_end_date {
+    
+    width: 10em;
+    
+    
+}
+
+#embargo_end_date_label {
+    
+    float: left;
+    margin-right: 1em;
+
+    
+    
+}
+
+
+/* general style for clearing after floats*/
 .clear-fix {
     
     clear: both;
