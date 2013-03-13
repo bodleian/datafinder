@@ -671,13 +671,11 @@ def delsource(request):
                                 password = settings.get("main:granary.uri_root_pass") 
                                 datastore = HTTPRequest(endpointhost=settings.get("main:granary.host"))       
                                 datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password)
-                                fields = \
-                                    [ ("silo", context["source"]),
-                                    ]
+                                fields = []
                                 files =[]
                                 (reqtype, reqdata) = SparqlQueryTestCase.encode_multipart_formdata(fields, files)
                                 
-                                (resp,respdata) = datastore.doHTTP_DELETE(resource="/admin")
+                                (resp,respdata) = datastore.doHTTP_DELETE(resource= "/" + context["source"] + "/admin")
             
                                 if  resp.status== 200:
                                     context['message']="Thanks, the registered source: "+ context["source"] +" has been successfully deleted."
