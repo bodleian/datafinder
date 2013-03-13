@@ -11,41 +11,38 @@ from datafinder.config import settings
 
 def contribute(request):
    try:
-    # A user need to be webauth-ed  to be able to contribute a record to the DataFinder
-    if  request.session.has_key('DF_USER_SSO_ID'):    
-        username = request.session['DF_USER_FULL_NAME']       
-        context = { 
-            #'DF_VERSION':settings.DF_VERSION,
-            #'STATIC_URL': settings.STATIC_URL,
-            'silo_name':"",
-            'ident' : "",
-            'id':"",
-            'path' :"",
-            'user_logged_in_name':username,
-            'q':"",
-            'typ':"",
-            'message':None,
-            'silo':"",
-            'source':" ",
-            'kw':{},       
-            'activate' : None,
-            'message':None,
-            'header':"create",
-            'kw':{},      
-            }
-        return render_to_response('contribute.html', context, context_instance=RequestContext(request))   
-    else:     
-        return redirect("/login?redirectPath=contribute")
+        # A user needs to be authenticated  to be able to contribute a record  the DataFinder                          
+        # Test if the user is now a university authenticated user
+        if 'DF_USER_SSO_ID' not in request.session:                          
+            return redirect("/login?redirectPath=contribute")    
+        context = {}
+        
+        if request.GET.has_key('message'):    
+            context["message"]=request.GET['message']
+        if request.GET.has_key('status'):    
+            context["status"]=request.GET['status']
+            
+        http_method = request.environ['REQUEST_METHOD'] 
+        
+        if http_method == "GET":         
+            return render_to_response('contribute.html', context, context_instance=RequestContext(request))  
+        elif http_method == "POST": 
+            if request.POST.has_key('record_title'):
+                context["record_title"]=request.GET['record_title']
+                context["alt_title"]=request.GET['alt_title']
+                context["deposit_data_file_upload"]=request.GET['deposit_data_file_upload']
+                context["deposit_data_embargo_options"]=request.GET['deposit_data_embargo_options']
+                context["deposit_data_embrago_release_date"]=request.GET['deposit_data_embrago_release_date']
+                context["deposit_data_embargo_options_type"]=request.GET['deposit_data_embargo_options_type']
+                context["deposit_data_embargo_reason"]=request.GET['deposit_data_embargo_reason']
+                #context["alt_title"]=request.GET['alt_title']
+                #context["alt_title"]=request.GET['alt_title']
+                #context["alt_title"]=request.GET['alt_title']
+                #context["alt_title"]=request.GET['alt_title']
+                #context["alt_title"]=request.GET['alt_title']
+                #context["alt_title"]=request.GET['alt_title']
+                #context["alt_title"]=request.GET['alt_title']
+                #context["alt_title"]=request.GET['alt_title']
+                #context["alt_title"]=request.GET['alt_title']                
    except Exception, e:
         raise
-        #return render_to_response('contribute.html', context, context_instance=RequestContext(request))
-    #return render_to_response('home.html',context, context_instance=RequestContext(request))
-#    'src' : ag.root,
-#        'host' : ag.host,
-#        'silo':"",
-#        'source' : "",
-#        'kw':{},       
-#        'activate' : None,
-#        'message':None,
-#        'header':"create",
-#        'kw':{}
