@@ -5,41 +5,45 @@
 </%def>
 
 
-<div class="row"><div class="three columns centered"><h4>Add metadata source</h4></div></div>
+<div class="row"><div class="four columns centered"><h4>Add metadata source</h4></div></div>
+
+% if message:
+	<div class="usermessage ${status}">${message}</div>
+% endif
 
 <div class="row">Please supply a uri for the source and give it a sensible name:</div>
 
 <div class="row">
-	<form method="GET"  action="/admin/users/add" >
+	<form method="POST"  action="/admin/source/add/" >
 	    <div class="four columns centered">
 	        <div class="row">
 	           <div class="two columns "> name </div>
 	           <div class="ten columns "> 
-	               <input type="text" id="username" name ="username"/>
+	               <input type="text" id="source" name="source" />
 	           </div>	           	        
 	        </div>
 	        <div class="row">
 	           <div class="two columns "> title </div>
 	           <div class="ten columns "> 
-	               <input type="text" id="title" name ="title"/>
+	               <input type="text" id="title" name="title"/>
 	           </div>	           	        
 	        </div>
 	        <div class="row">
 	           <div class="two columns "> Description </div>
 	           <div class="ten columns "> 
-	               <input type="text" id="description" name ="description"/>
+	               <input type="text" id="description" name="description"/>
 	           </div>	           	        
 	        </div>
             <div class="row">
 	           <div class="two columns "> uri </div>
 	           <div class="ten columns "> 
-	               <input type="text" id="uri" name ="uri"/>
+	               <input type="text" id="uri" name="uri"/>
 	           </div>	           	        
 	        </div>
 	        <div class="row">
 	           <div class="two columns "> notes </div>
 	           <div class="ten columns "> 
-	               <input type="text" id="notes" name ="notes"/>
+	               <input type="text" id="notes" name="notes"/>
 	           </div>	           	        
 	        </div>
 	    	<div  class="row">

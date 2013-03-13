@@ -4,9 +4,6 @@
   <title>DataFinder:Administration</title>
 </%def>
 
-<%
-n = len(source_infos)
-%>
 
 <div class="row"><div class="three columns centered"><h4>Administration</h4></div></div>
 
@@ -91,10 +88,7 @@ n = len(source_infos)
 
 
 <div class="row">
-	<h5>Metadata sources</h5>
-	<form method="GET"  action="/admin/source/add/" >
-     	<input type="submit" id="addsource" name ="addsource" value="addsource"/>
-	</form>
+	<h5>Metadata sources - Registered</h5>
 </div>
 
 <div class="row">
@@ -102,49 +96,63 @@ n = len(source_infos)
 		<thead>
 			<tr>
 			    <th>name</th>
-			    <th>url</th>
+			    <th>uri</th>
 			    <th>edit</th>
 			    <th>delete</th>
 			</tr>
-			% if source_infos and n > 0:
-				 % for source in source_infos:
+	     </thead>
+	     <tbody>
+			% if registered_sources and len(registered_sources) > 0:
+				 % for registered_source in registered_sources:
 				    <tr>
-					    <td><a href="/admin/${source}">${source_infos[source][0]}</a></td>
-					    <td>${source_infos[source][1]}</td>
-				        <td><a href="/admin/source/edit/">edit</a></td>
-				        <td><a href="">delete</a></td>
+					    <td><a href="/admin/${registered_source.source}">${registered_source.source}</a></td>
+					    <td>${registered_source.uri}</td>
+				        <td><a href="/admin/source/edit?source=${registered_source.source}">edit</a></td>
+				        <td><a href="/admin/source/del?source=${registered_source.source}">delete</a></td>
 			        </tr>
 				    </tr>
 				  % endfor
 			% endif
-			
-			<tr>
-			    <td>source 1</td>
-			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="/admin/source/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-            <tr>
-			    <td>source 2</td>
-			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="/admin/source/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-			<tr>
-			    <td>source 3</td>
-			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="/admin/source/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-			<tr>
-			    <td>source 4</td>
-			    <td>http://dx.doi.org/10.1234/Bodleion.5678c1</td>
-			    <td><a href="/admin/source/edit/">edit</a></td>
-			    <td><a href="">delete</a></td>
-			</tr>
-		</thead>
+		 </tbody>
 	</table>
 </div>
+
+<div class="row">
+	<h5>Metadata sources - Unregistered</h5>
+	<form method="GET"  action="/admin/source/add/" >
+    	<input type="submit" id="addsource" name ="addsource" value="addsource"/>
+	</form>	
+</div>
+
+<div class="row">
+  		<p>Number of sources awaiting admin approval: ${len(unregistered_sources)}</p>
+		<table>
+			<thead>
+				<tr>
+				    <th>name</th>
+				    <th>uri</th>
+				    <th>edit</th>
+				    <th>delete</th>
+				    <th>approve</th>
+				</tr>
+		     </thead>
+		     <tbody>
+		    % if unregistered_sources and len(unregistered_sources) > 0:
+				 % for unregistered_source in unregistered_sources:
+				    <tr>
+					    <td><a href="/admin/${unregistered_source.source}">${unregistered_source.source}</a></td>
+					    <td>${unregistered_source.uri}</td>
+				        <td><a href="/admin/source/edit?source=${unregistered_source.source}">edit</a></td>
+				        <td><a href="/admin/source/del?source=${unregistered_source.source}&registered=False">delete</a></td>
+				        <td><a href="/admin/source/approve?source=${unregistered_source.source}">approve</a></td>
+			        </tr>
+				    </tr>
+				  % endfor
+			% endif
+			 </tbody>
+		</table>	
+  </div>
+
 
 <div class="row">
 	<h5>Permissions</h5>

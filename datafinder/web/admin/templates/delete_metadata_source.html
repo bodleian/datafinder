@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 <%inherit file="/newbase.html" />
 <%def name="head_tags()">
-  <title>DataFinder:Administration-Edit metadata source</title>
+  <title>DataFinder:Administration-Delete metadata source</title>
 </%def>
 
 
-<div class="row"><div class="four columns centered"><h4>Edit metadata source</h4></div></div>
-
+<div class="row"><div class="four columns centered"><h4>Delete metadata source</h4></div></div>
 
 % if message:
 	<div class="usermessage ${status}">${message}</div>
@@ -15,7 +14,7 @@
 <div class="row">Please supply a uri for the source and give it a sensible name:</div>
 
 <div class="row">
-	<form method="POST"  action="/admin/source/edit/" >
+	<form method="POST"  action="/admin/source/del/" >
 	 <div class="four columns centered">
 	        <div class="row">
 	           <div class="two columns "> name </div>
@@ -52,10 +51,9 @@
 	    	   <div class="three columns "> </div>
 	    	   <div class="three columns "> </div>
 	    	   <div class="three columns ">
-	    	   		<input type="submit" id="editsource" name ="editsource" value="editsource"/>
+	    	   		<input type="submit" id="delsource" name ="delsource" value="delsource"/>
 	    	   </div>
 	    	</div>
 	    </div>	    
    </form>
 </div>
-
