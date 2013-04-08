@@ -8,7 +8,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> 
 <html lang="en"> 
 <!--<![endif]-->
-<head>
+<head> 
 
 <meta charset="utf-8" /> 
 
@@ -42,14 +42,30 @@
   
   <!-- Initialize JS Plugins -->
   <script src="/static/foundation/javascripts/app.js"></script>
-
   
-    <script>
+   <style>
+	.ui-autocomplete {
+	max-height: 100px;
+	overflow-y: auto;
+	/* prevent horizontal scrollbar */
+	overflow-x: hidden;
+	}
+	/* IE 6 doesn't support max-height
+	* we use height instead, but this forces the menu to always be this tall
+	*/
+	* html .ui-autocomplete {
+	height: 100px;
+	}
+  </style>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.2/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/ui/1.8.2/jquery-ui.js"></script>
+   
+  <script>
      <!-- $(window).load(function(){
  $("#featured").orbit();
     }); -->
     </script> 
-  <script type="text/javascript" src="/static/jquery.js"></script>
+ <!-- <script type="text/javascript" src="/static/jquery.js"></script> -->
 
   ${self.head_tags()}
   
@@ -63,7 +79,61 @@
 	    $('#form1').attr('action', actionURL);  
 	    $("#form1")[0].submit();    
 	});
+
+	var availableTags = [
+	"ActionScript",
+	"AppleScript",
+	"Asp",
+	"BASIC",
+	"C",
+	"C++",
+	"Clojure",
+	"COBOL",
+	"ColdFusion",
+	"Erlang",
+	"Fortran",
+	"Groovy",
+	"Haskell",
+	"Java",
+	"JavaScript",
+	"Lisp",
+	"Perl",
+	"PHP",
+	"Python",
+	"Ruby",
+	"Scala",
+	"Scheme"
+	];
+	$( "#pproject_desc" ).autocomplete({
+	source: availableTags
+	});
+
+   $("#project_desc").autocomplete({
+     //if ($(this).val().length >= 2 ) 
+		  //{
+			source: function( request, response ) 
+			{	var list;	 
+			  	 $.ajax({
+			      url: "/contribute/projects/",
+			      type: "POST",
+			      data: "{'Project_ID':'1'}",
+			      contentType: "application/json",
+                  dataType: "json",
+                  //async: false,
+			      success: function(data)
+				      {
+				         response( data);
+				      },
+			      error:function()
+				      {
+				          alert("failure");
+				      }   
+			    });
+			    //responsereturn list;
+		    } 
 	
+	 }); 
+ 
   $('#depositDataYes').change(function() 
     {
 	    if($(this).val()=='yes') {   

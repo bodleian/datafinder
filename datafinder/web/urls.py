@@ -6,7 +6,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = patterns('',       
   url(r'^', include('datafinder.web.core.urls', 'core')),
-  url(r'^contribute/$', include('datafinder.web.contribute.urls', 'contribute')),
+  url(r'^contribute/', include('datafinder.web.contribute.urls', 'contribute')),
   url(r'^search/', include('datafinder.web.search.urls', 'search')),
   url(r'^admin/', include('datafinder.web.admin.urls', 'admin')),
   url(r'^log', include('datafinder.web.webauth.urls', 'webauth')),

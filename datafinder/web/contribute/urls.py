@@ -3,7 +3,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 import views
 urlpatterns = patterns('',
-    url(r'^',  views.contribute),
+    url(r'^$',  views.contribute),
+    url(r'^projects/', views.projects),
   #  url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
   #     'document_root': 'static'}),
                          )
