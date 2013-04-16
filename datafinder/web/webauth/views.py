@@ -5,7 +5,7 @@ from django.conf import settings
 from django.template import RequestContext
 import logging,os, sys
 from datafinder.web.core.models import DFSessions
-
+from datafinder.lib.CUD_request import CUDRequest
 sys.path.append("../..")
 print str(sys.path)
 from datafinder.lib.DF_Auth_Session import DFAuthSession
