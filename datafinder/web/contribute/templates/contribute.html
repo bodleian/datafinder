@@ -76,7 +76,7 @@
             <label for="project_website">If you have a website for this research project, please enter the URL:</label>
             <input type="text" name="project_website" id="project_website"/>
         </div>
-        <span id="exampleXtra"> </span>
+        <!-- <span id="exampleXtra"> </span> -->
         <div class="label-field-pair ui-widget" ><label for="subject_areas">Subject Area(s)</label>
             <input type="text" name="subject_areas" id="subject_areas"/>
         </div>
@@ -86,7 +86,8 @@
         	<input type="text" name="record_keywords" id="record_keywords"/>
         </div>
         
-        <div class="label-field-pair" ><label for="main_language">Main Language</label>
+        <div class="label-field-pair" >
+            <label for="main_language">Main Language</label>
         	<input type="text" name="main_language" id="main_language"/>
         </div>               
     </fieldset>
@@ -95,14 +96,22 @@
     <fieldset class="creators-contributors" >
 		<legend>Data creators &amp; contributors</legend>
 	    <p class="instruction">Please name the authors of the data being deposited</p>
+	    <div class="label-field-pair" >
+		    <label for="author_lastname_1">Last Name</label>           
+		    <input type="text" name="author_lastname_1" id="author_lastname_1"/>            
+	    </div>
 		<div class="label-field-pair" >
     	    <label for="author_firstname_1">First Name</label>
 	        <input type="text" name="author_firstname_1" id="author_firstname_1"/>
 	    </div>
 	    <div class="label-field-pair" >
-		    <label for="author_lastname_1">Last Name</label>           
-		    <input type="text" name="author_lastname_1" id="author_lastname_1"/>            
+		    <label for="author_middlename_1">Middle Name</label>           
+		    <input type="text" name="author_middlename_1" id="author_middlename_1"/>            
 	    </div>
+	    <div class="label-field-pair" >
+	        <label for="author_email_1">Email</label>
+	        <input type="text" name="author_email_1" id="author_email_1"/>
+		</div>	
 		<div class="label-field-pair" >
 	        <label for="author_role_1">Role</label>
 	        <input type="text" name="author_role_1" id="author_role_1"/>

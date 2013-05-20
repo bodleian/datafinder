@@ -5,6 +5,8 @@ import views
 urlpatterns = patterns('',
     url(r'^$',  views.contribute),
     url(r'^projects/', views.projects),
+    url(r'^languages/', views.languages),
+    url(r'^people/', views.peopleFromCUD),
   #  url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
   #     'document_root': 'static'}),
                          )

@@ -25,7 +25,22 @@
 	    $('#form1').attr('action', actionURL);  
 	    $("#form1")[0].submit();    
 	});
-
+	
+  $('#project_desc').onchange( function()
+	{
+	  $.ajax({
+	      url: "/contribute/projects/",
+	      type: "POST",
+	      data: $(this).val(),
+	      success: function(data){
+	          alert(data);
+	      },
+	      error:function(){
+	          alert("failure");
+	      }   
+	    }); 
+	 });
+ 
   $('#depositDataYes').change(function() 
     {
 	    if($(this).val()=='yes') {   

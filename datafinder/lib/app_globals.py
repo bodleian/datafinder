@@ -26,7 +26,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 from pylons import config
 
-##from redis import Redis
+from redis import Redis
 
 ##from datafinder.lib.utils import authz
 from datafinder.lib.data_sync import sync_members
@@ -64,8 +64,8 @@ class Globals(object):
         if config.has_key("granary.host"):
             self.host = config['granary.host']
             
-        if config.has_key("granary.store"):
-            self.granary = Granary(config['granary.store'])
+        #if config.has_key("granary.store"):
+        #    self.granary = Granary(config['granary.store'])
             
         if config.has_key("redis.host"):
             self.redishost = config['redis.host']
