@@ -31,6 +31,20 @@ def search(request):
     return render_to_response('index.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
     
+def resultsmockup(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':"",
+        'q':"",
+        'typ':"",
+        }
+
+    return render_to_response('searchresults-mockup.html',context, context_instance=RequestContext(request))
     
 
 def searchtips(request):

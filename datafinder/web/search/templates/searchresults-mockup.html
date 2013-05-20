@@ -1,0 +1,223 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title> DataFinder </title>
+</%def>
+
+
+
+
+
+
+<div id="results"  class="results-block" >
+
+
+
+<div class="results-header" >
+
+<div class="panel  pagination">
+     
+    <span class="paging-info" >page 3 of 17 </span>
+     <ul class="pagelinks" >
+     <li><a href="#">previous</a></li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><span class="you-are-here">3</span></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#">6</a></li>
+    <li><a href="#">7</a></li>
+     <li><a href="#">next</a></li>
+     </ul>
+ 
+ 
+items per page
+ 
+      <ul class="items-per-page" >
+
+    <li><a href="#" class="select">25</a></li>
+    <li><a href="#">50</a></li>
+    <li><a href="#">100</a></li>
+    <li><a href="#">200</a></li>
+
+     </ul>  
+     
+ </div>
+
+
+
+
+ <div class="panel  sort-by"> 
+
+<span id="searchordering">Sort by: 
+	
+
+<a class="active" href="/search/detailed?q=data&type=all&truncate=450&start=0&sort=score+desc&rows=25">Relevance</a> | 
+<a href="/search/detailed?q=data&type=all&truncate=450&sort=publicationDate+desc&rows=25&start=0" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/> |
+<a href="/search/detailed?q=data&type=all&truncate=450&sort=silo+desc&rows=25&start=0" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/>
+
+</span>
+</div>
+
+
+
+
+<div class="panel link_to_this_search" >Link to these  results | 
+<a class="results-link webpage" href="/search/detailed?q=data&type=all&truncate=450&format=html&sort=score desc&rows=25&start=0">
+  This page</a>
+<a class="results-link csv" href="/search/detailed?q=data&type=all&truncate=450&format=csv&sort=score desc&rows=25&start=0">CSV</a>
+<a class="results-link json" href="/search/detailed?q=data&type=all&truncate=450&format=json&sort=score desc&rows=25&start=0">JSON</a>
+</div>
+
+
+</div>
+
+
+
+<div class="search-result">
+<h2 class="record-title"><a href="#">Record title</a></h2>
+
+<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+<div class="record-short-desc"> short description of the record</div>
+
+</div>
+
+<div class="search-result">
+<h2 class="record-title"><a href="#">Record title</a></h2>
+
+<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+<div class="record-short-desc"> short description of the record</div>
+
+</div>
+
+<div class="search-result">
+<h2 class="record-title"><a href="#">Record title</a></h2>
+
+<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+<div class="record-short-desc"> short description of the record</div>
+
+</div>
+
+<div class="search-result">
+<h2 class="record-title"><a href="#">Record title</a></h2>
+
+<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+<div class="record-short-desc"> short description of the record</div>
+
+</div>
+
+<div class="search-result">
+<h2 class="record-title"><a href="#">Record title</a></h2>
+
+<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+<div class="record-short-desc"> short description of the record</div>
+
+</div>
+
+<div class="search-result">
+<h2 class="record-title"><a href="#">Record title</a></h2>
+
+<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+<div class="record-short-desc"> short description of the record</div>
+
+</div>
+
+
+
+
+
+<div class="results-footer" >
+
+<div class="panel  pagination">
+     
+    <span class="paging-info" >page 3 of 17 </span>
+     <ul class="pagelinks" >
+     <li><a href="#">previous</a></li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><span class="you-are-here">3</span></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#">6</a></li>
+    <li><a href="#">7</a></li>
+     <li><a href="#">next</a></li>
+     </ul>
+ 
+ 
+items per page
+ 
+      <ul class="items-per-page" >
+
+    <li><a href="#" class="select">25</a></li>
+    <li><a href="#">50</a></li>
+    <li><a href="#">100</a></li>
+    <li><a href="#">200</a></li>
+
+     </ul>  
+     
+ </div>
+
+
+</div>
+
+
+
+</div>
+
+<div id="results-controls"  class="results-block" >
+
+
+<div   id="results-metadata">
+<div class="num-results"><span class="important-number">4839 </span> results</div>
+
+<ul class="current-facets">
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">keyword</span> <span class="facet-value">searchterm</span></a></li>
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
+</ul>
+
+</div>
+
+
+
+<div class="panel refine-results" >
+<h2>refine results</h2>
+
+<form>
+
+<div class="label-field-pair">
+<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
+</div>
+
+<div class="label-field-pair">
+<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
+</div>
+
+<div class="label-field-pair">
+<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
+</div>
+
+<div class="label-field-pair">
+<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
+</div>
+
+<div class="label-field-pair">
+<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
+</div>
+
+
+
+
+
+</form>
+
+
+
+</div>
+
+
+
+
+
+</div>

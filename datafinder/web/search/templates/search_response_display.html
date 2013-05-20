@@ -1,21 +1,65 @@
+
 <%namespace name="options" file="/search_response_options.html" />
+
 ##=============================================================================
 ## Current search options
 ${options.currentsearch()}
 ##=============================================================================
 ## Pagination and sort options
 % if numFound and numFound > 0:
-<div class="searchtop">
-  ${options.pagination()}
-  ${options.sortoptions()}
-</div>
+<div class="results-header">
+
+ <div clas="panel  pagination">
+     
+    <span class="paging-info" >page 3 of 17 </span>
+     <ul class="pagelinks" >
+     <li><a href="#">previous</a></li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><span class="you-are-here">3</span></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#">6</a></li>
+    <li><a href="#">7</a></li>
+     <li><a href="#">next</a></li>
+     </ul>
+ 
+ 
+items per page
+ 
+      <ul class="items-per-page" >
+
+    <li><a href="#">25</a></li>
+    <li><a href="#">50</a></li>
+    <li><a href="#">100</a></li>
+    <li><a href="#">200</a></li>
+
+     </ul>  
+     
+ </div>
+ 
+ <div clas="panel  sort-by">
+     
+     
+ </div>
+
+
+<!--
+ <div clas="panel  pagination"> ${options.pagination()}</div>
+ <div clas="panel  sort-by"> ${options.sortoptions()}</div>
+
 % endif
+-->
+
 ##=============================================================================
 ## Number of records, current span of records and items per page
+
+
+<!--
 <div class="searchtop">
 
 <div class="searchleft numRecords">
-${ numFound} records found.
+    ${ numFound} records found.
 </div>
 
 % if numFound > 0:
@@ -33,23 +77,47 @@ ${options.numresultspp("itemsppt")}
 % endif
 
 </div>
+
+-->
+
+
+
 ##=============================================================================
 ##Link to these results
 % if docs and add_facet:
-<div id="link_to_this_search">Link to these search results | 
-<a href="${add_facet}&format=html&sort=${sort}&rows=${rows}&start=${start}">
-  <img src="/static/styles/images/link.png" border="0" alt="HTML" /> This page'</a>
-<a href="${add_facet}&format=csv&sort=${sort}&rows=${rows}&start=${start}">
-  <img src="/static/styles/images/csv.png" border="0" alt="CSV Logo" /> CSV</a>
-<a href="${add_facet}&format=json&sort=${sort}&rows=${rows}&start=${start}">
-  <img src="/static/styles/images/json.png" border="0" alt="JSON Logo" />JSON</a>
+<div class="panel" id="link_to_this_search">Link to these  results | 
+<a class="results-link webpage" href="${add_facet}&format=html&sort=${sort}&rows=${rows}&start=${start}">
+  This page</a>
+<a class="results-link csv" href="${add_facet}&format=csv&sort=${sort}&rows=${rows}&start=${start}">CSV</a>
+<a class="results-link json" href="${add_facet}&format=json&sort=${sort}&rows=${rows}&start=${start}">JSON</a>
 </div>
 % endif
 ##=============================================================================
+
+
+
+
+
+</div>
+
+
 ##Search results
 % if docs:
 <div class="clear">&nbsp;</div>
 <div class="response_doc">
+
+
+<div class="search-result">
+<h2 class="record-title"><a href="#">Record title</a></h2>
+
+<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+<div class="record-short-desc"> short description of the record</div>
+
+</div>
+
+
+
+
 <% cnt = 0 %>
 %   for doc_index in xrange(len(docs)):
 <% 
@@ -75,7 +143,22 @@ ${docs[doc_index]['title'][0]}
 ${docs[doc_index]['id']}
 % endif
 </a></h2>
-<table class="searchresult" summary="Search result ${cnt}">
+
+
+
+
+
+
+
+<table class="searchresult" title="summary record 
+
+% if 'title' in docs[doc_index] and docs[doc_index]['title'] and docs[doc_index]['title'][0]:
+${docs[doc_index]['title'][0]}
+% else:
+${docs[doc_index]['id']}
+% endif
+
+">
 % if isSilo == False:
 <tr><th>Identifier </th><td>${docs[doc_index]['id']}</td></tr>
 <tr><th>Silo </th><td>${docs[doc_index]['silo']}</td></tr>

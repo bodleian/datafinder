@@ -20,6 +20,21 @@ try:
     import simplejson as json
 except ImportError: 
     import json
+
+def recordsmockup(request):
+    context = { 
+        #'DF_VERSION':settings.DF_VERSION,
+        #'STATIC_URL': settings.STATIC_URL,3
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'user_logged_in_name':"",
+        'q':"",
+        'typ':"",
+        }
+
+    return render_to_response('records_mockup.html',context, context_instance=RequestContext(request))
     
 def contribute(request):
    try:

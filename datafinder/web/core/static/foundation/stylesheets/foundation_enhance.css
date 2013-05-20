@@ -6,6 +6,7 @@ h1, h2, h3, h4, h5, h6
 {
     color: #4c637e;
     font-family: "Trebuchet MS", Helvetica, sans-serif ;
+    clear: both;
 
 } 
     
@@ -358,6 +359,20 @@ display: block;
  }
  
  
+dl dt, dl dd {
+    float: left;
+    margin: 0 0.5em 0 0;
+}
+dl dd + dt, dl dd + dd {
+    clear: left
+}
+dl dd + dd {
+    float: none
+}
+dl dt {
+    font-weight: bold
+}
+ 
  
   
 ul.user-options li {
@@ -470,10 +485,10 @@ ul.user-options li a {
   
   margin: 0px;
   */
-    font-size: 1.6em;
+    font-size: 1.5em;
 
   padding: 3px 10px;
-  
+  text-transform: uppercase;
       
   }
   
@@ -493,11 +508,57 @@ ul.user-options li a {
 
     /* panels */
   .panel {
-background: transparent;
-
-border: solid 1px #4c637e;
+background: #eef3f9 url("../images/bg/panel-bg.png") repeat-x bottom left;
+border: solid 1px #d2e0e8;
+border-bottom: solid 3px #d2e0e8;
+  border-radius: 3px;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
 margin: 0 0 12px 0;
+padding: 0px;
+
+}
+
+
+
+
+.panel-content {
 padding: 5px;
+}
+
+.panel h2,
+.panel h3{
+background: #eef3f9 url("../images/bg/panel-bg.png") repeat-x bottom left;
+border-bottom: solid 1px #d2e0e8;
+margin: 0px;
+padding: 0.1em 0.2em;
+}
+
+
+
+
+.panel h2,
+.panel h3{
+background: #eef3f9 url("../images/bg/panel-bg.png") repeat-x bottom left;
+border-bottom: solid 1px #d2e0e8;
+margin: 0px;
+padding: 0.1em 0.2em;
+}
+
+
+
+
+
+
+
+
+
+
+ .panel-content .panel {
+background: #eef3f9 url("../images/bg/panel-bg.png") repeat-x top left;
+
+
+
 }
 
 
@@ -574,7 +635,11 @@ div.footer {
 }
 
 
-/* general style for clearing after floats*/
+/* 
+
+general style for clearing after floats
+    
+*/
 .clear-fix {
     
     clear: both;
@@ -584,8 +649,302 @@ div.footer {
 
 
  
+ /* search results page  */
  
- 
+.refine-results h2 {
+  
+  color: #002147;
+  font-size: 1.6em;
+  font-weight: normal;
+  
+}
+
+
+
+/* pagination */
+
+.pagination ul,
+.pagination li,
+.pagination span,
+.pagination a{
+  
+  display: inline;
+  
+}
+
+.paging-info {
+    color: #002147;
+    font-family: "Trebuchet MS", Helvetica, sans-serif ;
+    font-size: 1.2em;
+  
+}
+
+
+
+ul.items-per-page li a {
+  
+  background-color: #eff4f9;
+  border: 1px solid #9ab7d9;
+  color: #002147;
+  padding: 2px 0.4em;
+  
+  
+}
+
+
+ul.items-per-page li a.select {
+  
+  background-color: #9ab7d9;
+
+  color: #fff;
+  
+  
+}
+
+
+.pagelinks span,
+.pagelinks a {
+  
+
+margin: 0px 0.5em;
+}
+
+.pagelinks .you-are-here {
+  
+    background-color: #002147;
+  padding: 2px 0.4em;
+  color: #fff;
+}
+
+.num-results {
+    
+    color: #002147;
+    font-family: "Trebuchet MS", Helvetica, sans-serif ;
+    font-size: 1.7em;
+
+}
+
+    
+#results {
+
+
+}
+
+
+#results-metadata ul,
+#facet_wrapper ul{
+
+margin: 0px;
+padding: 0px;
+
+
+
+}
+
+
+#results-metadata li,
+#facet_wrapper li{
+
+list-style: none;
+
+
+}
+   
+
+
+
+#results-metadata  ul.current-facets {
+
+    padding-left: 25px;
+}
+
+#results-metadata ul.current-facets li {
+    
+    list-style-type: disc;
+    list-style-image:url("../images/icons/cancel-cross.png");
+    padding: 5px 0px ; 
+    
+}
+
+
+span.facet-type {
+    
+    font-weight: bold;
+    font-style: normal;
+    padding-right: 0.3em;
+    
+}
+
+span.facet-value {
+    
+    font-weight: normal;
+    font-style: italic;
+    
+}
+
+
+
+
+
+div.search-result {
+    
+    
+    
+    border-bottom: 3px solid #eff5f7;
+    margin-bottom: 3em;
+    padding-bottom: 1em;
+    
+
+}
+
+div.search-result h2  {
+
+font-size: 1.6em;
+margin-bottom: 0.2em;
+clear: both;
+}
+
+
+div.search-result h2 a {
+
+background: transparent url("../images/icons/searchresult-arrow.png") no-repeat right top;
+padding-right: 30px;
+}
+
+
+
+div.search-result .record-publish-info {
+font-size: 0.95em;
+margin-bottom: 1em;
+}
+
+div.search-result .author {
+
+
+font-weight: bold;
+
+
+}
+
+div.search-result .publish-date {
+
+
+}
+
+div.search-result .record-short-desc {
+font-size: 1.2em;
+
+
+}
+
+
+.label {
+    
+    background-color: transparent;
+    
+}
+
+
+#facet_container ul {
+    
+    padding-left: 25px;
+}
+
+
+
+#facet_container ul li{
+    
+       list-style-type: disc;
+    list-style-image:url("../images/icons/box-unticked.png");
+    padding: 5px 0px ; 
+    
+}
+
+#link_to_this_search {
+    
+    padding-top: 12px;
+}
+
+
+a.results-link {
+    
+background: transparent url("../images/icons/json.png") no-repeat left 5px;
+   padding: 10px 10px 10px 27px; 
+}
+
+
+a.webpage {
+    
+background: transparent url("../images/icons/webpage.png") no-repeat left 5px;
+
+}
+
+
+a.csv {
+    
+background: transparent url("../images/icons/csv.png") no-repeat left 5px;
+
+}
+
+
+/* refine results */
+.refine-results {
+  
+
+  margin-top: 2em;
+
+
+  }
+  
+  
+
+#mainContent .refine-results label,
+.refine-results input[type="checkbox"] {
+  
+  font-size: 0.9em;
+  display: inline;
+  color: #000;
+  
+}
+
+
+.pair-key,
+.pair-value {
+  
+  display: inline;
+  
+}
+
+.pair-value {
+  
+  dmargin-left: 1em;
+  
+}
+
+
+/* record page */
+
+div.data-owner{
+  
+  padding-top: 1em;
+  
+}
+
+
+.author {
+  
+  border: 1px solid #d2e0e8;
+  border-radius: 3px;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px
+  
+}
+
+
+
+
+
+
 
 /*
 #
@@ -688,7 +1047,7 @@ div.footer {
 
     .nav ul {
 
-margin-left:6em;
+margin-left:3em;
       
   }
   
@@ -896,7 +1255,95 @@ margin-left:6em;
 
   }
   
+ 
+ 
+ 
+  /* search results page  */
+
+
+
+
+
+#facet_wrapper,
+#results {
+
+
+}
+
+.results-block {
   
+}
+
+
+.results-block ul {
+  
+padding-left: 0px;
+
+}
+
+
+
+.results-block ul li{
+  
+list-style: none;
+
+}
+
+
+
+
+#results {
+ 
+  float: right;
+  margin-right: -1.4em;
+    width: 77%;
+    
+}
+
+
+#results ul li{
+
+display: inline;
+    
+}
+
+
+
+#results-controls,
+#results-info
+{
+
+margin-left: -1.4em;
+float: left;    
+    width: 26%;
+    
+}
+
+
+
+.link_to_this_search {
+  
+    float: right;
+  width: 60%;
+}
+
+
+.sort-by {
+  
+  float: left;
+  width: 38%;
+  
+}
+
+/*
+#results-metadata,
+#facet_wrapper{
+
+float: left;   
+    width: 35%;
+}
+*/
+ 
 
 /*
 #

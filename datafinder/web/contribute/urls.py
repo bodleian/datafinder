@@ -5,6 +5,7 @@ import views
 urlpatterns = patterns('',
     url(r'^$',  views.contribute),
     url(r'^projects/', views.projects),
+    url(r'^records_mockup/', views.recordsmockup),
   #  url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
   #     'document_root': 'static'}),
                          )

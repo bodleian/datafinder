@@ -1,0 +1,341 @@
+# -*- coding: utf-8 -*-
+<%inherit file="/newbase.html" />
+<%def name="head_tags()">
+  <title> DataFinder : Record Name</title>
+</%def>
+ 
+% if message:
+	<p><span style="color:red;">${message}</span></p>
+% endif
+
+<h1>Record Name</h1>
+
+<form class="abau" id="form-contribute" name="form1" method="post" enctype="multipart/form-data" action="/contribute/" accept-charset="UTF-8">
+
+	<div class="label-field-pair" >
+		<label for="dataset_title" >The title of this dataset (to use in citation)</label>
+		<input type="text" name="record_title" id="record_title"/> 
+	</div>
+
+    <div class="label-field-pair" >
+         <label for="alt_title">If there is an alternative title, please enter it here:</label>    
+   		 <input type="text" name="alt_title" id="alt_title"/>
+    </div>   
+        
+    <!-- <fieldset id="deposit_data">    
+    	<legend>Data Deposit</legend>    
+    	<label for="deposit_data_file_upload">files(s) to upload</label>
+        <input type="file" name = "deposit_data_file_upload" id="deposit_data_file_upload" />
+   
+        <p class="instruction">Do you wish this data to be embargoed?</p>	       		
+		<div class="radio-set" >	       		     		
+		<div class="label-field-pair radio" >
+			<input name="deposit_data_embargo_options" type ="radio" value="deposit_data_embargo_no" id="deposit_data_embargo_no" /><label for="deposit_data_embargo_no" >no</label>
+		</div>
+		<div class="label-field-pair radio" >
+			<input  name="deposit_data_embargo_options" type ="radio" value="deposit_data_embargo_yes" id="deposit_data_embargo_yes" /><label for="deposit_data_embargo_yes" >yes</label>
+		</div>      
+		<div class="label-field-pair" >   
+			<label for="deposit_data_embrago_release_date">release date</label>   
+		    <input type="text" name="deposit_data_embrago_release_date" id="deposit_data_embrago_release_date"/>
+		</div>
+	    <div class="label-field-pair radio" >
+			<input name="deposit_data_embargo_options_type" type ="radio" value="deposit_data_embargo_dark" id="deposit_data_embargo_dark" />
+			<label for="deposit_data_embargo_dark" >Dark archive (Data never publicly accessible)</label>
+		</div>
+	    <div class="label-field-pair radio" >
+       		<input  name="deposit_data_embargo_options_type" type ="radio" value="deposit_data_embargo_invisible" id="deposit_data_embargo_invisible" />
+       		<label for="deposit_data_embargo_invisible" >Invisible archive (neither data nor this record every publicly accessible)</label>
+       	</div>	       		
+    	<div class="label-field-pair textarea" >
+			<label for="deposit_data_embargo_reason" >Reason for embargo or dark/invisible archiving</label>
+       		<textarea  name="deposit_data_embargo_reason"  id="deposit_data_embargo_reason" ></textarea>
+       	</div>
+       	</div>
+	</fieldset> -->
+    
+   
+    
+    <div class="panel" id="author-details">
+      <h2>Author details</h2>
+      <div class="panel-content">
+        <div class="author" id="author-1">
+        <h3>Author 1</h3>
+        <div class="author-info">
+        <dl>
+            <dt>Institution</dt>
+            <dd>uni of ox</dd>
+            <dt>Faculty</dt>
+            <dd>fac of foo</dd>
+            <dt>College</dt>
+            <dd>St. George</dd>
+            <dt>Role</dt>
+            <dd>Kitchen Staff supervisor</dd>
+            <dt><
+        </dl>
+        </div>
+      </div>
+    
+    </div>
+    
+    
+    
+    
+    <fieldset>   
+    	<legend>Describe your data</legend>
+	    <div class="label-field-pair" >
+	          <label for="data_description">Please write a short description of your data (max characters?)</label>   
+	          <input type="text" name="data_description" id="data_description"/>
+	    </div>        
+        <div class="label-field-pair" >
+            <label for="data_process">By what process was the data assembled/generated?</label>
+            <input type="text" name="data_process" id="data_process"/>
+        </div>
+        
+         <div class="label-field-pair" >
+            <label for="project_desc">Please write a short description of the research project that the data forms part of:</label>
+            <input name="project_desc" id="project_desc"/>
+        </div>
+        
+         <div class="label-field-pair" >
+            <label for="project_website">If you have a website for this research project, please enter the URL:</label>
+            <input type="text" name="project_website" id="project_website"/>
+        </div>
+        
+        <div class="label-field-pair" ><label for="subject_areas">Subject Area(s)</label>
+            <input type="text" name="subject_areas" id="subject_areas"/>
+        </div>
+        
+        <div class="label-field-pair" >
+        	<label for="record_keywords">Keyword(s)</label>
+        	<input type="text" name="record_keywords" id="record_keywords"/>
+        </div>
+        
+        <div class="label-field-pair" ><label for="main_language">Main Language</label>
+        	<input type="text" name="main_language" id="main_language"/>
+        </div>               
+    </fieldset>
+    
+    
+    <fieldset class="creators-contributors" >
+		<legend>Data creators &amp; contributors</legend>
+	    <p class="instruction">Please name the authors of the data being deposited</p>
+		<div class="label-field-pair" >
+    	    <label for="author_firstname_1">First Name</label>
+	        <input type="text" name="author_firstname_1" id="author_firstname_1"/>
+	    </div>
+	    <div class="label-field-pair" >
+		    <label for="author_lastname_1">Last Name</label>           
+		    <input type="text" name="author_lastname_1" id="author_lastname_1"/>            
+	    </div>
+		<div class="label-field-pair" >
+	        <label for="author_role_1">Role</label>
+	        <input type="text" name="author_role_1" id="author_role_1"/>
+		</div>	      
+	    <div class="label-field-pair" >
+	        <label for="author_affiliation_1">Affiliation</label>
+	        <input type="text" name="author_affiliation_1" id="author_affiliation_1"/>
+	    </div>
+		<div class="form-button">
+	        <input type="submit" name="add_author" id="add_author" value="add author"/>
+	        </div>
+    </fieldset>
+
+    
+    <fieldset class="contacts" >
+    	<legend>Contact details</legend>
+		<div class="label-field-pair" >    	  
+	    	<label for="record_contact">Who should we contact in future with information and updates about the data you are depositing? 
+	    	             (this will normally be your department or research group)</label>
+	    	<input type="text" name="record_contact" id="record_contact"/>
+    	</div>  	             
+    </fieldset>
+    
+    
+    <fieldset class="contacts" >
+    	<legend>About your data</legend>
+          <div class="radio-set" >
+	    	  <p>Is your data in digital format?</p>
+	    	  <div class="label-field-pair radio" >
+		  		  	<input type ="radio" name="data-format" value="yes" id="data_format_yes" />
+		  		  	<label for="data_format_yes">yes</label>
+	  		  </div>
+		      <div class="label-field-pair radio" >
+		      		<input type ="radio" name="data-format" value="no" id="data_format_no" />
+		      		<label for="data_format_no">no</label>
+		      </div>
+		  </div>
+	</fieldset>
+	       
+	      
+	<fieldset>
+	           <legend>Digital data</legend>       	        
+	            <div class="label-field-pair" >
+	            	<label for="digital_location">Location of data</label>
+		        	<input type="text" name="digital_location" id="digital_location"/>
+		        </div>
+		        
+		        <div class="label-field-pair" >
+		        	<label for="digital_resource_type">Resource type</label>
+		        	<input type="text" name="digital_resource_type" id="digital_resource_type"/>
+		        </div>
+		        
+		        <div class="label-field-pair" >
+		        	<label for="digital_filesize">Filesize</label>
+		        	<input type="text" name="digital_filesize" id="digital_filesize"/>
+		        </div>
+		            
+		        <div class="label-field-pair" >
+		        	<label for="digital_format">Format(s)</label>
+		        	<input type="text" name="digital_format" id="digital_format"/>
+		        </div>
+		        
+		        <div class="label-field-pair" >
+		        	<label for="digital_version">Version (if versioned)</label>
+		        	<input type="text" name="digital_version" id="digital_version"/>
+		        </div>
+		        
+		        <div class="label-field-pair" >
+		        	<label for="digital_publisher">Publisher</label>
+		        	<input type="text" name="digital_publisher" id="digital_publisher"/>
+		        </div>
+		        
+		       	<div class="label-field-pair" >
+		       		<label for="digital_publish_year">Publication year</label>
+		       		<input type="text" name="digital_publish_year" id="digital_publish_year"/>
+		       	</div>
+	</fieldset>
+	
+	       
+	<fieldset>
+	       <legend>Non-digital data</legend>	       
+	       <div class="label-field-pair" >
+	       		<label for="whereis_non_digital">Where is your data held</label>
+	       		<input type="text" name="whereis_non_digital" id="whereis_non_digital"/>
+	       </div>
+		   <div class="label-field-pair" >
+	            <label for="non_digital_format">Format</label>
+	            <input type="text" name="non_digital_format" id="non_digital_format"/>
+	       </div>	            
+	       <div class="label-field-pair" >
+	       		<label for="non_digital_publisher">Publisher</label>
+	            <input type="text" name="non_digital_publisher" id="non_digital_publisher"/>
+	       </div>	            
+	       <div class="label-field-pair" >
+	            <label for="non_digital_publish_year">Publication year</label>
+	            <input type="text" name="non_digital_publish_year" id="non_digital_publish_year"/>
+	       </div>	            
+	</fieldset>   
+	           	 
+	           	       
+	<fieldset><legend>Funding information</legend>	 
+	       <div class="radio-set" >
+	           <p>Is your data an output of a funded research?</p>
+	    	   <div class="label-field-pair radio" >
+	    	        <input type ="radio" name="funded_research" value="yes" id="funded_research_yes" />
+	    	        <label for="funded_research_yes" >yes</label>
+	    	   </div>
+	    	   <div class="label-field-pair radio" >  
+	    	   		<input type ="radio" name="funded_research" value="no" id="funded_research_no" />
+	    	   		<label for="funded_research_no" >no</label>
+	    	   </div>
+		   </div>
+		   <div class="label-field-pair" >
+		            <label for="funding_agency">Funding agency:</label>
+		            <input type="text" name="funding_agency" id="funding_agency"/>
+	       </div>
+	       <div class="label-field-pair" >
+		            <label for="grant_number">Grant number:</label>
+		            <input type="text" name="grant_number" id="grant_number"/>
+	       </div>
+	</fieldset>
+	       
+	           
+	<fieldset>
+	       <legend>Related information</legend>	 	       
+	       <div class="label-field-pair" >
+	       		<label for="data_management_plan_location">If you have a Data management Plan for the project for which this data was created, 
+	        	      please enter the location where it can be accessed here:</label>
+	            <input type="text" name="data_management_plan_location" id="data_management_plan_location"/>
+	       </div>	       
+		   <p class="instructions">If you are aware of any publications based  on this data, please add references to them here:</p>
+		   <div class="label-field-pair" >
+		   		<label for="publication_relationship_of_data_1">Relationship of Data</label>
+	            <input type="text" name="publication_relationship_of_data_1" id="publication_relationship_of_data_1"/>
+	       </div>
+	       <div class="label-field-pair" >
+	       		<label for="related_publication_url_1">URl of publication</label>
+	            <input type="text" name="related_publication_url_1" id="related_publication_url_1"/>
+	       </div>
+		   <div class="form-button">
+		   		<input type="submit" name="add_publication" id="add_publication" value="add publication"/>
+		   </div>
+	       <p class="instruction">If this data was based on any previous datasets, or is in some way related to other datasets, please add references to them here:</p>
+  		   <div class="label-field-pair" >
+  		   		<label for="dataset_relationship_of_data_1">Relationship of Data</label>
+	            <input type="text" name="dataset_relationship_of_data_1" id="dataset_relationship_of_data_1"/>
+	       </div>
+	       <div class="label-field-pair" >
+	       		<label for="dataset_related_url_1">URl of the dataset or DataFinder record for the dataset</label>
+	            <input type="text" name="dataset_related_url_1" id="dataset_related_url_1"/>
+	       </div>
+	       <div class="form-button">
+	       		<input type="submit" name="add_dataset" id="add_dataset" value="add dataset"/>
+	       </div>	            
+	</fieldset>
+	       
+	<fieldset>
+			<legend>Access terms &amp; conditions</legend>
+	       <div class="label-field-pair" >
+	       <label for="terms_and_conditions">Please enter any terms and conditions regarding access to your data here:</label>	       
+	       <input type="text" name="terms_and_conditions" id="terms_and_conditions"/></div>	       		
+	       <div class="label-field-pair" >
+	       		<label for="data_standard_licence">If your data is available under a standard license, please name the license here:</label>
+	       		<input type="text" name="data_standard_licence" id="data_standard_licence"/>
+	       	</div>
+	       <div class="radio-set" >
+	       		<p class="instruction">If the data you are describing is currently under the embargo, please indicate its public release date below:</p>	       		
+	       		<div class="label-field-pair radio" >
+	       			<input name="embargo-options" type ="radio" value="embargo_not_under" id="embargo_not_under" />
+	       			<label for="embargo_not_under" >Data not under embargo</label>
+	       		</div>
+	       		<div class="label-field-pair radio" >
+	       			<input  name="embargo-options" type ="radio" value="embargo_status_unknown" id="embargo_status_unknown" />
+	       			<label for="embargo_status_unknown" >Embargo status unknown</label>
+	       		</div>
+	       		<div class="label-field-pair radio" >
+	       			<input  name="embargo-options" type ="radio" value="embargoed_indefinitely" id="embargoed_indefinitely" />
+	       			<label for="embargoed_indefinitely" >Embargoed indefinitely</label>
+	       		</div>
+	       		<div class="label-field-pair radio" ><input  name="embargo-options" type ="radio" value="embargoed_until" id="embargoed_until" />
+	       			<label for="embargoed_until" >Embargoed until</label>	
+	       		</div>       		
+                <label for="embargo_end_date" id="embargo_end_date_label">Embargoed end date:</label>
+				<input type="text" name="embargo_end_date" id="embargo_end_date" />	       
+	       	</div>
+	</fieldset>
+	       
+	       
+	<fieldset>
+			<legend>Subject-Specific metadata</legend>
+			<p class="instruction" >If you have any subject-specific metadata describing your data, 
+	       		we would like to include it in our record. You will need to have the metadata in a .xml file.
+	       		For more information about this, please get in touch with staff at the Bodleian Library.
+	       		<a href=""> ADD EMAIL ADDRESS</a>
+	       	</p>
+		    <div class="label-field-pair" >
+		       		<label for="subject_specific_metadata_file"> File to upload: </label>
+		       		<input type="file" name="subject_specific_metadata_file" id="subject_specific_metadata_file"  /> 
+	        </div>
+		    <div class="label-field-pair" >
+		       		<label for="xml_schema_type">xml schema type</label>
+		       		<input type="text" name="xml_schema_type" id="xml_schema_type"/>
+	       	</div>
+	</fieldset>
+	       
+      <div class="form-button">         	            
+      		<input type="submit" name="submit_for_approval" id="submit_for_approval" value="submit for approval"/>	 
+      		<input type="submit" name="save_as_a_draft" id="save_as_a_draft" value="save as a draft"/>
+      </div>	 
+
+</form>
