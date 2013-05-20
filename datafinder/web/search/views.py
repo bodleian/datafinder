@@ -30,7 +30,7 @@ def search(request):
         context['login']=""
     return render_to_response('index.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
-    
+
 def resultsmockup(request):
     context = { 
         #'DF_VERSION':settings.DF_VERSION,
@@ -45,7 +45,6 @@ def resultsmockup(request):
         }
 
     return render_to_response('searchresults-mockup.html',context, context_instance=RequestContext(request))
-    
 
 def searchtips(request):
     context = { 
@@ -379,7 +378,7 @@ def detailed(request,query=None, additional_fields=[]):
             solr_response = None 
             try:
                 print "before solr connection :"
-                solr_conn = settings.getSolrConnection()
+                solr_conn, b = settings.getSolrConnection()
                 solr_response = solr_conn.raw_query(**solr_params)
                 print "solr response :"
                 print solr_response
@@ -538,7 +537,7 @@ def advanced(self):
                     solr_params['facet.field'].append(facet)
             try:
                 #solr_response = ag.solr.raw_query(**solr_params)
-                solr_conn = settings.getSolrConnection()
+                solr_conn,b = settings.getSolrConnection()
                 solr_response = solr_conn.raw_query(**solr_params)
             except:
                 solr_response = None

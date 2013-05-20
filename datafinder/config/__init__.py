@@ -27,7 +27,7 @@ import ConfigParser
 import os
 
 from django.core.exceptions import ImproperlyConfigured
-
+from datafinder.lib.broadcast import BroadcastToRedis
 
 class Settings(object):
     def __init__(self):
@@ -73,6 +73,20 @@ class Settings(object):
     
     def getSolrConnection(self):
         config = self._config
+        
+        if config.has_key("redis.host"):
+            self.redishost = config['redis.host']
+            try:
+                self.r = Redis(self.redishost)
+            except:
+                self.r = None
+            if self.r and config.has_key("broadcast.to") and config['broadcast.to'] == "redis" and  config.has_key("broadcast.queue"):
+                self.b = BroadcastToRedis(config['redis.host'], config['broadcast.queue'])
+        else:
+            self.r = None
+            self.redishost = None
+            self.b = None
+            
         if config.has_key("main:solr.host"):
             from solr import SolrConnection
             self.solrhost = config['main:solr.host']
@@ -83,7 +97,7 @@ class Settings(object):
         else:
             self.solrhost = None
             self.solr = None
-        return self.solr
+        return self.solr,self.b
 
     config_item = lambda key: property(lambda self: self[key])
     SITE_NAME = config_item('main:site_name')

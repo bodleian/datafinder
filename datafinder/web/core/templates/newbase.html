@@ -57,9 +57,9 @@
 	height: 100px;
 	}
   </style>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.2/themes/smoothness/jquery-ui.css" />
+
   <script src="http://code.jquery.com/ui/1.8.2/jquery-ui.js"></script>
-   
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.2/themes/smoothness/jquery-ui.css" />
   <script>
      <!-- $(window).load(function(){
  $("#featured").orbit();
@@ -70,9 +70,13 @@
   ${self.head_tags()}
   
  <script type="text/javascript">
-  
-  $(document).ready( function() {
 
+  $(document).ready( function() {
+   var $=jQuery.noConflict(); 
+
+  setUpExamplePage();
+  setUpPage();
+  
   $('#save').click( function()
 	{
 	    var actionURL = "/admin/save_source/";
@@ -119,7 +123,6 @@
 			      data: "{'Project_ID':'1'}",
 			      contentType: "application/json",
                   dataType: "json",
-                  //async: false,
 			      success: function(data)
 				      {
 				         response( data);
@@ -129,11 +132,169 @@
 				          alert("failure");
 				      }   
 			    });
-			    //responsereturn list;
-		    } 
-	
+		    } 	
 	 }); 
+	 
+	 $("#main_language").autocomplete({
+			source: function( request, response ) 
+			{	 var list;	 
+			     //if(request.term.length >= 2)
+			  	 //{
+				  	  $.ajax({
+				      url: "/contribute/languages/?lang="+request.term,
+				      type: "GET",
+				      data: "{'Project_ID':'1'}",
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      {
+					         response( data);
+					      },
+				      error:function()
+					      {
+					          alert("failure");
+					      }   
+					  });
+				 //}
+		    } 	
+	 }); 
+	 
+	 $(".author_lastname_1").autocomplete({
+			source: function( request, response ) 
+			{	 var data_dict = {}
+			     data_dict['lastname'] = request.term 
+			     data_dict['firstname'] = $("#author_firstname_1").val() 
+			     data_dict['middlename'] = $("#author_middlename_1").val() 
+                 data_dict['email'] = $("#author_email_1").val() 
+			     if(request.term.length >= 2)
+			  	 {
+				  	  $.ajax({
+				      url: "/contribute/people/",
+				      type: "POST",
+				      data:  data_dict ,
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      {  if (data.firstname.length == 1)
+					      		$("#author_firstname_1").val(data.firstname[0])
+					      	 if (data.middlename.length == 1)
+					      		$("#author_middlename_1").val(data.middlename[0])
+					      	 if (data.email.length == 1)
+					      		$("#author_email_1").val(data.email[0])
+					         response( data.lastname);
+					      },
+				      error: function(jqXHR, textStatus, errorThrown)
+				          {
+  							alert(textStatus + errorThrown);
+					   	  }  
+					  });
+				 }
+		    } 	
+	 }); 
+	 
+	  
+	 $("#author_firstname_1").autocomplete({
+			source: function( request, response ) 
+			{	 var data_dict = {}
+			     data_dict['lastname'] = $("#author_lastname_1").val()
+			     data_dict['firstname'] =  request.term 
+			     data_dict['middlename'] = $("#author_middlename_1").val() 
+                 data_dict['email'] = $("#author_email_1").val() 
+			     if(request.term.length >= 2)
+			  	 {
+				  	  $.ajax({
+				      url: "/contribute/people/",
+				      type: "POST",
+				      data:  data_dict ,
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      { 
+					      	 if (data.middlename.length == 1)
+					      		$("#author_middlename_1").val(data.middlename[0])
+					      	 if (data.email.length == 1)
+					      		$("#author_email_1").val(data.email[0])
+					      	 if (data.lastname.length == 1)
+					      		$("#author_lastname_1").val(data.lastname[0])
+					         response( data.firstname);
+					      },
+				      error: function(jqXHR, textStatus, errorThrown)
+				          {
+  							alert(textStatus + errorThrown);
+					   	  }  
+					  });
+				 }
+		    } 	
+	 }); 
+	 
+	  $("#author_middlename_1").autocomplete({
+			source: function( request, response ) 
+			{	 var data_dict = {}
+			     data_dict['lastname'] = $("#author_lastname_1").val()
+			     data_dict['firstname'] = $("#author_firstname_1").val() 
+			     data_dict['middlename'] =request.term 
+                 data_dict['email'] = $("#author_email_1").val() 
+			     if(request.term.length >= 2)
+			  	 {
+				  	  $.ajax({
+				      url: "/contribute/people/",
+				      type: "POST",
+				      data:  data_dict ,
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      {  if (data.firstname.length == 1)
+					      		$("#author_firstname_1").val(data.firstname[0])
+					      	 if (data.email.length == 1)
+					      		$("#author_email_1").val(data.email[0])
+					      	 if (data.lastname.length == 1)
+					      		$("#author_lastname_1").val(data.lastname[0])
+					         response( data.middlename);
+					      },
+				      error: function(jqXHR, textStatus, errorThrown)
+				          {
+  							alert(textStatus + errorThrown);
+					   	  }  
+					  });
+				 }
+		    } 	
+	 }); 
+	 
  
+	  $("#author_email_1").autocomplete({
+			source: function( request, response ) 
+			{	 var data_dict = {}
+			     data_dict['lastname'] = $("#author_lastname_1").val()
+			     data_dict['firstname'] = $("#author_firstname_1").val() 
+			     data_dict['middlename'] = $("#author_middlename_1").val() 
+                 data_dict['email'] = request.term 
+			     if(request.term.length >= 2)
+			  	 {
+				  	  $.ajax({
+				      url: "/contribute/people/",
+				      type: "POST",
+				      data:  data_dict ,
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      { 
+					         if (data.firstname.length == 1)
+					      		$("#author_firstname_1").val(data.firstname[0])
+					      	 if (data.middlename.length == 1)
+					      		$("#author_middlename_1").val(data.middlename[0])
+					      	 if (data.lastname.length == 1)
+					      		$("#author_lastname_1").val(data.lastname[0])
+					         response( data.email);
+					      },
+				      error: function(jqXHR, textStatus, errorThrown)
+				          {
+  							alert(textStatus + errorThrown);
+					   	  }  
+					  });
+				 }
+		    } 	
+	 }); 
+	 
   $('#depositDataYes').change(function() 
     {
 	    if($(this).val()=='yes') {   
@@ -226,6 +387,12 @@
 
 
 </script>
+
+  <script src="/static/js/assignFASTPage.js" type="text/javascript"></script>
+  <script src="/static/js/assignFASTExample.js" type="text/javascript"></script>
+  <script src="/static/js/assignFASTGadget.js" type="text/javascript"></script> 
+  <script src="/static/js/assignFASTComplete.js" type="text/javascript"></script>
+  
  <!--[if lt IE 9]>
 
   <script type="text/javascript" src="/static/js/html5.js" />

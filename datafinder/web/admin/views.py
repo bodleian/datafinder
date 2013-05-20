@@ -376,7 +376,7 @@ def adduser(request):
  
                except Users.DoesNotExist,e:
                     cud_authenticator = settings.get('main:cud_proxy.host')
-                    cudReq = CUDRequest(cud_proxy_host=cud_authenticator, sso_id=context["user_sso_id"])
+                    cudReq = CUDRequest(cud_proxy_host=cud_authenticator,filter={'sso_username':context["user_sso_id"]})
             
                     context["user_sso_name"]  = str(cudReq.get_fullName())
                     context["user_sso_email"] = str(cudReq.get_email())
@@ -405,7 +405,7 @@ def adduser(request):
                     cud_authenticator = settings.get('main:cud_proxy.host')
                     context["user_sso_id"] = request.POST.get("user_sso_id")                 
                     context["user_role"] = request.POST.get("user_role")                    
-                    cudReq = CUDRequest(cud_proxy_host=cud_authenticator, sso_id=context["user_sso_id"])            
+                    cudReq = CUDRequest(cud_proxy_host=cud_authenticator, filter={'sso_username':context["user_sso_id"]})            
                     context["user_sso_name"]  = str(cudReq.get_fullName())
                     context["user_sso_email"] = str(cudReq.get_email())
                     # Set the role to default to 'user'

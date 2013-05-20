@@ -14,11 +14,25 @@
 <%def name="footer()">
 </%def>
 
+
+<div class="panel" id="results-metadata">
+<div class="num-results"><span class="important-number">${ numFound} </span> results</div>
+
+<ul class="current-facets">
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">keyword</span> <span class="facet-value">searchterm</span></a></li>
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
+</ul>
+
+</div>
+
+
 <div id="results">
 <%include file="/search_response_display.html"/>
 </div>
 
-<div id="facet_wrapper">
+<div class="panel" id="facet_wrapper">
 <% count = 0 %>
 <div id="facet_container">
 % if returned_facets:

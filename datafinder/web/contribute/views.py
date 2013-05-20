@@ -15,6 +15,11 @@ from datafinder.config import settings
 from datafinder.lib.HTTP_request import HTTPRequest
 from datafinder.lib import SparqlQueryTestCase
 from datafinder.lib.CUD_request import CUDRequest
+import json as simplejson
+import xml.etree.ElementTree as ET
+import xml
+from datafinder.config import settings
+from datafinder.lib.broadcast import BroadcastToRedis
 
 try: 
     import simplejson as json
@@ -81,8 +86,8 @@ def contribute(request):
                 
                 literals[DCTERMS['status']]='seeking_approval'
                 
-                cud_authenticator = settings.get('main:cud_proxy.host')
-                cudReq = CUDRequest(cud_proxy_host=cud_authenticator, sso_id=request.session['DF_USER_SSO_ID'])
+#               cud_authenticator = settings.get('main:cud_proxy.host')
+#               cudReq = CUDRequest(cud_proxy_host=cud_authenticator, {'sso_username':request.session['DF_USER_SSO_ID']})
                 literals[OXDS['depositor']] = request.session['DF_USER_SSO_ID']
                 #context["author_firstname_1"]=request.GET['author_firstname_1']
                 
@@ -90,13 +95,17 @@ def contribute(request):
                 #context["author_role_1"]=request.GET['author_role_1']
                 #context["author_affiliation_1"]=request.GET['author_affiliation_1']
                 #context["record_contact"]=request.GET['record_contact']  
-                literals[OXDS['isDigital']]=''#request.POST['data-format']
+                
+                literals[OXDS['contact']] = request.POST['record_contact']
+                literals[OXDS['isEmbargoed']] = 'False'
+                if request.POST.has_key('data-format'):
+                    literals[OXDS['isDigital']]=request.POST['data-format']
                 if literals[OXDS['isDigital']] == "yes":
-                    context[OXDS['DataLocation']]=request.POST['digital_location']
-                    context[DCTERMS['type']]=request.POST['digital_resource_type']      
-                    context[OXDS['Filesize']]=request.POST['digital_filesize']
-                    context[DCTERMS['format']]=request.POST['digital_format']
-                    context[OXDS['currentversion']]=request.POST['digital_version']
+                    literals[OXDS['DataLocation']]=request.POST['digital_location']
+                    literals[DCTERMS['type']]=request.POST['digital_resource_type']      
+                    literals[OXDS['Filesize']]=request.POST['digital_filesize']
+                    literals[DCTERMS['format']]=request.POST['digital_format']
+                    literals[OXDS['currentversion']]=request.POST['digital_version']
                     context[DCTERMS['publisher']]=request.POST['digital_publisher']
                     #context["digital_publish_year"]=request.POST['digital_publish_year']
                     #context["whereis_non_digital"]=request.POST['whereis_non_digital']
@@ -194,7 +203,12 @@ def contribute(request):
                 files =  [("file", manifest_name, df_namifest, "application/rdf+xml")]            
                 (reqtype, reqdata) = SparqlQueryTestCase.encode_multipart_formdata(fields, files)                
                 (resp,respdata) = datastore.doHTTP_POST(reqdata, reqtype, resource="/DataFinder/datasets/" + identifier +"/")
-           
+                
+                silo = settings.get("main:mainsilo")
+                #solr_conn, b = settings.getSolrConnection()
+                b = BroadcastToRedis('localhost', 'silochanges')
+                b.creation(silo, identifier, ident=request.session['DF_USER_SSO_ID'])
+                
                 #Submit the main manifest file which as the see also
                 fields=[]       
                 main_manifest = open(main_manifest_filename).read()         
@@ -249,5 +263,79 @@ def projects(request):
        #     return render_to_response('contribute.html', context, context_instance=RequestContext(request))                                       
    except Exception, e:
         raise
+    
+
+
+def languages(request):
+   try:
+        # A user needs to be authenticated  to be able to contribute a record  the DataFinder                          
+        # Test if the user is now a university authenticated user
+        if 'DF_USER_SSO_ID' not in request.session:                          
+            return redirect("/login?redirectPath=contribute")    
         
+        #context = {}
+        languages = []
+        tmp=[]
+        languages_xml_file_path = settings.get("main:granary.languages_path")
+        
+        languages_xml_filename = os.path.join(languages_xml_file_path, 'languages-iso-639.xml')
+      
+        tree = ET.parse(languages_xml_filename)
+        for elem in tree.iter():
+            if request.GET['lang'].lower() in elem.text.lower():
+                if elem.text[:len(request.GET['lang'])].lower() == request.GET['lang'].lower() :
+                    languages.append(elem.text)
+                else:
+                    tmp.append(elem.text)
+        languages.sort();
+        tmp.sort();
+
+        languages = languages + tmp;
+        
+        return HttpResponse(json.dumps(languages), mimetype="application/json")
+            #return render_to_response('contribute.html', context, context_instance=RequestContext(request))  
+       # elif http_method == "POST":             
+       #     return render_to_response('contribute.html', context, context_instance=RequestContext(request))                                       
+   except Exception, e:
+        raise
+        
+        
+def peopleFromCUD(request):
+   try:
+        # A user needs to be authenticated  to be able to contribute a record  the DataFinder                          
+        # Test if the user is now a university authenticated user
+        if 'DF_USER_SSO_ID' not in request.session:                          
+            return redirect("/login?redirectPath=contribute")    
+
+        http_method = request.environ['REQUEST_METHOD'] 
+        context = {}
+        if http_method == "POST":
+            cud_authenticator = settings.get('main:cud_proxy.host')
+            data_filter = {}
+            if request.POST.has_key('lastname') and request.POST['lastname'] != "": 
+                data_filter['lastname']= request.POST['lastname']
+            if request.POST.has_key('firstname') and request.POST['firstname'] != "":
+                data_filter['firstname']= request.POST['firstname']
+            if request.POST.has_key('middlename') and request.POST['middlename'] != "":
+                data_filter['middlename']= request.POST['middlename']
+            if request.POST.has_key('email') and request.POST['email'] != "":
+                data_filter['oxford_email']= request.POST['email']
+
+            cudReq = CUDRequest(cud_proxy_host=cud_authenticator,filter=data_filter)
+            
+
+            context["firstname"]  =  sorted(set(cudReq.get_filter_values('firstname')))
+            #str(cudReq.get_filter_values('sso_username'))
+            context["lastname"]  = sorted(set(cudReq.get_filter_values('lastname')))
+            context["middlename"]  = sorted(set(cudReq.get_filter_values('middlename')))
+            context["email"]  = sorted(set(cudReq.get_filter_values('oxford_email')))            
+            
+        return HttpResponse(json.dumps(context), mimetype="application/json")
+            #return render_to_response('contribute.html', context, context_instance=RequestContext(request))  
+       # elif http_method == "POST":             
+       #     return render_to_response('contribute.html', context, context_instance=RequestContext(request))                                       
+   except Exception, e:
+        raise
+        
+
     

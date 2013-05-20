@@ -42,7 +42,7 @@ class DFAuthSession():
                 df_user_sso_id = os.environ.get('DF_REMOTE_USER')
                 
             cud_authenticator = settings.get('main:cud_proxy.host')
-            cudReq = CUDRequest(cud_proxy_host=cud_authenticator, sso_id=df_user_sso_id)
+            cudReq = CUDRequest(cud_proxy_host=cud_authenticator,filter= {'sso_username':df_user_sso_id})
             
             user_logged_in_name = str(cudReq.get_fullName())
             user_email = str(cudReq.get_email())
