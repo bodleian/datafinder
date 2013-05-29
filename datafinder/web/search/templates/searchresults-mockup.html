@@ -5,8 +5,9 @@
 </%def>
 
 
-
-
+% if search and q:
+  <link rel="alternate" type="application/atom+xml" href="${add_finder_facet}&format=atom&rows=rows&sort=score+desc" title="Search results for '${q}'"/>
+% endif
 
 
 <div id="results"  class="results-block" >
@@ -72,58 +73,36 @@ items per page
 
 </div>
 
-
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-
-
+<% cnt = 0 %>
+%   for doc_index in xrange(len(docs)):
+	<% 
+	cnt += 1 
+	isSilo = False
+	if 'type' in docs[doc_index] and docs[doc_index]['type']:
+	    if not isinstance(docs[doc_index]['type'], list):
+	        docs[doc_index]['type'] = [docs[doc_index]['type']]
+	    for typ in docs[doc_index]['type']:
+	        if typ.lower() == 'silo':
+	            isSilo = True
+	%>
+	<!--
+	<div class="search-result">
+	<h2 class="record-title"><a href="#">Record title</a></h2>
+	<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+	<div class="record-short-desc"> short description of the record</div>
+	</div> -->
+	
+	% if isSilo == False:
+		<div class="search-result">
+			<!-- <div> ${search} </div> -->
+			<h2 class="record-title"><a href="#">${docs[doc_index]['id']}</a></h2>
+			<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+			% if 'description' in docs[doc_index]:
+				<div class="record-short-desc"> ${docs[doc_index]['description'][0]}</div>
+			% endif
+		</div>
+	% endif
+%   endfor
 
 
 <div class="results-footer" >
@@ -168,10 +147,10 @@ items per page
 
 
 <div   id="results-metadata">
-<div class="num-results"><span class="important-number">4839 </span> results</div>
+<div class="num-results"><span class="important-number">${numFound} </span> results</div>
 
 <ul class="current-facets">
-    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">keyword</span> <span class="facet-value">searchterm</span></a></li>
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">keyword</span> <span class="facet-value"> ${q |n} </span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>

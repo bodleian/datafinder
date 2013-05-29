@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.template import RequestContext
 import logging,os, sys
 import rdflib
-from rdflib import Literal
+from rdflib import Literal, URIRef
 import datafinder.util.serializers
 from datafinder.namespaces import OXDS, DCTERMS, RDF, FOAF, FUND, bind_namespaces, FUND
 from pwd import  getpwnam 
@@ -65,7 +65,9 @@ def contribute(request):
             return render_to_response('contribute.html', context, context_instance=RequestContext(request))  
         elif http_method == "POST":             
             if request.POST.has_key('record_title'):
-                             
+                BASE = settings.get("main:manifest.about")
+                identifier = request.POST['record_title']    
+                subject = URIRef(BASE+identifier)     
                 literals[DCTERMS['title']]=request.POST['record_title']
                 literals[DCTERMS['alternative']]=request.POST['alt_title']
                 #context["deposit_data_file_upload"]=request.POST['deposit_data_file_upload']
@@ -97,7 +99,7 @@ def contribute(request):
                 #context["record_contact"]=request.GET['record_contact']  
                 
                 literals[OXDS['contact']] = request.POST['record_contact']
-                literals[OXDS['isEmbargoed']] = 'False'
+                #literals[OXDS['isEmbargoed']] = 'False'
                 if request.POST.has_key('data-format'):
                     literals[OXDS['isDigital']]=request.POST['data-format']
                 if literals[OXDS['isDigital']] == "yes":
@@ -173,10 +175,10 @@ def contribute(request):
                 #    pass
                 
                 for key, value in literals.items():
-                    manifest.add((OXDS[literals[DCTERMS['title']]], key, Literal(value)))
+                    manifest.add((subject, key, Literal(value)))
                 
                 for key, res_uri in resources.items():
-                    manifest.add(((OXDS[literals[DCTERMS['title']]], key, res_uri)))
+                    manifest.add((subject, key, res_uri))
                     
                 with open(manifest_filename, 'w') as f:
                     manifest.serialize(f, 'better-pretty-xml', base=manifest_filename)
@@ -192,7 +194,7 @@ def contribute(request):
                 password = settings.get("main:granary.uri_root_pass") 
                 datastore = HTTPRequest(endpointhost=settings.get("main:granary.host"))       
                 datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password)
-                identifier = literals[DCTERMS['title']]
+             
                 #(reqtype, reqdata) = SparqlQueryTestCase.encode_multipart_formdata([], [])
                 # Create a dataset
                 #(resp,respdata) = datastore.doHTTP_POST(reqdata, reqtype, resource="/DataFinder/datasets/" + identifier)

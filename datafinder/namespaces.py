@@ -42,4 +42,5 @@ for name, value in locals().items():
 def bind_namespaces(graph):
     for prefix, uri in namespaces.iteritems():
         graph.bind(prefix, uri)
+    
     return graph

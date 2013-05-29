@@ -34,9 +34,9 @@ from rdflib import URIRef
 import simplejson
 from collections import defaultdict
 from uuid import uuid4
-import json
+import json, os
 from solr import SolrConnection
-
+from pwd import  getpwnam 
 from HTTP_request import HTTPRequest
 import logging
 
@@ -57,15 +57,16 @@ def gather_document(silo_name, uuid, item_id,  graph):
     document['uuid'].append(uuid)
     document['id'].append(item_id)
     document['silo'].append(silo_name)
+    #document['description'].append(silo_name)
     #for (_,p,o) in graph.triples((URIRef(item.uri), None, None)):
     for (_,p,o) in graph.triples((None , None, None)):
         if str(p) in solr_fields_mapping:
             field = solr_fields_mapping[str(p)]
-            if field == "aggregatedResource":
-                if '/datasets/' in o:
-                    fn = unicode(o).split('/datasets/')
-                    if len(fn) == 2 and fn[1]:
-                        document['filename'].append(unicode(fn[1]).encode("utf-8"))
+            #if field == "aggregatedResource":
+            #    if '/datasets/' in o:
+            #        fn = unicode(o).split('/datasets/')
+            #        if len(fn) == 2 and fn[1]:
+            #            document['filename'].append(unicode(fn[1]).encode("utf-8"))
             if field == "embargoedUntilDate":
                 ans = u"%sZ"%unicode(o).split('.')[0]
                 document[field].append(unicode(ans).encode("utf-8"))
@@ -164,11 +165,19 @@ if __name__ == "__main__":
                 (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo_name +"/datasets/" + itemid +"/manifest.rdf")
                 graph=rdflib.Graph()
                 try:
+                    with open("temp_manifest.rdf", 'w') as f:
+                        f.write(respdata)
+                        f.close()
+                        os.chown("temp_manifest.rdf", getpwnam('www-data').pw_uid, getpwnam('www-data').pw_gid)
                     with open("temp_manifest.rdf", 'r') as f:
                         graph.parse(f, base="temp_manifest.rdf")
+                        f.close()
                 except IOError, e:
+                    logger.info("IOERROR")
                     pass
                 solr_doc = gather_document(silo_name, uuid, itemid, graph)
+                logger.info('Solr_document = ')
+                logger.info(solr_doc)
                 try:
                     solr.add(_commit=False, **solr_doc)
                 except Exception, e :

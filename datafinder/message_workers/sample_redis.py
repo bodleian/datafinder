@@ -22,11 +22,11 @@ def gather_document(silo_name, uuid, item_id,  graph):
     for (_,p,o) in graph.triples((None , None, None)):
         if str(p) in solr_fields_mapping:
             field = solr_fields_mapping[str(p)]
-            if field == "aggregatedResource":
-                if '/datasets/' in o:
-                    fn = unicode(o).split('/datasets/')
-                    if len(fn) == 2 and fn[1]:
-                        document['filename'].append(unicode(fn[1]).encode("utf-8"))
+            #if field == "aggregatedResource":
+            #    if '/datasets/' in o:
+            #        fn = unicode(o).split('/datasets/')
+            #        if len(fn) == 2 and fn[1]:
+            #           document['filename'].append(unicode(fn[1]).encode("utf-8"))
             if field == "embargoedUntilDate":
                 ans = u"%sZ"%unicode(o).split('.')[0]
                 document[field].append(unicode(ans).encode("utf-8"))
@@ -38,7 +38,7 @@ def gather_document(silo_name, uuid, item_id,  graph):
     return document
 
 if __name__ == "__main__":
-    item_id ='monday'
+    item_id ='wed1'
     silo_name = 'DataFinder'
     #r = Redis()
     c = Config()
@@ -86,6 +86,7 @@ if __name__ == "__main__":
     
     solr = SolrConnection(c.get(worker_section, "solrurl"))
     solr_doc = gather_document('DataFinder' , uuid , item_id,  graph )
+    #solr_doc = {'identifier': ['wed1'], 'aggregatedResource': ['http://datafinder-d2v.bodleian.ox.ac.uk/DataFinder/datasets/wed1/df_manifest_wed1.rdf'], 'mediator': ['admin'], 'text': ['yes', '', 'zool0982', '', '', 'http://vocab.ox.ac.uk/projectfunding#', '', 'seeking_approval', '', ''], 'embargoedUntilDate': ['2083-05-29T07:54:46Z'], 'alternative': ['wed1title'], 'id': ['wed1'], 'subject': [''], 'rights': ['http://ora.ouls.ox.ac.uk/objects/uuid%3A1d00eebb-8fed-46ad-8e38-45dbdb4b224c'], 'publisher': ['Bodleian Libraries, University of Oxford'], 'license': ['CC0 1.0 Universal (CC0 1.0). See http://creativecommons.org/publicdomain/zero/1.0/legalcode'], 'uuid': [u'51b51cd8e78f4da2951e288078cf3821'], 'language': [''], 'title': ['wed1'], 'embargoStatus': ['False'], 'description': ['wed1desc'], 'format': [''], 'modified': ['2013-05-29 07:54:46.606822'], 'filename': ['wed1/df_manifest_wed1.rdf'], 'currentVersion': ['2'], 'created': ['2013-05-29 07:54:46.360052'], 'silo': ['DataFinder'], 'type': ['', 'http://vocab.ox.ac.uk/dataset/schema#DataSet']}
     print "solr_doc = gather_document('DataFinder' ,"+ str(uuid)+" , "+ str(item_id)+" , "+str(graph)+" )"
     print repr(solr_doc)
     solr.add(_commit=True, **solr_doc)
