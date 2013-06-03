@@ -1,6 +1,8 @@
 ##=============================================================================
 <%def name="pagination()">
+
     % if len(permissible_offsets) > 0:
+    <h2> I am inside 'if' </h2>
 <div class="paginated_results">
         <%
             jump = rows*10
@@ -64,7 +66,7 @@
 ##=============================================================================
 <%def name="sortoptions()">
 % if docs and add_facet:
-<div class="searchright">
+##<div class="searchright">
 <span id="searchordering">Sort by: 
 	
 %	if (sort == "score desc"):
@@ -129,7 +131,7 @@
 
 %	endif
 </span>
-</div>
+##</div>
 % endif
 ## end sortoptions()
 </%def>

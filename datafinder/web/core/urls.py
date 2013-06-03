@@ -4,6 +4,7 @@ from django.conf import settings
 import views
 urlpatterns = patterns('',
     url(r'^home/$',  views.home),
+    url(r'^browse/$', views.browse),
     url(r'^about/$',  views.about),
     url(r'^help/$',  views.help),
     url(r'^contact/$',  views.contact),

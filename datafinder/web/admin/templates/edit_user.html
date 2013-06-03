@@ -22,7 +22,7 @@
 	              <div class="two columns ">    role:  </div>
 	              <div class="four columns ">
 	                  <select id="user_role" name="user_role">
-			             % for role in ("user","admin","proxy","reviewer"):
+			             % for role in ("user","admin","reviewer"):
 			             	%  if role == user_role:
 			                  <option  selected value="${role}"> ${role}</option>
 			                % else:

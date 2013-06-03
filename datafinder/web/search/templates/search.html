@@ -35,8 +35,9 @@
 <div class="panel" id="facet_wrapper">
 <% count = 0 %>
 <div id="facet_container">
-% if returned_facets:
+
 <div class="facet_title">Filter results</div>
+% if returned_facets:
 % for facet in returned_facets:
 <% count = count + 1 %>
 % if returned_facets[facet] and len(returned_facets[facet]) > 1:
@@ -65,8 +66,8 @@ else:
 </div>
 % endif
 % endfor
-</div>
 % endif
+</div>
 </div>
 </div>
 

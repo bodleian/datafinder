@@ -385,6 +385,46 @@
 	});
 });
 
+//search 
+
+	function fhAdjust(){
+		//Make sure facets do not stick beneath footer
+		$navh = $('#facet_wrapper').height();
+		$navh = $navh + 211;
+		$wrah = $('#wrapper').height();
+		if ($navh > $wrah) {
+			$('#wrapper').css("height", $navh + 100);
+		} else {
+			$mainh = $('#main').height();
+			$mainh = $mainh + 91;
+			if ($mainh > $navh){
+				$('#wrapper').css("height", $mainh + 100);
+			} else {
+				$('#wrapper').css("height", $navh + 100);
+			}
+		}
+	}
+	
+	//function bindItem(ind){  
+		//$('#fh' + ind).click(function(event) {
+		    $('a[id^="fh"]').click(function(event) {
+			event.preventDefault();
+			alert("i am here");
+			if ($('#fl' + ind).hasClass("closed")){
+			$('#fl' + ind).show();
+			$('#fl' + ind).removeClass("closed");
+			$('#fh' + ind).css("background-image", "url('/static/styles/images/fminus.png')");
+			$('#fs' + ind).css("background-color", "#A79D96");
+			} else {
+			$('#fl' + ind).hide();
+			$('#fl' + ind).addClass("closed");
+			$('#fh' + ind).css("background-image", "url('/static/styles/images/fplus.png')");
+			$('#fs' + ind).css("background-color", "#999");
+			}
+			fhAdjust();
+		});
+	//}
+
 
 </script>
 
