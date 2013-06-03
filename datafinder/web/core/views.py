@@ -16,6 +16,18 @@ def home(request):
        }    
     return render_to_response('home.html',context, context_instance=RequestContext(request))
  
+
+def browse(request):
+    context = {    
+        'silo_name':"",
+        'ident' : "",
+        'id':"",
+        'path' :"",
+        'q':"",
+        'typ':"",
+       }    
+    return render_to_response('browse.html',context, context_instance=RequestContext(request))
+
 def accessibility(request):
     context = { 
         'silo_name':"",

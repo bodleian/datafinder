@@ -1,171 +1,149 @@
 # -*- coding: utf-8 -*-
 <%inherit file="/newbase.html" />
+<%namespace name="options" file="/search_response_options.html" />
+
 <%def name="head_tags()">
   <title> DataFinder </title>
 </%def>
 
 
+% if search and q:
+  <link rel="alternate" type="application/atom+xml" href="${add_finder_facet}&format=atom&rows=rows&sort=score+desc" title="Search results for '${q}'"/>
+% endif
 
-
-
+%if numFound and numFound > 0:
+<div class="results-block">
+  ${options.pagination()}
+</div>
+% endif
 
 <div id="results"  class="results-block" >
 
-
-
 <div class="results-header" >
 
-<div class="panel  pagination">
-     
-    <span class="paging-info" >page 3 of 17 </span>
-     <ul class="pagelinks" >
-      <li><a class="icon first" href="#">first page</a></li>
-      <li><a class="icon prev" href="#">previous page</a></li>
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><span class="you-are-here">3</span></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><a href="#">6</a></li>
-      <li><a href="#">7</a></li>
-      <li><a class="icon next" href="#">next page</a></li>
-      <li><a class="icon last" href="#">last page</a></li>
-     </ul>
- 
- 
- 
-      <div class="items-per-page" >
-      items per page
+ % if numFound and numFound > 0: 
+	<div class="panel  pagination">	
+		  ${options.pagination()}   
+		    <span class="paging-info" >page 3 of 
+			    %   if (start+rows) > numFound:
+					${numFound}
+				%   else:
+					${start+rows}
+				%   endif 
+			</span>
+			
+			${options.pagination()}
+			
+			<!--
+		     <ul class="pagelinks" >
+		     <li><a href="#">previous</a></li>
+		    <li><a href="#">1</a></li>
+		    <li><a href="#">2</a></li>
+		    <li><span class="you-are-here">3</span></li>
+		    <li><a href="#">4</a></li>
+		    <li><a href="#">5</a></li>
+		    <li><a href="#">6</a></li>
+		    <li><a href="#">7</a></li>
+		     <li><a href="#">next</a></li>
+		     </ul>
+		 -->
+		 
+		items per page
+		 
+		      <ul class="items-per-page" >	
+			    <li><a href="#" class="select">25</a></li>
+			    <li><a href="#">50</a></li>
+			    <li><a href="#">100</a></li>
+			    <li><a href="#">200</a></li>	
+		     </ul>  
+		     
+	 </div>
 
-        <ul>
-    <li><a href="#" class="select">25</a></li>
-    <li><a href="#">50</a></li>
-    <li><a href="#">100</a></li>
-    <li><a href="#">200</a></li>
-
-     </ul>  
-     
- </div>
-  </div>
 
 
+	<div class="panel  sort-by"> 
+	  	${options.sortoptions()}
+	</div>
+% endif
 
 
- <div class="panel  sort-by"> 
+% if docs and add_facet:
+	<div class="panel link_to_this_search" >Link to these  results | 
+	<a class="results-link webpage" href="${add_facet}&format=html&sort=${sort}&rows=${rows}&start=${start}">
+	  This page</a>
+	<a class="results-link csv" href="${add_facet}&format=csv&sort=${sort}&rows=${rows}&start=${start}">CSV</a>
+	<a class="results-link json" href="${add_facet}&format=json&sort=${sort}&rows=${rows}&start=${start}">JSON</a>
+	</div>
+% endif
 
-<span id="searchordering">Sort by: 
+</div>
+
+
+
+<% cnt = 0 %>
+%   for doc_index in xrange(len(docs)):
+	<% 
+	cnt += 1 
+	isSilo = False
+	if 'type' in docs[doc_index] and docs[doc_index]['type']:
+	    if not isinstance(docs[doc_index]['type'], list):
+	        docs[doc_index]['type'] = [docs[doc_index]['type']]
+	    for typ in docs[doc_index]['type']:
+	        if typ.lower() == 'silo':
+	            isSilo = True
+	%>
+	<!--
+	<div class="search-result">
+	<h2 class="record-title"><a href="#">Record title</a></h2>
+	<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+	<div class="record-short-desc"> short description of the record</div>
+	</div> -->
 	
-
-<a class="desc" href="/search/detailed?q=data&type=all&truncate=450&start=0&sort=score+desc&rows=25">Relevance</a> 
-<a href="/search/detailed?q=data&type=all&truncate=450&sort=publicationDate+desc&rows=25&start=0" title="Date descending">Date </a>
-<a href="/search/detailed?q=data&type=all&truncate=450&sort=silo+desc&rows=25&start=0" title="Silo descending">Silo </a>
-</span>
-</div>
-
-
-
-
-<div class="panel link_to_this_search" >Link to these  results | 
-<a class="results-link webpage" href="/search/detailed?q=data&type=all&truncate=450&format=html&sort=score desc&rows=25&start=0">
-  This page</a>
-<a class="results-link csv" href="/search/detailed?q=data&type=all&truncate=450&format=csv&sort=score desc&rows=25&start=0">CSV</a>
-<a class="results-link json" href="/search/detailed?q=data&type=all&truncate=450&format=json&sort=score desc&rows=25&start=0">JSON</a>
-</div>
-
-
-</div>
-
-
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-<div class="search-result">
-<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
-
-<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
-<div class="record-short-desc"> short description of the record</div>
-
-</div>
-
-
-
+	% if isSilo == False:
+		<div class="search-result">
+			<!-- <div> ${search} </div> -->
+			<h2 class="record-title"><a href="#">${docs[doc_index]['id']}</a></h2>
+			<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+			% if 'description' in docs[doc_index]:
+				<div class="record-short-desc"> ${docs[doc_index]['description'][0]}</div>
+			% endif
+		</div>
+	% endif
+%   endfor
 
 
 <div class="results-footer" >
-
-<div class="panel  pagination">
-     
-
-     <span class="paging-info" >page 3 of 17 </span>
-     <ul class="pagelinks" >
-      <li><a class="icon first" href="#">first page</a></li>
-      <li><a class="icon prev" href="#">previous page</a></li>
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><span class="you-are-here">3</span></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><a href="#">6</a></li>
-      <li><a href="#">7</a></li>
-      <li><a class="icon next" href="#">next page</a></li>
-      <li><a class="icon last" href="#">last page</a></li>
-     </ul>
- 
- 
- 
-      <div class="items-per-page" >
-      items per page
-
-        <ul>
-    <li><a href="#" class="select">25</a></li>
-    <li><a href="#">50</a></li>
-    <li><a href="#">100</a></li>
-    <li><a href="#">200</a></li>
-
-     </ul>  
-     
- </div>     
- </div>
-
-
+	<div class="panel  pagination">
+	    <span class="paging-info" >page 3 of 
+			    %   if (start+rows) > numFound:
+					${numFound}
+				%   else:
+					${start+rows}
+				%   endif 
+		</span>
+	    <ul class="pagelinks" >
+		    <li><a href="#">previous</a></li>
+		    <li><a href="#">1</a></li>
+		    <li><a href="#">2</a></li>
+		    <li><span class="you-are-here">3</span></li>
+		    <li><a href="#">4</a></li>
+		    <li><a href="#">5</a></li>
+		    <li><a href="#">6</a></li>
+		    <li><a href="#">7</a></li>
+		    <li><a href="#">next</a></li>
+	     </ul>
+	 
+	    <div class="items-per-page" >
+	      items per page
+	        <ul>
+			    <li><a href="#" class="select">25</a></li>
+			    <li><a href="#">50</a></li>
+			    <li><a href="#">100</a></li>
+			    <li><a href="#">200</a></li>
+	        </ul>      
+	 	</div>  
+	 	   
+	 </div>
 </div>
 
 
@@ -173,13 +151,11 @@
 </div>
 
 <div id="results-controls"  class="results-block" >
-
-
-<div   class="panel results-metadata">
-<div class="num-results"><span class="important-number">4839 </span> results</div>
+<div   id="results-metadata">
+<div class="num-results"><span class="important-number">${numFound} </span> results</div>
 
 <ul class="current-facets">
-    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">keyword</span> <span class="facet-value">searchterm</span></a></li>
+    <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">keyword</span> <span class="facet-value"> ${q |n} </span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
@@ -193,39 +169,105 @@
 <h2>refine results</h2>
 
 <form>
-
+<!--
 <div class="label-field-pair">
 <input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
 </div>
+-->
 
-<div class="label-field-pair">
-<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
+
+<div class="panel" id="facet_wrapper">
+<% count = 0 %>
+<div id="facet_container">
+
+<div class="facet_title">Filter results</div>
+% if returned_facets:
+% for facet in returned_facets:
+<% count = count + 1 %>
+% if returned_facets[facet] and len(returned_facets[facet]) > 1:
+<div class="facet_results">
+<div id="fs${count}" class="subheading ><a id="fh${count}" href="#" >${field_names[facet]}</a></div>
+<div id="fl${count}" class="facetlist ">
+<ul>
+%     for result,value in returned_facets[facet]:
+<li><span class="label">
+<%
+from urllib import quote
+try:
+   res = quote(result)
+except:
+   res = result
+if len(result) > 40:
+    res_label = result[:40] + '...'
+else:
+    res_label = result
+%>
+<a href="${add_facet + u'&filter%s="%s"&rows=%d&sort=%s' % (facet, res, rows, sort)}" title="${result}">${res_label}</a></span>
+<span class="value">(${value})</span></li>
+%     endfor
+</ul>
 </div>
-
-<div class="label-field-pair">
-<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
 </div>
-
-<div class="label-field-pair">
-<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
+% endif
+% endfor
+% endif
 </div>
-
-<div class="label-field-pair">
-<input type="checkbox" name="result-filter" value="access-rights" id="filter-accessrights"><label for="accessrights">access rights</label>
-</div>
-
-
-
-
+</div
 
 </form>
-
-
-
+</div>
 </div>
 
 
+<!-- <![if !IE]> -->
+<![if lte IE 8]>
+<script type="text/javascript">
+	$(document).ready(function() {
+	
+	function fhAdjust(){
+		//Make sure facets do not stick beneath footer
+		$navh = $('#facet_wrapper').height();
+		$navh = $navh + 211;
+		$wrah = $('#wrapper').height();
+		if ($navh > $wrah) {
+			$('#wrapper').css("height", $navh + 100);
+		} else {
+			$mainh = $('#main').height();
+			$mainh = $mainh + 91;
+			if ($mainh > $navh){
+				$('#wrapper').css("height", $mainh + 100);
+			} else {
+				$('#wrapper').css("height", $navh + 100);
+			}
+		}
+	}
+	
+	function bindItem(ind){
+		$('#fh' + ind).click(function(event) {
+			event.preventDefault();
+			if ($('#fl' + ind).hasClass("closed")){
+			$('#fl' + ind).show();
+			$('#fl' + ind).removeClass("closed");
+			$('#fh' + ind).css("background-image", "url('/static/styles/images/fminus.png')");
+			$('#fs' + ind).css("background-color", "#A79D96");
+			} else {
+			$('#fl' + ind).hide();
+			$('#fl' + ind).addClass("closed");
+			$('#fh' + ind).css("background-image", "url('/static/styles/images/fplus.png')");
+			$('#fs' + ind).css("background-color", "#999");
+			}
+			fhAdjust();
+		});
+	}
 
+	for (i=1;i<=${count};i++){
+	//Facet Toggle
+	$('#fl'+i).hide();
+	$('#fl'+i).addClass("closed");
+	bindItem(i);
+	}
 
+});
+</script>
+<![endif]>
 
-</div>
