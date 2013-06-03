@@ -1,8 +1,11 @@
 body {
     
-    background: #ebf1f6 ;}
+    background: #ebf1f6 ;
     
-h1, h2, h3, h4, h5, h6
+    }
+    
+h1, h2, h3, h4, h5, h6,
+legend
 {
     color: #4c637e;
     font-family: "Trebuchet MS", Helvetica, sans-serif ;
@@ -176,6 +179,21 @@ textarea
 
 }
  
+ /* resize some form elements to be smaller */
+div.label-field-pair.medium
+ {
+   
+   width: 20em;
+   
+ } 
+ /* resize some form elements to be very small */
+
+ {
+   
+   width: 20em;
+   
+ } 
+ 
  div.label-field-pair {
      
      clear: both;
@@ -196,11 +214,28 @@ textarea
  
   div.radio-set  {
      
-     border: 1px solid #ccc;
+   /*  border: 1px solid #ccc;
+     */
      clear: both;
      padding: 10px;
  }
  
+ 
+ div.deposit-data {
+   
+   border: none;
+ }
+ 
+ div.radio {
+   
+   
+   clear: none;
+   float: left;
+   margin-right: 10px;
+   width: 45%;
+   
+   
+ }
  div.radio label {
      
  }
@@ -210,21 +245,42 @@ textarea
           margin: 0px 10px;
 
 
+
      }
  
- #mainContent #mainContent form  legend{
-    
-    color: #555;
-    font-size: 1.4em;
+  fieldset legend{
+        background-color: #ebf1f6 ;
+
+    border-bottom: 1px solid #c5d4e3;
+    display: block;
+    font-size: 1.8em;
+    padding: 0.2em;
+    width: 100%;
         
 }
 
 #mainContent form  fieldset{
-    
-    
-    margin: 3em 0px;    
+  background-color: #f7fafd ;
+
+    border: 1px solid #ebf1f6;
+    margin: 3em 0px;  
+    padding: 1em ;  
     
 }
+
+
+#mainContent form  fieldset div,
+#mainContent form  fieldset input,
+#mainContent form  fieldset label,
+#mainContent form  fieldset p {
+   
+   /* 
+   hide all contents of fieldsets except for legneds, for testing hide-show appearace
+display: none;   
+    */
+}
+
+
 
 
 #mainContent form  label{
@@ -292,6 +348,96 @@ display: block;
      
  }
  
+ /* make certain text fields smaller and inline  */
+ 
+  #mainContent form  .label-field-pair.stacked-inline
+{
+   
+   
+   clear: none;
+   margin: 0px 5px 10px 0px;
+   float: left;
+   width: 24%;
+   
+ }
+ 
+   #mainContent form  .label-field-pair.stacked-inline-wide
+{
+   
+   clear: none;
+   margin: 0px 5px 10px 10px;
+   float: left;
+   width: 69%;
+   
+ }
+ 
+ 
+   form #funding-information .label-field-pair.inline-inline {
+    clear: none;
+    float: left;
+    width: 48%;
+   }
+   
+   
+   form #funding-information .label-field-pair.inline-inline label,
+   form #funding-information .label-field-pair.inline-inline input
+{
+   
+    clear: none;
+    margin: 0px 5px 10px 0px;
+    float: left;
+    width: 48%;
+   
+ }
+ 
+
+
+ 
+ 
+ #mainContent form .label-field-pair.full-width {
+   
+   clear: both;
+   width: 100%;
+ }
+ 
+  #mainContent form .label-field-pair.full-width .url {
+   
+   width: 60%;
+ }
+
+ 
+ #mainContent form fieldset div.form-button
+  {
+   
+   clear: both;
+
+   
+ }
+ 
+  /* make certain label/input pairs smaller and inline, but still  a stcked block  as a pair */
+
+ 
+ #mainContent form  .label-field-pair.inline-stacked label,
+  #mainContent form  .label-field-pair.inline-stacked input {
+   
+      clear: none;
+   margin: 0px 5px 10px 0px;
+   float: left;
+   width: 42%;
+   
+ }
+ 
+  
+ #mainContent form  .label-field-pair.inline-stacked label {
+   
+
+   width: 24%;
+   
+ }
+ 
+ 
+ 
+ /*  form styling ends   */
   
   /* header styling */
   
@@ -511,9 +657,9 @@ ul.user-options li a {
 background: #eef3f9 url("../images/bg/panel-bg.png") repeat-x bottom left;
 border: solid 1px #d2e0e8;
 border-bottom: solid 3px #d2e0e8;
-  border-radius: 3px;
--webkit-border-radius: 3px;
--moz-border-radius: 3px;
+  border-radius:12px;
+-webkit-border-radius: 1px;
+-moz-border-radius: 1px;
 margin: 0 0 12px 0;
 padding: 0px;
 
@@ -663,12 +809,17 @@ general style for clearing after floats
 
 /* pagination */
 
+
+
+
+
 .pagination ul,
 .pagination li,
 .pagination span,
 .pagination a{
   
   display: inline;
+  margin: 0px;
   
 }
 
@@ -676,12 +827,92 @@ general style for clearing after floats
     color: #002147;
     font-family: "Trebuchet MS", Helvetica, sans-serif ;
     font-size: 1.2em;
+    font-weight: bold;
   
 }
 
 
+.pagination a.icon {
 
-ul.items-per-page li a {
+background: transparent url("../images/icons/paging-arrows.png") repeat -2px -2px;
+display: inline-block;
+height: 24px;
+text-indent: -900000px;
+width: 16px;
+margin: 0px;
+
+}
+
+
+.pagination a.icon.prev {
+
+background-position: -2px -27px;
+
+
+}
+
+
+
+.pagination a.icon.next {
+
+background-position: -2px -52px;
+
+
+}
+
+.pagination a.icon.last {
+
+background-position: -2px -77px;
+
+
+}
+
+
+
+.pagination a.icon.first:hover,
+.pagination a.icon.first:focus {
+
+background-position: -2px -102px;
+
+}
+
+
+.pagination a.icon.prev:hover,
+.pagination a.icon.prev:focus
+ {
+
+background-position: -2px -127px;
+
+
+}
+
+
+.pagination a.icon.next:hover,
+.pagination a.icon.next:focus
+ {
+
+background-position: -2px -152px;
+
+
+}
+
+.pagination a.icon.last:hover,
+.pagination a.icon.last:focus {
+
+background-position: -2px -177px;
+
+
+}
+
+
+.items-per-page {
+
+float: right;
+
+}
+
+
+.items-per-page ul li a {
   
   background-color: #eff4f9;
   border: 1px solid #9ab7d9;
@@ -692,7 +923,7 @@ ul.items-per-page li a {
 }
 
 
-ul.items-per-page li a.select {
+.items-per-page ul li a.select {
   
   background-color: #9ab7d9;
 
@@ -700,13 +931,17 @@ ul.items-per-page li a.select {
   
   
 }
+.results-block ul.pagelinks ,
+ul.pagelinks {
 
+padding: 0px 0px 0 4em;
+}
 
 .pagelinks span,
 .pagelinks a {
   
-
-margin: 0px 0.5em;
+font-weight: bold;
+margin: 0px 0.2em;
 }
 
 .pagelinks .you-are-here {
@@ -828,7 +1063,7 @@ font-weight: bold;
 
 div.search-result .publish-date {
 
-
+font-style: italic;
 }
 
 div.search-result .record-short-desc {
@@ -933,10 +1168,8 @@ div.data-owner{
 
 .author {
   
-  border: 1px solid #d2e0e8;
-  border-radius: 3px;
--webkit-border-radius: 3px;
--moz-border-radius: 3px
+ 
+ 
   
 }
 
@@ -1289,6 +1522,13 @@ list-style: none;
 
 }
 
+ul.current-facets,
+.num-results {
+
+padding: 3px;
+
+}
+
 
 
 
@@ -1308,6 +1548,20 @@ display: inline;
 }
 
 
+.results-header .panel,
+.results-footer .panel {
+
+    height: 2.5em;
+  padding: 10px 0px 5px 5px;
+  
+
+  }
+  
+  
+.panel.pagination {
+
+padding: 5px;
+}
 
 #results-controls,
 #results-info
@@ -1325,6 +1579,9 @@ float: left;
   
     float: right;
   width: 60%;
+  
+
+
 }
 
 
@@ -1334,6 +1591,30 @@ float: left;
   width: 38%;
   
 }
+
+
+.sort-by a{
+  
+background: #dae7f4 url("../images/icons/sort-arrows.png")  repeat-y 0px 4px; 
+padding-left: 13px;
+margin-left: 8px;
+}
+
+.sort-by a.desc{
+  
+background-position:  0px -16px; 
+
+}
+
+
+.sort-by a.asc{
+  
+background-position:  0px -36px; 
+
+}
+
+
+
 
 /*
 #results-metadata,

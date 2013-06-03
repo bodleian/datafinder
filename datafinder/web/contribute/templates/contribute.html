@@ -21,8 +21,25 @@
          <label for="alt_title">If there is an alternative title, please enter it here:</label>    
    		 <input type="text" name="alt_title" id="alt_title"/>
     </div>   
+    
+    
+    
+              <div class="radio-set deposit-data" >
+	    	  <p>Do you wish to deposit the Data you are describing in DataBank now, or are you just creating a DataFinder record for the data?</p>
+	    	  <div class="label-field-pair radio" >
+		  		  	<input type ="radio" name="deposit_data" value="yes" id="deposit_data_yes" />
+		  		  	<label for="data_format_yes">Deposit data in DataBank</label>
+	  		  </div>
+		      <div class="label-field-pair radio" >
+		      		<input type ="radio" name="deposit_data" value="no" id="deposit_data_no" />
+		      		<label for="data_format_no">Create Record only</label>
+		      </div>
+		      
+		      <div class="clear-fix" ></div>
+		  </div>
+    
         
-    <!-- <fieldset id="deposit_data">    
+    <fieldset id="deposit_data">    
     	<legend>Data Deposit</legend>    
     	<label for="deposit_data_file_upload">files(s) to upload</label>
         <input type="file" name = "deposit_data_file_upload" id="deposit_data_file_upload" />
@@ -34,7 +51,11 @@
 		</div>
 		<div class="label-field-pair radio" >
 			<input  name="deposit_data_embargo_options" type ="radio" value="deposit_data_embargo_yes" id="deposit_data_embargo_yes" /><label for="deposit_data_embargo_yes" >yes</label>
-		</div>      
+			 		     
+
+		</div>     
+		
+		 <div class="clear-fix" ></div> 
 		<div class="label-field-pair" >   
 			<label for="deposit_data_embrago_release_date">release date</label>   
 		    <input type="text" name="deposit_data_embrago_release_date" id="deposit_data_embrago_release_date"/>
@@ -52,7 +73,7 @@
        		<textarea  name="deposit_data_embargo_reason"  id="deposit_data_embargo_reason" ></textarea>
        	</div>
        	</div>
-	</fieldset> -->
+	</fieldset>
     
    
     
@@ -77,46 +98,46 @@
             <input type="text" name="project_website" id="project_website"/>
         </div>
         <!-- <span id="exampleXtra"> </span> -->
-        <div class="label-field-pair ui-widget" ><label for="subject_areas">Subject Area(s)</label>
+        <div class="label-field-pair ui-widget inline-stacked" ><label for="subject_areas">Subject Area(s)</label>
             <input type="text" name="subject_areas" id="subject_areas"/>
         </div>
         
-        <div class="label-field-pair" >
+        <div class="label-field-pair inline-stacked" >
         	<label for="record_keywords">Keyword(s)</label>
         	<input type="text" name="record_keywords" id="record_keywords"/>
         </div>
         
-        <div class="label-field-pair" >
+        <div class="label-field-pair inline-stacked" >
             <label for="main_language">Main Language</label>
         	<input type="text" name="main_language" id="main_language"/>
         </div>               
     </fieldset>
     
     
-    <fieldset class="creators-contributors" >
+    <fieldset id="creators-contributors" >
 		<legend>Data creators &amp; contributors</legend>
 	    <p class="instruction">Please name the authors of the data being deposited</p>
-	    <div class="label-field-pair" >
+	    <div class="label-field-pair stacked-inline" >
 		    <label for="author_lastname_1">Last Name</label>           
 		    <input type="text" name="author_lastname_1" id="author_lastname_1"/>            
 	    </div>
-		<div class="label-field-pair" >
+		<div class="label-field-pair stacked-inline" >
     	    <label for="author_firstname_1">First Name</label>
 	        <input type="text" name="author_firstname_1" id="author_firstname_1"/>
 	    </div>
-	    <div class="label-field-pair" >
+	    <div class="label-field-pair stacked-inline" >
 		    <label for="author_middlename_1">Middle Name</label>           
 		    <input type="text" name="author_middlename_1" id="author_middlename_1"/>            
 	    </div>
-	    <div class="label-field-pair" >
+	    <div class="label-field-pair stacked-inline" >
 	        <label for="author_email_1">Email</label>
 	        <input type="text" name="author_email_1" id="author_email_1"/>
 		</div>	
-		<div class="label-field-pair" >
+		<div class="label-field-pair stacked-inline" >
 	        <label for="author_role_1">Role</label>
 	        <input type="text" name="author_role_1" id="author_role_1"/>
 		</div>	      
-	    <div class="label-field-pair" >
+	    <div class="label-field-pair stacked-inline" >
 	        <label for="author_affiliation_1">Affiliation</label>
 	        <input type="text" name="author_affiliation_1" id="author_affiliation_1"/>
 	    </div>
@@ -148,6 +169,8 @@
 		      		<input type ="radio" name="data-format" value="no" id="data_format_no" />
 		      		<label for="data_format_no">no</label>
 		      </div>
+		      		      <div class="clear-fix" ></div>
+
 		  </div>
 	</fieldset>
 	       
@@ -159,32 +182,32 @@
 		        	<input type="text" name="digital_location" id="digital_location"/>
 		        </div>
 		        
-		        <div class="label-field-pair" >
+		        <div class="label-field-pair inline-stacked" >
 		        	<label for="digital_resource_type">Resource type</label>
 		        	<input type="text" name="digital_resource_type" id="digital_resource_type"/>
 		        </div>
 		        
-		        <div class="label-field-pair" >
+		        <div class="label-field-pair inline-stacked" >
 		        	<label for="digital_filesize">Filesize</label>
 		        	<input type="text" name="digital_filesize" id="digital_filesize"/>
 		        </div>
 		            
-		        <div class="label-field-pair" >
+		        <div class="label-field-pair inline-stacked" >
 		        	<label for="digital_format">Format(s)</label>
 		        	<input type="text" name="digital_format" id="digital_format"/>
 		        </div>
 		        
-		        <div class="label-field-pair" >
+		        <div class="label-field-pair inline-stacked" >
 		        	<label for="digital_version">Version (if versioned)</label>
 		        	<input type="text" name="digital_version" id="digital_version"/>
 		        </div>
 		        
-		        <div class="label-field-pair" >
+		        <div class="label-field-pair inline-stacked" >
 		        	<label for="digital_publisher">Publisher</label>
 		        	<input type="text" name="digital_publisher" id="digital_publisher"/>
 		        </div>
 		        
-		       	<div class="label-field-pair" >
+		       	<div class="label-field-pair inline-stacked" >
 		       		<label for="digital_publish_year">Publication year</label>
 		       		<input type="text" name="digital_publish_year" id="digital_publish_year"/>
 		       	</div>
@@ -197,22 +220,28 @@
 	       		<label for="whereis_non_digital">Where is your data held</label>
 	       		<input type="text" name="whereis_non_digital" id="whereis_non_digital"/>
 	       </div>
-		   <div class="label-field-pair" >
+		   <div class="label-field-pair inline-stacked" >
 	            <label for="non_digital_format">Format</label>
 	            <input type="text" name="non_digital_format" id="non_digital_format"/>
 	       </div>	            
-	       <div class="label-field-pair" >
+	       <div class="label-field-pair inline-stacked" >
 	       		<label for="non_digital_publisher">Publisher</label>
 	            <input type="text" name="non_digital_publisher" id="non_digital_publisher"/>
 	       </div>	            
-	       <div class="label-field-pair" >
+	       <div class="label-field-pair inline-stacked" >
 	            <label for="non_digital_publish_year">Publication year</label>
 	            <input type="text" name="non_digital_publish_year" id="non_digital_publish_year"/>
 	       </div>	            
 	</fieldset>   
 	           	 
 	           	       
-	<fieldset><legend>Funding information</legend>	 
+	           	       
+	           	       
+	           	       
+	           	       
+	           	       
+	           	       
+	<fieldset id="funding-information" ><legend>Funding information</legend>	 
 	       <div class="radio-set" >
 	           <p>Is your data an output of a funded research?</p>
 	    	   <div class="label-field-pair radio" >
@@ -223,45 +252,77 @@
 	    	   		<input type ="radio" name="funded_research" value="no" id="funded_research_no" />
 	    	   		<label for="funded_research_no" >no</label>
 	    	   </div>
+	    	    <div class="clear-fix" ></div>
 		   </div>
-		   <div class="label-field-pair" >
+		   <div class="label-field-pair inline-inline" >
 		            <label for="funding_agency">Funding agency:</label>
 		            <input type="text" name="funding_agency" id="funding_agency"/>
 	       </div>
-	       <div class="label-field-pair" >
+	       <div class="label-field-pair inline-inline" >
 		            <label for="grant_number">Grant number:</label>
 		            <input type="text" name="grant_number" id="grant_number"/>
 	       </div>
 	</fieldset>
 	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
 	           
-	<fieldset>
+	<fieldset id="data_management">
 	       <legend>Related information</legend>	 	       
-	       <div class="label-field-pair" >
+	       <div class="label-field-pair full-width" >
 	       		<label for="data_management_plan_location">If you have a Data management Plan for the project for which this data was created, 
 	        	      please enter the location where it can be accessed here:</label>
 	            <input type="text" name="data_management_plan_location" id="data_management_plan_location"/>
 	       </div>	       
 		   <p class="instructions">If you are aware of any publications based  on this data, please add references to them here:</p>
-		   <div class="label-field-pair" >
+		   <div class="label-field-pair stacked-inline" >
 		   		<label for="publication_relationship_of_data_1">Relationship of Data</label>
+	         <!--
 	            <input type="text" name="publication_relationship_of_data_1" id="publication_relationship_of_data_1"/>
+	            -->
+	            	            <select  name="publication_relationship_of_data_1" id="publication_relationship_of_data_1">
+	            	            
+
+                                <option value="option-1">option 1</option>
+                                <option value="option-2">option 2</option>
+                                <option value="option-3">option 3</option>
+                                <option value="option-4">option 4</option>
+
+	            	            </select>
+
 	       </div>
-	       <div class="label-field-pair" >
+	       <div class="label-field-pair stacked-inline-wide" >
 	       		<label for="related_publication_url_1">URl of publication</label>
-	            <input type="text" name="related_publication_url_1" id="related_publication_url_1"/>
+	            <input type="text" class="url" name="related_publication_url_1" id="related_publication_url_1"/>
 	       </div>
 		   <div class="form-button">
 		   		<input type="submit" name="add_publication" id="add_publication" value="add publication"/>
 		   </div>
 	       <p class="instruction">If this data was based on any previous datasets, or is in some way related to other datasets, please add references to them here:</p>
-  		   <div class="label-field-pair" >
+  		   <div class="label-field-pair stacked-inline" >
   		   		<label for="dataset_relationship_of_data_1">Relationship of Data</label>
+  		   		<!--
+  		   		
 	            <input type="text" name="dataset_relationship_of_data_1" id="dataset_relationship_of_data_1"/>
+	            
+	            -->
+	            
+	            <select  type="text" name="dataset_relationship_of_data_1" id="dataset_relationship_of_data_1">
+	              <option value="option-1">option 1</option>
+                                <option value="option-2">option 2</option>
+                                <option value="option-3">option 3</option>
+                                <option value="option-4">option 4</option>
+
+	            </select>
 	       </div>
-	       <div class="label-field-pair" >
+	       <div class="label-field-pair stacked-inline-wide" >
 	       		<label for="dataset_related_url_1">URl of the dataset or DataFinder record for the dataset</label>
-	            <input type="text" name="dataset_related_url_1" id="dataset_related_url_1"/>
+	            <input type="text"  class="url" name="dataset_related_url_1" id="dataset_related_url_1"/>
 	       </div>
 	       <div class="form-button">
 	       		<input type="submit" name="add_dataset" id="add_dataset" value="add dataset"/>
@@ -293,7 +354,9 @@
 	       		</div>
 	       		<div class="label-field-pair radio" ><input  name="embargo-options" type ="radio" value="embargoed_until" id="embargoed_until" />
 	       			<label for="embargoed_until" >Embargoed until</label>	
-	       		</div>       		
+	       		</div>   
+	       		
+	       		 <div class="clear-fix" ></div>    		
                 <label for="embargo_end_date" id="embargo_end_date_label">Embargoed end date:</label>
 				<input type="text" name="embargo_end_date" id="embargo_end_date" />	       
 	       	</div>
@@ -311,7 +374,7 @@
 		       		<label for="subject_specific_metadata_file"> File to upload: </label>
 		       		<input type="file" name="subject_specific_metadata_file" id="subject_specific_metadata_file"  /> 
 	        </div>
-		    <div class="label-field-pair" >
+		    <div class="label-field-pair inline-stacked" >
 		       		<label for="xml_schema_type">xml schema type</label>
 		       		<input type="text" name="xml_schema_type" id="xml_schema_type"/>
 	       	</div>

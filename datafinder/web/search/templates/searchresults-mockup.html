@@ -19,22 +19,25 @@
      
     <span class="paging-info" >page 3 of 17 </span>
      <ul class="pagelinks" >
-     <li><a href="#">previous</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><span class="you-are-here">3</span></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">6</a></li>
-    <li><a href="#">7</a></li>
-     <li><a href="#">next</a></li>
+      <li><a class="icon first" href="#">first page</a></li>
+      <li><a class="icon prev" href="#">previous page</a></li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><span class="you-are-here">3</span></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">6</a></li>
+      <li><a href="#">7</a></li>
+      <li><a class="icon next" href="#">next page</a></li>
+      <li><a class="icon last" href="#">last page</a></li>
      </ul>
  
  
-items per page
  
-      <ul class="items-per-page" >
+      <div class="items-per-page" >
+      items per page
 
+        <ul>
     <li><a href="#" class="select">25</a></li>
     <li><a href="#">50</a></li>
     <li><a href="#">100</a></li>
@@ -43,6 +46,7 @@ items per page
      </ul>  
      
  </div>
+  </div>
 
 
 
@@ -52,10 +56,9 @@ items per page
 <span id="searchordering">Sort by: 
 	
 
-<a class="active" href="/search/detailed?q=data&type=all&truncate=450&start=0&sort=score+desc&rows=25">Relevance</a> | 
-<a href="/search/detailed?q=data&type=all&truncate=450&sort=publicationDate+desc&rows=25&start=0" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/> |
-<a href="/search/detailed?q=data&type=all&truncate=450&sort=silo+desc&rows=25&start=0" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/>
-
+<a class="desc" href="/search/detailed?q=data&type=all&truncate=450&start=0&sort=score+desc&rows=25">Relevance</a> 
+<a href="/search/detailed?q=data&type=all&truncate=450&sort=publicationDate+desc&rows=25&start=0" title="Date descending">Date </a>
+<a href="/search/detailed?q=data&type=all&truncate=450&sort=silo+desc&rows=25&start=0" title="Silo descending">Silo </a>
 </span>
 </div>
 
@@ -75,7 +78,7 @@ items per page
 
 
 <div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
+<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
 
 <div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
 <div class="record-short-desc"> short description of the record</div>
@@ -83,7 +86,7 @@ items per page
 </div>
 
 <div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
+<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
 
 <div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
 <div class="record-short-desc"> short description of the record</div>
@@ -91,7 +94,7 @@ items per page
 </div>
 
 <div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
+<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
 
 <div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
 <div class="record-short-desc"> short description of the record</div>
@@ -99,7 +102,7 @@ items per page
 </div>
 
 <div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
+<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
 
 <div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
 <div class="record-short-desc"> short description of the record</div>
@@ -107,7 +110,7 @@ items per page
 </div>
 
 <div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
+<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
 
 <div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
 <div class="record-short-desc"> short description of the record</div>
@@ -115,7 +118,7 @@ items per page
 </div>
 
 <div class="search-result">
-<h2 class="record-title"><a href="#">Record title</a></h2>
+<h2 class="record-title"><a href="#">This is where the Record title goes</a></h2>
 
 <div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
 <div class="record-short-desc"> short description of the record</div>
@@ -130,24 +133,28 @@ items per page
 
 <div class="panel  pagination">
      
-    <span class="paging-info" >page 3 of 17 </span>
+
+     <span class="paging-info" >page 3 of 17 </span>
      <ul class="pagelinks" >
-     <li><a href="#">previous</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><span class="you-are-here">3</span></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">6</a></li>
-    <li><a href="#">7</a></li>
-     <li><a href="#">next</a></li>
+      <li><a class="icon first" href="#">first page</a></li>
+      <li><a class="icon prev" href="#">previous page</a></li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><span class="you-are-here">3</span></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">6</a></li>
+      <li><a href="#">7</a></li>
+      <li><a class="icon next" href="#">next page</a></li>
+      <li><a class="icon last" href="#">last page</a></li>
      </ul>
  
  
-items per page
  
-      <ul class="items-per-page" >
+      <div class="items-per-page" >
+      items per page
 
+        <ul>
     <li><a href="#" class="select">25</a></li>
     <li><a href="#">50</a></li>
     <li><a href="#">100</a></li>
@@ -155,6 +162,7 @@ items per page
 
      </ul>  
      
+ </div>     
  </div>
 
 
@@ -167,7 +175,7 @@ items per page
 <div id="results-controls"  class="results-block" >
 
 
-<div   id="results-metadata">
+<div   class="panel results-metadata">
 <div class="num-results"><span class="important-number">4839 </span> results</div>
 
 <ul class="current-facets">
