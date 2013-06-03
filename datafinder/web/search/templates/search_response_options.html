@@ -2,7 +2,6 @@
 <%def name="pagination()">
 
     % if len(permissible_offsets) > 0:
-    <h2> I am inside 'if' </h2>
 <div class="paginated_results">
         <%
             jump = rows*10
@@ -66,7 +65,7 @@
 ##=============================================================================
 <%def name="sortoptions()">
 % if docs and add_facet:
-##<div class="searchright">
+<div class="searchright">
 <span id="searchordering">Sort by: 
 	
 %	if (sort == "score desc"):
@@ -75,9 +74,9 @@
 	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
         titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows, start)
 %>
-<a class="active" href="${relstring}">Relevance</a> | 
-<a href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/> |
-<a href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/>
+<a class="active" href="${relstring}">Relevance</a> 
+<a href="${datestring}" title="Date descending">Date </a>
+<a href="${titlestring}" title="Silo descending">Silo </a>
 
 %	elif (sort == "publicationDate desc"):
 <%
@@ -85,19 +84,18 @@
 	datestring = add_facet + "&sort=publicationDate+asc&rows=%d&start=%d"%(rows, start)
 	titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows, start)
 %>
-<a href="${relstring}">Relevance</a> |
-<a class="active" href="${datestring}" title="Date ascending">Date </a><img src="/static/styles/images/down_arrow_black.png" height="10" alt="Ascending"/> | 
-<a href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/>
-
+<a href="${relstring}">Relevance</a>
+<a class="active" href="${datestring}" title="Date ascending">Date </a>
+<a href="${titlestring}" title="Silo descending">Silo </a>
 %	elif (sort == "publicationDate asc"):
 <%
 	relstring = add_facet + "&sort=score+desc&rows=%d&start=%d"%(rows, start)
 	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
 	titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows, start)
 %>
-<a href="${relstring}">Relevance</a> |
-<a class="active" href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_black.png" height="10" alt="Descending"/> |
-<a href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/>
+<a href="${relstring}">Relevance</a>
+<a class="active" href="${datestring}" title="Date descending">Date </a>
+<a href="${titlestring}" title="Silo descending">Silo </a>
 
 %	elif (sort == "silo desc"):
 <%
@@ -105,9 +103,9 @@
 	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
 	titlestring = add_facet + "&sort=silo+asc&rows=%d&start=%d"%(rows, start)
 %>
-<a href="${relstring}">Relevance</a> | 
-<a href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/> |
-<a class="active" href="${titlestring}" title="Silo ascending">Silo </a><img src="/static/styles/images/down_arrow_black.png" height="10" alt="Ascending"/>
+<a href="${relstring}">Relevance</a> 
+<a href="${datestring}" title="Date descending">Date </a>
+<a class="active" href="${titlestring}" title="Silo ascending">Silo </a>
 
 %	elif (sort == "silo asc"):
 <%
@@ -115,9 +113,9 @@
 	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
 	titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows, start)
 %>
-<a href="${relstring}">Relevance</a> |
-<a href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descending"/> |
-<a class="active" href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_black.png" height="10" alt="Descending"/>
+<a href="${relstring}">Relevance</a>
+<a href="${datestring}" title="Date descending">Date </a>
+<a class="active" href="${titlestring}" title="Silo descending">Silo </a>
 
 %	else:
 <%
@@ -125,13 +123,13 @@
 	datestring = add_facet + "&sort=publicationDate+desc&rows=%d&start=%d"%(rows, start)
 	titlestring = add_facet + "&sort=silo+desc&rows=%d&start=%d"%(rows ,start)
 %>
-<a href="${relstring}">Relevance</a> |
-<a href="${datestring}" title="Date descending">Date </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descecding"/> |
-<a href="${titlestring}" title="Silo descending">Silo </a><img src="/static/styles/images/up_arrow_blue.png" height="10" alt="Descecding"/>
+<a href="${relstring}">Relevance</a>
+<a href="${datestring}" title="Date descending">Date </a>
+<a href="${titlestring}" title="Silo descending">Silo </a>
 
 %	endif
 </span>
-##</div>
+</div>
 % endif
 ## end sortoptions()
 </%def>

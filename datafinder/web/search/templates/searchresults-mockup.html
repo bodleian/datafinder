@@ -48,14 +48,16 @@
 		     </ul>
 		 -->
 		 
-		items per page
-		 
-		      <ul class="items-per-page" >	
-			    <li><a href="#" class="select">25</a></li>
-			    <li><a href="#">50</a></li>
-			    <li><a href="#">100</a></li>
-			    <li><a href="#">200</a></li>	
-		     </ul>  
+ 	<div class="items-per-page" >
+      items per page
+       <ul>
+	    <li><a href="#" class="select">25</a></li>
+	    <li><a href="#">50</a></li>
+	    <li><a href="#">100</a></li>
+	    <li><a href="#">200</a></li>
+     </ul>  
+     
+ </div>
 		     
 	 </div>
 
@@ -122,17 +124,18 @@
 				%   endif 
 		</span>
 	    <ul class="pagelinks" >
-		    <li><a href="#">previous</a></li>
-		    <li><a href="#">1</a></li>
-		    <li><a href="#">2</a></li>
-		    <li><span class="you-are-here">3</span></li>
-		    <li><a href="#">4</a></li>
-		    <li><a href="#">5</a></li>
-		    <li><a href="#">6</a></li>
-		    <li><a href="#">7</a></li>
-		    <li><a href="#">next</a></li>
-	     </ul>
-	 
+	      <li><a class="icon first" href="#">first page</a></li>
+	      <li><a class="icon prev" href="#">previous page</a></li>
+	      <li><a href="#">1</a></li>
+	      <li><a href="#">2</a></li>
+	      <li><span class="you-are-here">3</span></li>
+	      <li><a href="#">4</a></li>
+	      <li><a href="#">5</a></li>
+	      <li><a href="#">6</a></li>
+	      <li><a href="#">7</a></li>
+	      <li><a class="icon next" href="#">next page</a></li>
+	      <li><a class="icon last" href="#">last page</a></li>
+        </ul>
 	    <div class="items-per-page" >
 	      items per page
 	        <ul>
@@ -151,7 +154,8 @@
 </div>
 
 <div id="results-controls"  class="results-block" >
-<div   id="results-metadata">
+<div   class="panel results-metadata"> 
+
 <div class="num-results"><span class="important-number">${numFound} </span> results</div>
 
 <ul class="current-facets">
