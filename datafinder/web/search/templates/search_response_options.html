@@ -275,22 +275,22 @@
 <div class="current_search">
 <h2 class="current_search_header">Current Search</h2>
 
-##----c.q----
+##---- q----
 <div class="current_facet">
 <div class="search_remove">
-% if c.q and c.q != "*:*":
+% if q and q != "*:*":
 <form action="/search/detailed" method="GET">
 <input type="hidden" name="q" value="*:*">
-<input type="hidden" name="rows" value="${c.rows}">
-<input type="hidden" name="truncate" value="${c.truncate}">
-%   if c.chosen_facets:
-%     for chosen_facet in c.chosen_facets:
+<input type="hidden" name="rows" value="${rows}">
+<input type="hidden" name="truncate" value="${truncate}">
+%   if chosen_facets:
+%     for chosen_facet in  chosen_facets:
         <%
           current_items = []
-          if isinstance(c.chosen_facets[chosen_facet], list):
-            current_items = c.chosen_facets[chosen_facet]
+          if isinstance(chosen_facets[chosen_facet], list):
+            current_items = chosen_facets[chosen_facet]
           else:
-            current_items = [c.chosen_facets[chosen_facet]]
+            current_items = [chosen_facets[chosen_facet]]
         %>
 %       for chosen_item in current_items:
           <%
@@ -304,8 +304,8 @@
 %       endfor
 %     endfor
 %   endif
-%   if c.typ:
-<input type="hidden" name="type" value="${c.typ}">
+%   if typ:
+<input type="hidden" name="type" value="${typ}">
 %   endif
 <input type="submit" value="x">
 </form>
@@ -313,25 +313,25 @@
 &nbsp;
 % endif
 </div>
-<div class="label">Text</div><div class="value"> ${c.q |n}</div>
+<div class="label">Text</div><div class="value"> ${ q |n}</div>
 </div>
 
-##----c.typ filters (to be displayed only if search is not *:*)----
-% if c.typ and c.typ != 'all' and c.q != "*:*":
+##---- typ filters (to be displayed only if search is not *:*)----
+% if  typ and  typ != 'all' and  q != "*:*":
 <div class="current_facet">
 <div class="search_remove">
 <form action="/search/detailed" method="GET">
-<input type="hidden" name="q" value="${c.q}">
-<input type="hidden" name="rows" value="${c.rows}">
-<input type="hidden" name="truncate" value="${c.truncate}">
-%   if c.chosen_facets:
-%     for chosen_facet in c.chosen_facets:
+<input type="hidden" name="q" value="${ q}">
+<input type="hidden" name="rows" value="${ rows}">
+<input type="hidden" name="truncate" value="${ truncate}">
+%   if  chosen_facets:
+%     for chosen_facet in  chosen_facets:
         <%
           current_items = []
-          if isinstance(c.chosen_facets[chosen_facet], list):
-            current_items = c.chosen_facets[chosen_facet]
+          if isinstance( chosen_facets[chosen_facet], list):
+            current_items =  chosen_facets[chosen_facet]
           else:
-            current_items = [c.chosen_facets[chosen_facet]]
+            current_items = [ chosen_facets[chosen_facet]]
         %>
 %        for chosen_item in current_items:
           <%
@@ -350,37 +350,37 @@
 </form>
 </div>
 <div class="label">Search within</div>
-<div class="value">${c.types[c.typ] |n}</div>
+<div class="value">${ types[ typ] |n}</div>
 </div>
 % endif
 
-##----c.chosen_facets----
-% if c.chosen_facets:
-% for facet in c.chosen_facets:
+##---- chosen_facets----
+% if  chosen_facets:
+% for facet in  chosen_facets:
 <%
 currentfacet = []
-if isinstance(c.chosen_facets[facet], list):
-  currentfacet = c.chosen_facets[facet]
+if isinstance( chosen_facets[facet], list):
+  currentfacet =  chosen_facets[facet]
 else:
-  currentfacet = [c.chosen_facets[facet]]
+  currentfacet = [ chosen_facets[facet]]
 %>
 %   for item in currentfacet:
 <div class="current_facet">
 <div class="search_remove">
 <form action="/search/detailed" method="GET">
-<input type="hidden" name="q" value="${c.q}">
-<input type="hidden" name="rows" value="${c.rows}">
-<input type="hidden" name="truncate" value="${c.truncate}">
-%     if c.typ:
-<input type="hidden" name="type" value="${c.typ}">
+<input type="hidden" name="q" value="${ q}">
+<input type="hidden" name="rows" value="${ rows}">
+<input type="hidden" name="truncate" value="${ truncate}">
+%     if  typ:
+<input type="hidden" name="type" value="${ typ}">
 %     endif
-%     for chosen_facet in c.chosen_facets:
+%     for chosen_facet in  chosen_facets:
         <%
           current_items = []
-          if isinstance(c.chosen_facets[chosen_facet], list):
-            current_items = c.chosen_facets[chosen_facet]
+          if isinstance( chosen_facets[chosen_facet], list):
+            current_items =  chosen_facets[chosen_facet]
           else:
-            current_items = [c.chosen_facets[chosen_facet]]
+            current_items = [ chosen_facets[chosen_facet]]
         %>
 %       for chosen_item in current_items:
 %         if not (chosen_item==item):
@@ -398,7 +398,7 @@ else:
 <input type="submit" value="x">
 </form>
 </div>
-<div class="label">${c.field_names[facet]|n}</div><div class="value">${ item |n}</div>
+<div class="label">${ field_names[facet]|n}</div><div class="value">${ item |n}</div>
 </div>
 %   endfor
 % endfor
