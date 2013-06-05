@@ -116,7 +116,7 @@
 
 <div class="results-footer" >
 	<div class="panel  pagination">
-	    <span class="paging-info" >page 3 of 
+	    <span class="paging-info" >Page 3 of 
 			    %   if (start+rows) > numFound:
 					${numFound}
 				%   else:
@@ -137,7 +137,7 @@
 	      <li><a class="icon last" href="#">last page</a></li>
         </ul>
 	    <div class="items-per-page" >
-	      items per page
+	      Items per page
 	        <ul>
 			    <li><a href="#" class="select">25</a></li>
 			    <li><a href="#">50</a></li>
@@ -158,11 +158,15 @@
 
 <div class="num-results"><span class="important-number">${numFound} </span> results</div>
 
+
 <ul class="current-facets">
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">keyword</span> <span class="facet-value"> ${q |n} </span></a></li>
+    	${options.currentsearch()}
+    <!--
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
+    -->
 </ul>
 
 </div>
@@ -170,7 +174,7 @@
 
 
 <div class="panel refine-results" >
-<h2>refine results</h2>
+<h2>Refine your results</h2>
 
 <form>
 <!--
@@ -184,13 +188,12 @@
 <% count = 0 %>
 <div id="facet_container">
 
-<div class="facet_title">Filter results</div>
 % if returned_facets:
 % for facet in returned_facets:
 <% count = count + 1 %>
 % if returned_facets[facet] and len(returned_facets[facet]) > 1:
 <div class="facet_results">
-<div id="fs${count}" class="subheading ><a id="fh${count}" href="#" >${field_names[facet]}</a></div>
+<div id="fs${count}" class="subheading" ><a id="fh${count}"  onclick="bindItem(${count});"  href="javascript:void(0);" >${field_names[facet]}</a></div>
 <div id="fl${count}" class="facetlist ">
 <ul>
 %     for result,value in returned_facets[facet]:
@@ -221,57 +224,4 @@ else:
 </form>
 </div>
 </div>
-
-
-<!-- <![if !IE]> -->
-<![if lte IE 8]>
-<script type="text/javascript">
-	$(document).ready(function() {
-	
-	function fhAdjust(){
-		//Make sure facets do not stick beneath footer
-		$navh = $('#facet_wrapper').height();
-		$navh = $navh + 211;
-		$wrah = $('#wrapper').height();
-		if ($navh > $wrah) {
-			$('#wrapper').css("height", $navh + 100);
-		} else {
-			$mainh = $('#main').height();
-			$mainh = $mainh + 91;
-			if ($mainh > $navh){
-				$('#wrapper').css("height", $mainh + 100);
-			} else {
-				$('#wrapper').css("height", $navh + 100);
-			}
-		}
-	}
-	
-	function bindItem(ind){
-		$('#fh' + ind).click(function(event) {
-			event.preventDefault();
-			if ($('#fl' + ind).hasClass("closed")){
-			$('#fl' + ind).show();
-			$('#fl' + ind).removeClass("closed");
-			$('#fh' + ind).css("background-image", "url('/static/styles/images/fminus.png')");
-			$('#fs' + ind).css("background-color", "#A79D96");
-			} else {
-			$('#fl' + ind).hide();
-			$('#fl' + ind).addClass("closed");
-			$('#fh' + ind).css("background-image", "url('/static/styles/images/fplus.png')");
-			$('#fs' + ind).css("background-color", "#999");
-			}
-			fhAdjust();
-		});
-	}
-
-	for (i=1;i<=${count};i++){
-	//Facet Toggle
-	$('#fl'+i).hide();
-	$('#fl'+i).addClass("closed");
-	bindItem(i);
-	}
-
-});
-</script>
-<![endif]>
 

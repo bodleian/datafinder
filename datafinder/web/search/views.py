@@ -1,8 +1,12 @@
 # Mako templating engine
 from djangomako.shortcuts import render_to_response, render_to_string
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.template import RequestContext, loader
 from django.conf import settings
 from django.template import RequestContext
-import sys, json
+import sys , json
+from django.utils import simplejson
 sys.path.append("../..")
 from datafinder.lib.search_term import term_list
 from datafinder.lib.conneg import MimeType as MT, parse as conneg_parse
@@ -266,16 +270,21 @@ def resultsmockup(request,query=None, additional_fields=[]):
                     context['atom'] = {}
                     #return render('/atom_results.html')
                     #c = RequestContext(request, context)
-                    return render(request, 'atom_results.html',context,content_type="application/xml")
+                    #return render(request, 'atom_results.html',context,content_type="application/xml")
+                    t = loader.get_template('atom_results.html')
+                    c = RequestContext(request, context)
+                    return HttpResponse(t.render(c),  content_type="application/xml")
                 elif res_format == 'json':
                     #esponse.headers['Content-Type'] = 'application/json'
                     #response.charset = 'utf8'
                     #return {}
-                    return render(request,context,content_type="application/json")                   
+                    #return render(request,context,content_type="application/json")   
+                    return HttpResponse(solr_response, mimetype='application/json')                
                 else:
                     #response.headers['Content-Type'] = 'application/text'
                     #response.charset = 'utf8'
-                    return render(request,solr_response,content_type="application/text")
+                    #return render(request,solr_response,content_type="application/text")
+                    return HttpResponse(solr_response, mimetype='application/text') 
                     #return solr_response
         
             #response.status_int = 200
@@ -286,16 +295,21 @@ def resultsmockup(request,query=None, additional_fields=[]):
                 #response.charset = 'utf8'
                 context['atom'] = solr_response
                 #return render('/atom_results.html')
-                return render_to_response(request,'atom_results.html',context,content_type="application/xml")
+                #return render_to_response(request,'atom_results.html',context,content_type="application/xml")
+                t = loader.get_template('atom_results.html')
+                c = RequestContext(request, context)
+                return HttpResponse(t.render(c),  content_type="application/xml")
             elif res_format == 'json':
                 #response.headers['Content-Type'] = 'application/json'
                 #response.charset = 'utf8'
-                return render_to_response(request,solr_response,content_type="application/json")
+                #return render_to_response(request,solr_response,content_type="application/json")
                 #return solr_response
+                return HttpResponse(solr_response, mimetype='application/json')   
             elif res_format in ['csv', 'python', 'php']:
                 #response.headers['Content-Type'] = 'application/text'
                 #response.charset = 'utf8'
-                return render_to_response(request,solr_response,content_type="application/text")
+                #return render_to_response(request,solr_response,content_type="application/text")
+                return HttpResponse(solr_response, mimetype='application/text') 
             #return solr_response
                 
             search = json.loads(solr_response)
