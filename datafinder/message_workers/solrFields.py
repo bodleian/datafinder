@@ -27,6 +27,7 @@ solr_fields_mapping = {
     "silo":"silo",
     "id":"id",
     "uuid":"uuid",
+    "http://vocab.ox.ac.uk/dataset/schema#":"depositor",    
     "http://www.w3.org/1999/02/22-rdf-syntax-ns#type":"type",
     "http://vocab.ox.ac.uk/dataset/schema#isEmbargoed":"embargoStatus",
     "http://purl.org/spar/pso/Status":"embargoStatus",

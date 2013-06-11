@@ -1643,6 +1643,23 @@ float: left;
 #
  */
  
- 
+
+
+.main-label {
+  color: #4C637E;
+  display: inline-block;
+ font-size: 1.2em;
+  padding-top:20px;
+  padding-bottom:10px; /*super hack but ok*/
+}
+
+
+
+.subheading{
+  border-bottom: 1px solid #D2E0E8;
+  font-size: 1.2em;
+  margin: 15px 0px 5px;
+  padding: 5px;
+}
  
  

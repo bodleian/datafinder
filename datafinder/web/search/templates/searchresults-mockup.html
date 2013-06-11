@@ -158,23 +158,23 @@
 
 <div class="num-results"><span class="important-number">${numFound} </span> results</div>
 
-
-<ul class="current-facets">
+${options.currentsearch()}
+<!--<ul class="current-facets">
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">keyword</span> <span class="facet-value"> ${q |n} </span></a></li>
-    	${options.currentsearch()}
-    <!--
+    	
+    
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
     <li><a class="remove-filter" href="#" title="remove this filter"><span class="facet-type">facet</span> <span class="facet-value">facet value</span></a></li>
-    -->
-</ul>
+   
+</ul> -->
 
 </div>
 
 
 
 <div class="panel refine-results" >
-<h2>Refine your results</h2>
+<h2>Refine your Results</h2>
 
 <form>
 <!--
@@ -209,11 +209,10 @@ if len(result) > 40:
 else:
     res_label = result
 %>
-<a href="${add_facet + u'&filter%s="%s"&rows=%d&sort=%s' % (facet, res, rows, sort)}" title="${result}">${res_label}</a></span>
+<a href="${add_facet + u"&filter%s=%s&rows=%d&sort=%s" % (facet, res, rows, sort)}" title="${result}">${res_label}</a></span>
 <span class="value">(${value})</span></li>
 %     endfor
 </ul>
-</div>
 </div>
 % endif
 % endfor

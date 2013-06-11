@@ -139,7 +139,18 @@ def resultsmockup(request,query=None, additional_fields=[]):
         
         for field in context['all_fields']:
             if request.REQUEST.get("filter"+field, None):
-                multi = request.REQUEST.getall("filter"+field)
+                
+                multi = []
+                filter_key = "filter"+field
+                iterkeys= request.GET
+                for key in iterkeys:  # "for key in request.GET" works too.
+                    if filter_key == key:
+                    # Add filtering logic here.
+                        multi = request.GET.getlist(key)
+                    #multi.extend(['%s=%s' % (key, val) for val in valuelist])
+                    #print '&'.join(mstring)
+                
+                #multi = request.REQUEST.getall("filter"+field)
                 context['chosen_facets'][field] = []
                 #search["filter"+field] = ""
                 for m in multi:
@@ -160,7 +171,7 @@ def resultsmockup(request,query=None, additional_fields=[]):
         
         for field in context['chosen_facets']:
             if field not in context['chosen_fields']:
-               context[' chosen_fields'].append(field)
+               context['chosen_fields'].append(field)
 
         context['truncate'] = 450
         context['start'] = 0

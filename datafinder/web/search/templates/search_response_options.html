@@ -277,7 +277,7 @@
 
 ##---- q----
 <div class="current_facet">
-<div class="search_remove">
+<span class="search_remove">
 % if q and q != "*:*":
 <form action="/search/detailed" method="GET">
 <input type="hidden" name="q" value="*:*">
@@ -307,19 +307,19 @@
 %   if typ:
 <input type="hidden" name="type" value="${typ}">
 %   endif
-<input type="submit" value="x">
+<input type="submit" class="right" value="x">
 </form>
 % else:
 &nbsp;
 % endif
-</div>
-<div class="label">Text</div><div class="value"> ${ q |n}</div>
+</span>
+<span class="label main-label">Text</span><span class="value"> ${ q |n}</span>
 </div>
 
 ##---- typ filters (to be displayed only if search is not *:*)----
 % if  typ and  typ != 'all' and  q != "*:*":
 <div class="current_facet">
-<div class="search_remove">
+<span class="search_remove">
 <form action="/search/detailed" method="GET">
 <input type="hidden" name="q" value="${ q}">
 <input type="hidden" name="rows" value="${ rows}">
@@ -346,11 +346,11 @@
 %     endfor
 %   endif
 <input type="hidden" name="type" value="all">
-<input type="submit" value="x">
+<input type="submit" class="right" value="x">
 </form>
-</div>
-<div class="label">Search within</div>
-<div class="value">${ types[ typ] |n}</div>
+</span>
+<span class="label main-label">Search within</span>
+<span class="value">${ types[ typ] |n}</span>
 </div>
 % endif
 
@@ -366,7 +366,7 @@ else:
 %>
 %   for item in currentfacet:
 <div class="current_facet">
-<div class="search_remove">
+<span class="search_remove">
 <form action="/search/detailed" method="GET">
 <input type="hidden" name="q" value="${ q}">
 <input type="hidden" name="rows" value="${ rows}">
@@ -395,10 +395,10 @@ else:
 %         endif
 %       endfor
 %     endfor
-<input type="submit" value="x">
+<input type="submit" class="right"  value="x">
 </form>
-</div>
-<div class="label">${ field_names[facet]|n}</div><div class="value">${ item |n}</div>
+</span>
+<span class="label main-label">${ field_names[facet]|n}</span><span class="value">${ item |n}</span>
 </div>
 %   endfor
 % endfor
