@@ -108,8 +108,8 @@ def contribute(request):
                     literals[OXDS['Filesize']]=request.POST['digital_filesize']
                     literals[DCTERMS['format']]=request.POST['digital_format']
                     literals[OXDS['currentversion']]=request.POST['digital_version']
-                    context[DCTERMS['publisher']]=request.POST['digital_publisher']
-                    #context["digital_publish_year"]=request.POST['digital_publish_year']
+                    literals[DCTERMS['publisher']]=request.POST['digital_publisher']
+                    literals[DCTERMS['issued']]=request.POST['digital_publish_year']
                     #context["whereis_non_digital"]=request.POST['whereis_non_digital']
                 if literals[OXDS['isDigital']] == "no":                    
                     context[DCTERMS['format']]=request.POST['non_digital_format']

@@ -4,108 +4,61 @@ from django.conf import settings
 from datafinder.config import settings
 from datafinder.lib.HTTP_request import HTTPRequest
 from django.template import RequestContext
-import logging, os
+import logging, os, json
 from datafinder.lib.search_term import term_list
+from datetime import  date, timedelta
+from datafinder.lib.SolrQuery import SolrQuery
 
 def home(request):
-    context = {    
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-       }    
+
+    context = {}
+    
+    end = date.today()
+    start = end-timedelta(days=7)
+    #SolrQuery(self, query_filter = "" , q = "*:*" , req_format="json")
+    q1 = "*:*"
+    solr_query = SolrQuery(q=q1)
+    context['numFound'] = solr_query.get_NumRecordsFound()
+    
+    q2 = "timestamp:["+ str(start) + "T00:00:00Z" + " TO "+ str(end) + "T00:00:00Z" + "]"
+    solr_query = SolrQuery(q=q2)
+    
+    context['numFoundThisWeek'] = solr_query.get_NumRecordsFound()
+    
     return render_to_response('home.html',context, context_instance=RequestContext(request))
  
 
 def browse(request):
-    context = {    
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-       }    
+    context = {}
     return render_to_response('browse.html',context, context_instance=RequestContext(request))
 
 def accessibility(request):
-    context = { 
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        }
+    context = {}
     return render_to_response('accessibility.html',context, context_instance=RequestContext(request))
 
 def privacy(request):
-    context = { 
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        }
+    context = {}
     return render_to_response('privacy.html',context, context_instance=RequestContext(request))
 
 def termsconditions(request):
-    context = { 
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        }
+    context = {}
     return render_to_response('terms-conditions.html',context, context_instance=RequestContext(request))
 
 def about(request):
-    context = { 
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        }
+    context = {}
     return render_to_response('about.html',context, context_instance=RequestContext(request))
 
 def contact(request):
-    context = { 
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        }
+    context = {}
     return render_to_response('contact.html',context, context_instance=RequestContext(request))
 
 def help(request):
-    context = { 
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        }
+    context = {}
     return render_to_response('help.html',context, context_instance=RequestContext(request))
 
 
 def cookies(request):
-    context = { 
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        }
+    context = {}
     return render_to_response('cookies.html',context, context_instance=RequestContext(request))
 
 def myrecords(request):

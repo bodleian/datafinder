@@ -1,16 +1,15 @@
 ##=============================================================================
 <%def name="pagination()">
-
     % if len(permissible_offsets) > 0:
-<div class="paginated_results">
+<div class="paginated_results left">
         <%
-            jump = rows*10
-            lowerJump = start-jump
+            jump =  rows*10
+            lowerJump =  start-jump
             if lowerJump < 0:
                 lowerJump = 0;
-            higherJump = start+jump
-            if higherJump > lastPage:
-                higherJump = lastPage
+            higherJump =  start+jump
+            if higherJump >  lastPage:
+                higherJump =  lastPage
         %>
 
 <span class="numbers">
@@ -22,34 +21,35 @@
         % endif
 <a href="${add_facet}&start=0&rows=${rows}&sort=${sort}">&#171;</a>
 </span>
-        % if start != 0:
+        % if  start != 0:
 <span class="ellipse">&#133;</span>
         % endif
 		<%! import math %>
 		<% pagcount = 0.0 %>
-        % for offset in permissible_offsets:
-            % if start == offset:
+        % for offset in  permissible_offsets:
+            % if  start == offset:
 <span class="pagination_label highlighted_page">
             % else:
 <span class="pagination_label">
             % endif
             <%
                 offset_start = offset+1
-                offset_end = offset+rows
-                if offset_end > numFound:
-                    offset_end = numFound
+                offset_end = offset+ rows
+                if offset_end >  numFound:
+                    offset_end =  numFound
             %>
-			<% pagcount = float(offset_end) / float(rows) %>
+			<% pagcount = float(offset_end) / float( rows) %>
 			<% pagcount= math.ceil(pagcount) %>
 			<% pagcount= int(pagcount) %>
-##${h.link_to(pagcount, "%s&start=%d&rows=%d&sort=%s"%(add_facet, offset, rows, sort))}
+##${h.link_to(pagcount, "%s&start=%d&rows=%d&sort=%s"%( add_facet, offset,  rows,  sort))}
+<a href="${add_facet}&start=${offset}&rows=${rows}&sort=${sort}">${pagcount}</a>
 </span>
         % endfor
-        % if start != lastPage:
+        % if  start !=  lastPage:
 <span class="ellipse">&#133;</span>
         % endif
         ## Goto to last page
-        % if start == lastPage:
+        % if  start ==  lastPage:
 <span class="pagination_label highlighted_page">
         % else:
 <span class="pagination_label">
@@ -61,7 +61,7 @@
 </div><!--class=paginated_results-->
     % endif
 ## end pagination()
-</%def>
+</%def> 
 ##=============================================================================
 <%def name="sortoptions()">
 % if docs and add_facet:
@@ -172,7 +172,7 @@
 %         endfor
 %     endfor
 %    endif
-<input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/>
+<!-- <input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/> -->
 </form>
 %	elif (rows == 50):
 <a href="${twentyfstring}">25</a>
@@ -202,7 +202,7 @@
 %         endfor
 %     endfor
 %    endif
-<input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/>
+<!-- <input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/> -->
 </form>
 %	elif (rows == 100):
 <a href="${twentyfstring}">25</a>
@@ -232,7 +232,7 @@
 %         endfor
 %     endfor
 %    endif
-<input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/>
+<!-- <input class="itemsppformtext" type="text" name="rows" placeholder="#" onUnfocus="this.form.submit()"/> -->
 </form>
 %	else:
 <a href="${twentyfstring}">25</a>
@@ -262,7 +262,7 @@
 %         endfor
 %     endfor
 %    endif
-<input class="itemsppformtext itemsppformchosen" type="text" name="rows" value="${rows}" onUnfocus="this.form.submit()"/>
+<!-- <input class="itemsppformtext itemsppformchosen" type="text" name="rows" value="${rows}" onUnfocus="this.form.submit()"/> -->
 </form>
 %	endif
 </div>
@@ -283,6 +283,9 @@
 <input type="hidden" name="q" value="*:*">
 <input type="hidden" name="rows" value="${rows}">
 <input type="hidden" name="truncate" value="${truncate}">
+
+
+
 %   if chosen_facets:
 %     for chosen_facet in  chosen_facets:
         <%
@@ -307,13 +310,13 @@
 %   if typ:
 <input type="hidden" name="type" value="${typ}">
 %   endif
-<input type="submit" class="right" value="x">
+<input type="submit" class="right x-box" value="x">
 </form>
 % else:
 &nbsp;
 % endif
 </span>
-<span class="label main-label">Text</span><span class="value"> ${ q |n}</span>
+<span class="label main-label">Text</span><span class="value"> ${q |n}</span>
 </div>
 
 ##---- typ filters (to be displayed only if search is not *:*)----
@@ -321,9 +324,9 @@
 <div class="current_facet">
 <span class="search_remove">
 <form action="/search/detailed" method="GET">
-<input type="hidden" name="q" value="${ q}">
-<input type="hidden" name="rows" value="${ rows}">
-<input type="hidden" name="truncate" value="${ truncate}">
+<input type="hidden" name="q" value="${q}">
+<input type="hidden" name="rows" value="${rows}">
+<input type="hidden" name="truncate" value="${truncate}">
 %   if  chosen_facets:
 %     for chosen_facet in  chosen_facets:
         <%
@@ -346,11 +349,10 @@
 %     endfor
 %   endif
 <input type="hidden" name="type" value="all">
-<input type="submit" class="right" value="x">
+<input type="submit" class="right x-box" value="x">
 </form>
 </span>
-<span class="label main-label">Search within</span>
-<span class="value">${ types[ typ] |n}</span>
+<span class="label main-label">Search within</span><span class="value">${types[ typ] |n}</span>
 </div>
 % endif
 
@@ -368,11 +370,11 @@ else:
 <div class="current_facet">
 <span class="search_remove">
 <form action="/search/detailed" method="GET">
-<input type="hidden" name="q" value="${ q}">
-<input type="hidden" name="rows" value="${ rows}">
-<input type="hidden" name="truncate" value="${ truncate}">
+<input type="hidden" name="q" value="${q}">
+<input type="hidden" name="rows" value="${rows}">
+<input type="hidden" name="truncate" value="${truncate}">
 %     if  typ:
-<input type="hidden" name="type" value="${ typ}">
+<input type="hidden" name="type" value="${typ}">
 %     endif
 %     for chosen_facet in  chosen_facets:
         <%
@@ -395,10 +397,10 @@ else:
 %         endif
 %       endfor
 %     endfor
-<input type="submit" class="right"  value="x">
+<input type="submit" class="right x-box"  value="x">
 </form>
 </span>
-<span class="label main-label">${ field_names[facet]|n}</span><span class="value">${ item |n}</span>
+<span class="label main-label">${field_names[facet]|n}</span><span class="value"> ${item |n}</span>
 </div>
 %   endfor
 % endfor

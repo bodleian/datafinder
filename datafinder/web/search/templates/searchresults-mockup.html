@@ -11,31 +11,27 @@
   <link rel="alternate" type="application/atom+xml" href="${add_finder_facet}&format=atom&rows=rows&sort=score+desc" title="Search results for '${q}'"/>
 % endif
 
-%if numFound and numFound > 0:
-<div class="results-block">
-  ${options.pagination()}
-</div>
-% endif
 
 <div id="results"  class="results-block" >
 
 <div class="results-header" >
+## Pagination and sort options
 
  % if numFound and numFound > 0: 
-	<div class="panel  pagination">	
-		  ${options.pagination()}   
-		    <span class="paging-info" >page 3 of 
+ 
+	<div class="panel  pagination searchtop">	
+		    <span class="paging-info left" >page 1 of 
 			    %   if (start+rows) > numFound:
 					${numFound}
 				%   else:
 					${start+rows}
 				%   endif 
 			</span>
-			
+
 			${options.pagination()}
 			
 			<!--
-		     <ul class="pagelinks" >
+		     <ul class="pagelinks left" >
 		     <li><a href="#">previous</a></li>
 		    <li><a href="#">1</a></li>
 		    <li><a href="#">2</a></li>
@@ -49,15 +45,16 @@
 		 -->
 		 
  	<div class="items-per-page" >
-      items per page
-       <ul>
-	    <li><a href="#" class="select">25</a></li>
-	    <li><a href="#">50</a></li>
-	    <li><a href="#">100</a></li>
-	    <li><a href="#">200</a></li>
-     </ul>  
-     
- </div>
+			${options.numresultspp("itemsppt")}
+
+      <!-- items per page
+	       <ul>
+		    <li><a href="#" class="select">25</a></li>
+		    <li><a href="#">50</a></li>
+		    <li><a href="#">100</a></li>
+		    <li><a href="#">200</a></li>
+	     </ul> --> 
+    </div> 
 		     
 	 </div>
 
@@ -103,9 +100,31 @@
 	
 	% if isSilo == False:
 		<div class="search-result">
-			<!-- <div> ${search} </div> -->
-			<h2 class="record-title"><a href="#">${docs[doc_index]['id']}</a></h2>
-			<div class="record-publish-info"><span class="author">author name</span>, <span class="publish-date">publish date</span></div>
+			<!-- <div> ${search} </div> -->			
+			
+			% if 'doi':
+				<h2 class="record-title"><a href=${doi}> ${docs[doc_index]['id']} </a></h2>
+			% else:	
+				<h2 class="record-title"><a href=${relation}>${docs[doc_index]['id']}</a></h2>
+			% endif 
+			<div class="record-publish-info"><span class="author">
+				% if 'creator' in docs[doc_index]:
+					% if docs[doc_index]['creator'][0].endswith("rdf"):
+						${creator}
+					% else:
+						${docs[doc_index]['creator'][0]}
+					% endif
+				% endif
+			</span>, 
+			<span class="publish-date">
+				% if 'issued' in docs[doc_index]:
+					${docs[doc_index]['issued'][0]}
+				% endif
+					% if 'date' in docs[doc_index]:
+					${docs[doc_index]['date'][0]}
+				% endif
+				
+			</span></div>
 			% if 'description' in docs[doc_index]:
 				<div class="record-short-desc"> ${docs[doc_index]['description'][0]}</div>
 			% endif
