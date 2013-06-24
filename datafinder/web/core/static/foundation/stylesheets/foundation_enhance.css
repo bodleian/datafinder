@@ -136,6 +136,7 @@ padding-left: 200px;
    label {
        
        color: #000;
+       color: #4c637e;
        font-weight: bold;
        
        
@@ -516,7 +517,8 @@ dl dd + dd {
     float: none
 }
 dl dt {
-    font-weight: bold
+    font-weight: bold;
+    color: #4c637e;
 }
  
  
@@ -649,7 +651,6 @@ ul.user-options li a {
   }
   
   
-
   
 
     /* panels */
@@ -657,7 +658,7 @@ ul.user-options li a {
 background: #eef3f9 url("../images/bg/panel-bg.png") repeat-x bottom left;
 border: solid 1px #d2e0e8;
 border-bottom: solid 3px #d2e0e8;
-  border-radius:12px;
+  border-radius:1px;
 -webkit-border-radius: 1px;
 -moz-border-radius: 1px;
 margin: 0 0 12px 0;
@@ -694,7 +695,11 @@ padding: 0.1em 0.2em;
 
 
 
-
+.panel p {
+  
+  margin: 0.5em;
+  
+}
 
 
 
@@ -1152,12 +1157,169 @@ background: transparent url("../images/icons/csv.png") no-repeat left 5px;
 
 .pair-value {
   
-  dmargin-left: 1em;
+  margin-left: 1em;
   
 }
 
 
 /* record page */
+
+
+.main-col,
+.side-col {
+
+
+
+  
+}
+
+.main-col {
+
+
+}
+
+
+.side-col {
+
+  
+}
+
+dl ul {
+  
+  padding-left: 40px;
+  
+}
+
+ul.accordion>li.active .content {
+  background-color: #f8fbff ;
+  border: 1px solid #ebf1f6;
+  border-top: none;
+  padding: 0.3em;
+
+
+}
+
+ul.accordion>li.active a {
+  background-position: top right;
+
+}
+
+
+ul.accordion>li h2.title a {
+  background-position: top right;
+display: block;
+}
+
+    
+ul.accordion>li .title {
+
+
+position:relative;
+
+}
+
+ul.accordion > li > .title:after {
+content: "";
+display: block;
+width: 0;
+height: 0;
+border: solid 6px;
+border-color: transparent #93a4b5 transparent transparent;
+position: absolute;
+right: 10px;
+top: 15px;
+}
+
+ul.accordion>li.active .title:after {
+
+
+border-color: #93a4b5 transparent transparent transparent;
+position:absolute;
+
+}
+
+
+
+
+
+
+.record-entry .accordion li h2,
+.record-entry .accordion li.active h2 {
+
+  background-color: #ebf1f6 ;
+  border-bottom: 1px solid #c5d4e3;
+  display: block;
+  font-size: 1.8em;
+  margin-top: 0.5em;
+  margin-bottom: 0px;
+  padding: 0.2em;
+  width: 100%;
+  
+  
+
+
+  }
+  
+
+
+   
+   
+   ul.accordion>li.active {
+border: none;
+}
+   
+
+.side-col h2{
+
+  font-size: 1.4em;
+  text-align: center;
+
+}
+
+.side-col ul{
+
+  padding: 1em;
+}
+
+.side-col ul li{
+
+ list-style: none;
+}
+
+.citation {
+  
+  font-size: 1.2em;
+  margin-bottom: 0.1em;
+}
+.record-title {
+  
+  font-style: italic;
+}
+.citation-url label {
+  
+  display: inline;
+}
+
+
+.record-status {
+
+  background-color: #f8e3bc;
+  border: 1px solid  #e19c4e;
+      border-radius: 1px;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+  margin: -4em 0px 1em 0px;
+  padding: 0.5em;
+}
+
+.record-status label{
+
+ color: #300;
+ display: inline;  
+}
+
+
+
 
 div.data-owner{
   
@@ -1174,9 +1336,177 @@ div.data-owner{
 }
 
 
+ul.metadatalinks {
+  
+  padding: 0px;
+}
+
+
+ul.metadatalinks li {
+  
+  display: inline;
+  list-style: none;
+  
+}
+
+
+ul.metadatalinks li a{
+  
+  background-color: #ebf1f6 ;
+  border: 1px solid #c5d4e3;
+        border-radius: 1px;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+  padding: 5px;
+}
 
 
 
+
+
+
+
+/*  browse page */
+
+
+.browse .tabs {
+  border-bottom: none;
+width: 10 0px;
+float: left;
+margin-top: 20px;
+position: absolute;
+}
+
+.browse .tabs,
+.browse ul.tabs-content {
+min-height: 20em;
+}
+
+
+.browse .tabs dd
+{
+  background-color: #e9eff6;
+  
+        border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+border: 1px solid #b9cddc;
+border-right: none;
+margin-top: 0px;
+margin-bottom: 0.2em;
+width: 10em;
+line-height: 1em;
+padding: 10px;
+}
+
+
+.browse .tabs dd.active,
+.browse .tabs li.active {
+  background-color: #f3f7fb;
+
+margin-top: 0px;
+}
+
+.browse .tabs dd.active a
+ {
+  background-color: #f3f7fb;
+
+}
+
+.browse ul.tabs-content {
+    background-color: #f3f7fb;
+border: 1px solid #b9cddc;
+ border: 1px solid #c5d4e3;
+        border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+  margin-left: 10em;
+  padding: 1em;
+
+}
+
+
+  
+
+.browse ul.tabs-content li  p.more {
+
+  clear: both;
+  margin-top: 4em;
+  padding-left: 1em;
+  
+
+}
+
+.browse-cat,
+.browse span.num {
+  
+  display: inline-block;
+  float: left;
+  text-align: left;
+  width: 20em;
+}
+
+
+
+
+
+
+
+.browse-cat {
+  background-color: #e9eff6;
+
+padding: 5px 10px;
+
+}
+
+
+a:hover .browse-cat,
+a:focus .browse-cat {
+  background-color: #ccd9e8;
+  
+}
+
+.browse span.num {
+  
+
+  width: 4em;
+}
+
+.browse ul.tabs-content li ul li{
+clear: both;
+padding-top: 0.5em;
+
+}
+
+
+.browse ul.tabs-content li{
+
+list-style: none;
+
+
+}
+
+
+
+
+form.browse-by-date select{
+  
+  width: 15em;
+}
+
+
+
+.browse .tabs dd a,
+.browse .tabs li a {
+border: none;
+color: #6f6f6f;
+display: block;
+font-size: 14px;
+height: auto;
+padding: 15px;
+line-height: 1em;
+padding: 0px 23.8px;
+}
 
 
 /*
@@ -1403,17 +1733,21 @@ margin-left:3em;
        div.homepage.stats dt,
        div.homepage.stats dd{ 
           float:right;
-          clear: both;
+      /*    clear: both;
+        */
+          
           }
           
                  div.homepage.stats dt{ 
-                 
-                 margin: 0px 0px 5px 0px;
-          width: 200px;
+               float: left;  
+               
+                 margin: 0px 0px 25px 0px;
+          width: 150px;
           }
           
           
-                 div.homepage.stats dd{ 
+                 div.homepage.stats dd,
+                 span.num{ 
                   background: transparent url("../images/bg/panel-header.png") left top repeat;
                   color: #fff;
                   font-size: 1.2em;
@@ -1436,6 +1770,10 @@ margin-left:3em;
         margin-top: 30px;
         width: 840px;
   }
+  
+  
+  
+  
   
       div.homepage.search div.search-intro {
 
@@ -1489,7 +1827,29 @@ margin-left:3em;
   }
   
  
+ /* search index page */
  
+ 
+ .search-home .panel {
+   
+   width: 47%;
+   float:left;
+   margin-right: 2%;
+ }
+ 
+  .search-home .panel {
+   
+border: none;
+
+
+ }
+ 
+ 
+ 
+  .search-home  .searchbox {
+    
+    padding: 1em 1em 0 1em ;
+  }
  
   /* search results page  */
 
@@ -1613,6 +1973,26 @@ background-position:  0px -36px;
 
 }
 
+
+/* record page */
+
+
+.main-col,
+.side-col {
+  float:left;
+  width: 30%;
+
+  
+}
+
+.main-col {
+    
+    margin-right: 2%;
+    width: 68%;
+    
+
+
+}
 
 
 

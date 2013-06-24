@@ -10,7 +10,32 @@
 
 <h1>Contribute a record</h1>
 
-<form class="abau" id="form-contribute" name="form1" method="post" enctype="multipart/form-data" action="/contribute/" accept-charset="UTF-8">
+<div class="row">
+
+			<div class="section-container accordion" data-section="accordion">
+
+<section>
+			    <p class="title" data-section-title><a href="#">Section 1</a></p>
+			    <div class="content" data-section-content>
+			      <p>Content of section 1.</p>
+			    </div>
+
+</section>
+
+<section>
+			    <p class="title" data-section-title><a href="#">Section 2</a></p>
+			    <div class="content" data-section-content>
+			      <p>Content of section 2.</p>
+			    </div>
+			    </section>
+			  
+			  
+			</div>
+			
+</div>		
+			
+<form class="abau custom" id="form-contribute" name="form1" method="post" enctype="multipart/form-data" action="/contribute/" accept-charset="UTF-8">
+  <div class="section-container accordion" data-section="accordion">
 
 	<div class="label-field-pair" >
 		<label for="dataset_title" >The title of this dataset (to use in citation)</label>
@@ -39,8 +64,11 @@
 		  </div>
     
         
+  
     <fieldset id="deposit_data">    
-    	<legend>Data Deposit</legend>    
+    	<legend>Data Deposit</legend> 
+    	<section>
+    	<div class="content" data-section-content>   
     	<label for="deposit_data_file_upload">files(s) to upload</label>
         <input type="file" name = "deposit_data_file_upload" id="deposit_data_file_upload" />
    
@@ -73,8 +101,11 @@
        		<textarea  name="deposit_data_embargo_reason"  id="deposit_data_embargo_reason" ></textarea>
        	</div>
        	</div>
+       	
+       		  </div><!-- .content closes  --> 
+       		  </section>
 	</fieldset>
-    
+
    
     
     <fieldset>   
@@ -384,5 +415,6 @@
       		<input type="submit" name="submit_for_approval" id="submit_for_approval" value="submit for approval"/>	 
       		<input type="submit" name="save_as_a_draft" id="save_as_a_draft" value="save as a draft"/>
       </div>	 
+  </div><!-- .section-container.accordion  closes--> 
 
 </form>

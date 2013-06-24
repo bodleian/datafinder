@@ -34,5 +34,12 @@
       }, 0);
     });
   }
+  
+
+$("#openAll").click( function() {
+    $(".accordion li").removeClass("active").addClass("active");
+});
+
+
 
 })(jQuery, this);

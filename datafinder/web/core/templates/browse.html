@@ -1,22 +1,18 @@
-The code you need is:
-
-# -*- coding: utf-8 -*-
 <%inherit file="/newbase.html" />
 <%def name="head_tags()">
-  <title>DataFinder:Help</title>
+  <title>DataFinder: Browse</title>
 </%def>
 
+<div class="browse">
+<h1>Browse</h1>
 
-<div class="row"><div class="two columns centered"><h4>Help</h4></div></div>
-<div  class="row"> <p> Introduction to the Help section, explanaing what is and is not included here and linking to other appropriate sources of help (eg, technnical documentation, Websuth help pages, etc...)
-</p></div>
-<div class="row">
-  <div class="tweve columns">
-     <h5>Help section 1</h5>
-     <p>brief explanation of what this section
-       contains... Ut enim ad minim veniom, quis nostrud exercitation ullomoo loboris nisi ut
-       allow ex ea commodo consequat. Duis cute irure dolor in reprehenderit in voluptate vela esse cilium dolore eu fugiat nulla pariatur.
-    </p>
+ <p>Feel free to browse DataFinder</p>
+
+
+
+
+    <!--
+    
     <div class="section-container vertical-tabs" data-section="vertical-tabs">
       <section>
         <p class="title" data-section-title><a href="#">Subject</a></p>
@@ -58,6 +54,105 @@ The code you need is:
         </div>
       </section>
     </div>
+
+
+-->
+
+
+
+
+
+<dl class="tabs">
+  <dd class="active"><a href="#subject">Subject</a></dd>
+  <dd><a href="#funder">Funder</a></dd>
+  <dd ><a href="#pubdate">Date of publication</a></dd>
+    <dd><a href="#faculty">Faculty</a></dd>
+      <dd><a href="#college">College</a></dd>
+
+
+</dl>
+<ul class="tabs-content">
+  <li class="active" id="subjectTab">
+          <ul>
+          <li><a href="#"><span class="browse-cat">Economics</span> <span class="num">337</span></a></li>
+          <li><a href="#"><span class="browse-cat">Anthropology </span> <span class="num">306</a></li>
+          <li><a href="#"><span class="browse-cat">Engineering &amp; allied sciences </span> <span class="num">245</span></a></li>
+          <li><a href="#"><span class="browse-cat">Education </span> <span class="num">243</span></a></li>
+          <li><a href="#"><span class="browse-cat">Philosophy</span> <span class="num">232</span></a></li>
+          <li><a href="#"><span class="browse-cat">Zoological sciences</span> <span class="num">206</span></a></li>
+          <li><a href="#"><span class="browse-cat">Geography</span> <span class="num">205</span></a></li>
+          <li><a href="#"><span class="browse-cat">Physics</span> <span class="num">189</span></a></li>
+          <li><a href="#"><span class="browse-cat">History</span> <span class="num">156</span></a></li>
+          <li><a href="#"><span class="browse-cat">Environment</span> <span class="num">150</span></a></li>
+
+          </ul>
+          <p class="more"><a class="read-more" href="#">more subjects...</a></p>
+          
+          </li>
+  <li id="funderTab">
+    
+              <ul>
+          <li><a href="#"><span class="browse-cat">AHRC</span> <span class="num">337</span></a></li>
+          <li><a href="#"><span class="browse-cat">JISC </span> <span class="num">306</a></li>
+          <li><a href="#"><span class="browse-cat">STFC</span> <span class="num">245</span></a></li>
+        
+        
+          </ul>
+          <p class="more"><a class="read-more" href="#">more finders...</a></p>
+    
+    
+  </li>
+  <li id="pubdateTab">
+  <form class="browse-by-date">   
+    <label for="browse-by-date-range">Select a date range...</label>
+    
+ <p>  between  [datepicker] and [datepicker]</p>
+ 
+ <label for="browse-by-date-year"> ...or select a year of publication [select year]</label>
+
+<div class="label-field-pair"> <select id="browse-by-date-year">
+    <option>1900</option>
+    <option>1901</option>
+    <option>...</option>
+    <option>1960</option>
+    <option>...</option>
+    <option>2012</option>
+    <option>2013</option>
+ </select>
   </div>
+  <class="form-button">
+ <input type="submit" value="find"/>
+  </class="form-button">
+ </form>
+ 
+
+  </li>
+    <li id="facultyTab">
+      
+                    <ul>
+          <li><a href="#"><span class="browse-cat">Anthropology</span> <span class="num">306</a></li>
+          <li><a href="#"><span class="browse-cat">Ruskin School of Art</span> <span class="num">337</span></a></li>
+          <li><a href="#"><span class="browse-cat">Zoology</span> <span class="num">245</span></a></li>
+        
+        
+          </ul>
+          <p class="more"><a class="read-more" href="#">more faculties...</a></p>
+      
+    </li>
+  <li id="collegeTab">
+    
+                        <ul>
+          <li><a href="#"><span class="browse-cat">Exeter</span> <span class="num">306</a></li>
+          <li><a href="#"><span class="browse-cat">Green Templeton</span> <span class="num">337</span></a></li>
+          <li><a href="#"><span class="browse-cat">Mansfield</span> <span class="num">245</span></a></li>
+        
+        
+          </ul>
+          <p class="more"><a class="read-more" href="#">more colleges...</a></p>
+    
+  </li>
+</ul>
 
 </div>
+
+<div class="clear-fix"></div>
