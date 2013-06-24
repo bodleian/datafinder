@@ -39,6 +39,7 @@ from solr import SolrConnection
 from pwd import  getpwnam 
 from HTTP_request import HTTPRequest
 import logging
+import traceback
 
 logger = logging.getLogger("redisqueue")
 logger.setLevel(logging.INFO)
@@ -159,6 +160,7 @@ if __name__ == "__main__":
             if itemid and (itemid in items):
                 #item = s.get_item(itemid)
                 (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo_name +"/states/" + itemid )
+                logger.info(repr(respdata))
                 json_data = json.loads(respdata)
                 uuid = json_data['state']['metadata']['uuid']
                 
@@ -173,6 +175,7 @@ if __name__ == "__main__":
                         graph.parse(f, base="temp_manifest.rdf")
                         f.close()
                 except IOError, e:
+                    logger.info( str(e))
                     logger.info("IOERROR")
                     pass
                 solr_doc = gather_document(silo_name, uuid, itemid, graph)

@@ -43,16 +43,21 @@ filter the listing by status or search within your records.
 			    <th>status</th>
 			    <th>edit</th>                         
 			</tr>
+			% for df_record in solr_response['docs']:
 			<tr>
-			    <td>  <input type="checkbox" name="select" value="select"/></td>
-			    <td>A record</td>
+			    <td><input type="checkbox" name="select" value="select"/></td>
+			    <td>${df_record['title'][0]}</td>
 			    <td>36KB</td>
-			    <td>16/04/2012</td>
-			    <td>17/04/2012</td>
-			    <td>requires attention</td>
+			    <td>${df_record['created'][0]}</td>
+			    <td>${df_record['timestamp']}</td>
+			    % if 'status' in df_record:
+			    	<td>${df_record['status']}</td>
+			    	% else:
+			    	<td> </td>
+			    % endif
 			    <th><a href="">edit</a></th>                           
 			</tr>
-			<tr>
+			<!-- <tr>
 			    <td>  <input type="checkbox" name="select" value="select"/></td>
 			    <td>some record</td>
 			    <td>36KB</td>
@@ -60,25 +65,8 @@ filter the listing by status or search within your records.
 			    <td>17/04/2012</td>
 			    <td>submited for approval</td>
 			    <th><a href="">edit</a></th>                        
-			</tr>
-			<tr>
-			    <td>  <input type="checkbox" name="select" value="select"/></td>
-			    <td>another record</td>
-			    <td>36KB</td>
-			    <td>16/04/2012</td>
-			    <td>17/04/2012</td>
-			    <td>draft</td>
-			    <th><a href="">edit</a></th>                          
-			</tr>
-			<tr>
-			    <td>  <input type="checkbox" name="select" value="select"/></td>
-			    <td>this is a record</td>
-			    <td>36KB</td>
-			    <td>16/04/2012</td>
-			    <td>17/04/2012</td>
-			    <td>published</td>
-			    <th><a href="">edit</a></th>                           
-			</tr>
+			</tr> -->
+			% endfor
 			
 		</thead>
 	</table>

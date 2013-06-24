@@ -86,7 +86,7 @@ def contribute(request):
                 literals[DCTERMS['keywords']]=request.POST['record_keywords']
                 literals[DCTERMS['language']]=request.POST['main_language']
                 
-                literals[DCTERMS['status']]='seeking_approval'
+                literals[DCTERMS['status']]='Seeking Approval'
                 
 #               cud_authenticator = settings.get('main:cud_proxy.host')
 #               cudReq = CUDRequest(cud_proxy_host=cud_authenticator, {'sso_username':request.session['DF_USER_SSO_ID']})
@@ -108,7 +108,7 @@ def contribute(request):
                     literals[OXDS['Filesize']]=request.POST['digital_filesize']
                     literals[DCTERMS['format']]=request.POST['digital_format']
                     literals[OXDS['currentversion']]=request.POST['digital_version']
-                    literals[DCTERMS['publisher']]=request.POST['digital_publisher']
+#                    literals[DCTERMS['publisher']]=request.POST['digital_publisher']
                     literals[DCTERMS['issued']]=request.POST['digital_publish_year']
                     #context["whereis_non_digital"]=request.POST['whereis_non_digital']
                 if literals[OXDS['isDigital']] == "no":                    
@@ -164,8 +164,9 @@ def contribute(request):
                 # Record Manifest RDF
                 records_path = settings.get("main:granary.records_path")
                 records_package = rdflib.URIRef(records_path)
-                manifest_name = 'df_manifest_'+literals[DCTERMS['title']] +'.rdf'
-                manifest_filename = os.path.join(records_path, manifest_name)
+                #manifest_name = 'df_manifest_'+literals[DCTERMS['title']] +'.rdf'
+                df_manifest_name = 'df_manifest.rdf'
+                manifest_filename = os.path.join(records_path, df_manifest_name)
                 main_manifest_filename = os.path.join(records_path, 'manifest.rdf')
                 manifest = bind_namespaces(rdflib.ConjunctiveGraph())
                 #try:
@@ -202,7 +203,7 @@ def contribute(request):
                 #Submit the df_manefest as a file
                 fields=[]
                 df_namifest = open(manifest_filename).read()               
-                files =  [("file", manifest_name, df_namifest, "application/rdf+xml")]            
+                files =  [("file", df_manifest_name, df_namifest, "application/rdf+xml")]            
                 (reqtype, reqdata) = SparqlQueryTestCase.encode_multipart_formdata(fields, files)                
                 (resp,respdata) = datastore.doHTTP_POST(reqdata, reqtype, resource="/DataFinder/datasets/" + identifier +"/")
                 
@@ -213,7 +214,8 @@ def contribute(request):
                 
                 #Submit the main manifest file which as the see also
                 fields=[]       
-                main_manifest = open(main_manifest_filename).read()         
+
+                main_manifest = open(main_manifest_filename).read()
                 files =  [("file", "manifest.rdf", main_manifest, "application/rdf+xml")]            
                 (reqtype, reqdata) = SparqlQueryTestCase.encode_multipart_formdata(fields, files)                
                 (resp,respdata) = datastore.doHTTP_POST(reqdata, reqtype, resource="/DataFinder/datasets/" + identifier +"/")
