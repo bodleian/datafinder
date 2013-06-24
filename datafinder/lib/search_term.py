@@ -29,6 +29,8 @@ class term_list():
         "silo",
         "id",
         "uuid",
+        "depositor",
+        "status",
         "embargoStatus",
         "embargoedUntilDate",
         "currentVersion",
@@ -112,6 +114,8 @@ class term_list():
         field_names = {
         "silo":"Silo",
         "id":"Identifier",
+        "depositor": "depositor",
+        "status": "status",
         "uuid":"Unique Identifier",
         "embargoStatus":"Embargo status",
         "embargoedUntilDate":"Embargoed until date",

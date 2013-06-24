@@ -38,7 +38,7 @@ def gather_document(silo_name, uuid, item_id,  graph):
     return document
 
 if __name__ == "__main__":
-    item_id ='wed1'
+    item_id ='mond_ay2'
     silo_name = 'DataFinder'
     #r = Redis()
     c = Config()
@@ -64,12 +64,12 @@ if __name__ == "__main__":
     datastore.setRequestUserPass(endpointuser=user_name, endpointpass=password) 
     
     (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo_name +"/states/" + item_id )
-    print str(respdata)
+    #print str(respdata)
     json_data = json.loads(respdata)
     uuid = json_data['state']['metadata']['uuid']
                     
     (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo_name +"/datasets/" + item_id +"/manifest.rdf")
-    print respdata
+    #print respdata
     text_file = open("sample_redis_manifest.rdf", "w")
     text_file.write(respdata)
     text_file.close()
@@ -87,8 +87,46 @@ if __name__ == "__main__":
     solr = SolrConnection(c.get(worker_section, "solrurl"))
     solr_doc = gather_document('DataFinder' , uuid , item_id,  graph )
     #solr_doc = {'identifier': ['wed1'], 'aggregatedResource': ['http://datafinder-d2v.bodleian.ox.ac.uk/DataFinder/datasets/wed1/df_manifest_wed1.rdf'], 'mediator': ['admin'], 'text': ['yes', '', 'zool0982', '', '', 'http://vocab.ox.ac.uk/projectfunding#', '', 'seeking_approval', '', ''], 'embargoedUntilDate': ['2083-05-29T07:54:46Z'], 'alternative': ['wed1title'], 'id': ['wed1'], 'subject': [''], 'rights': ['http://ora.ouls.ox.ac.uk/objects/uuid%3A1d00eebb-8fed-46ad-8e38-45dbdb4b224c'], 'publisher': ['Bodleian Libraries, University of Oxford'], 'license': ['CC0 1.0 Universal (CC0 1.0). See http://creativecommons.org/publicdomain/zero/1.0/legalcode'], 'uuid': [u'51b51cd8e78f4da2951e288078cf3821'], 'language': [''], 'title': ['wed1'], 'embargoStatus': ['False'], 'description': ['wed1desc'], 'format': [''], 'modified': ['2013-05-29 07:54:46.606822'], 'filename': ['wed1/df_manifest_wed1.rdf'], 'currentVersion': ['2'], 'created': ['2013-05-29 07:54:46.360052'], 'silo': ['DataFinder'], 'type': ['', 'http://vocab.ox.ac.uk/dataset/schema#DataSet']}
-    print "solr_doc = gather_document('DataFinder' ,"+ str(uuid)+" , "+ str(item_id)+" , "+str(graph)+" )"
-    print repr(solr_doc)
+#    print "solr_doc = gather_document('DataFinder' ,"+ str(uuid)+" , "+ str(item_id)+" , "+str(graph)+" )"
+    print solr_doc
+    solr_doc ={
+                'id': ['mond_ay2'], 
+                'silo': ['DataFinder']}
+    solr.delete( id= 'mond_ay2' )
+    print "deleted'"
+    
+    solr_doc ={
+                'id': ['mond_ay2'], 
+                'silo': ['DataFindehhhhr'],
+                'uuid': [u'78755d851f9a453b84a51b1c00c68553'], 
+                'depositor': 'zool0982'
+              
+#               'identifier': ['fri_day1'], 
+#                'aggregatedResource': ['http://datafinder-d2v.bodleian.ox.ac.uk/DataFinder/datasets/fri_day1/df_manifest.rdf'], 
+#                'mediator': ['admin'],
+#               'text': ['', 'http://vocab.ox.ac.uk/projectfunding#', '', 'seeking_approval', '', '', 'yes', '', ''], 
+#               'depositor': ['zool0982'], 
+#               'embargoedUntilDate': ['2083-06-21T14:08:45Z'], 
+#               'alternative': ['fri_day1'], 
+#               'subject': [''], 
+#               'rights': ['http://ora.ouls.ox.ac.uk/objects/uuid%3A1d00eebb-8fed-46ad-8e38-45dbdb4b224c'], 
+#               'publisher': ['Bodleian Libraries, University of Oxford'], 
+#               'license': ['CC0 1.0 Universal (CC0 1.0). See http://creativecommons.org/publicdomain/zero/1.0/legalcode'],              
+#               'language': [''], 
+#               'title': ['fri_day1'], 
+#               'embargoStatus': ['True'], 
+#               'description': [''], 
+#               'format': [''], 
+#               'modified': ['2013-06-21 14:08:45.525602'],               
+#               'currentVersion': ['2'], 
+#               'created': ['2013-06-21 14:08:45.253033'], 
+#               'issued': [''], 
+#               'type': ['', 'http://vocab.ox.ac.uk/dataset/schema#DataSet']
+               }
+
+ #   solr_doc = {'identifier': ['fri_day1'], 'aggregatedResource': ['http://datafinder-d2v.bodleian.ox.ac.uk/DataFinder/datasets/fri_day1/df_manifest.rdf'], 'mediator': ['admin'], 'text': ['', '', '', 'http://vocab.ox.ac.uk/projectfunding#', '', 'yes', '', 'seeking_approval', ''], 'depositor': ['zool0982'], 'embargoedUntilDate': ['2083-06-21T14:08:45Z'], 'alternative': ['fri_day1'], 'subject': [''], 'rights': ['http://ora.ouls.ox.ac.uk/objects/uuid%3A1d00eebb-8fed-46ad-8e38-45dbdb4b224c'], 'publisher': ['', 'Bodleian Libraries, University of Oxford'], 'license': ['CC0 1.0 Universal (CC0 1.0). See http://creativecommons.org/publicdomain/zero/1.0/legalcode'], 'uuid': [u'4fb84512bfaf4927945ea3c241bf21c0'], 'language': [''], 'title': ['fri_day1'], 'embargoStatus': ['True'], 'description': [''], 'format': [''], 'modified': ['2013-06-21 14:08:45.525602'], 'id': ['fri_day1'], 'currentVersion': ['2'], 'created': ['2013-06-21 14:08:45.253033'], 'issued': [''], 'silo': ['DataFinder'], 'type': ['http://vocab.ox.ac.uk/dataset/schema#DataSet', '']}
+    #solr_doc = {'identifier': ['mond_ay2'], 'aggregatedResource': ['http://datafinder-d2v.bodleian.ox.ac.uk/DataFinder/datasets/mond_ay2/df_manifest.rdf'], 'mediator': ['admin'], 'text': ['', 'http://vocab.ox.ac.uk/projectfunding#', '', 'seeking_approval', '', 'yes', '', '', ''], 'depositor': 'zool0982', 'alternative': ['mond_ay2'], 'embargoedUntilDate': ['2083-06-24T03:41:53Z'], 'subject': [''], 'rights': ['http://ora.ouls.ox.ac.uk/objects/uuid%3A1d00eebb-8fed-46ad-8e38-45dbdb4b224c'], 'publisher': ['Bodleian Libraries, University of Oxford'], 'license': ['CC0 1.0 Universal (CC0 1.0). See http://creativecommons.org/publicdomain/zero/1.0/legalcode'], 'uuid': [u'78755d851f9a453b84a51b1c00c68553'], 'language': [''], 'title': ['mond_ay2'], 'embargoStatus': ['True'], 'description': ['mond_ay2'], 'format': [''], 'modified': ['2013-06-24 03:41:53.988847'], 'id': ['mond_ay2'], 'currentVersion': ['2'], 'created': ['2013-06-24 03:41:53.618090'], 'issued': [''], 'silo': ['DataFinder'], 'type': ['', 'http://vocab.ox.ac.uk/dataset/schema#DataSet']}
+    #print repr(solr_doc)
     solr.add(_commit=True, **solr_doc)
     solr.commit()
      

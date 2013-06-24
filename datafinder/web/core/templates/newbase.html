@@ -422,19 +422,20 @@
 			//if ((document.getElementById('fl' + ind)).classList.contains("closed"))
 			if((document.getElementById('fl' + ind)).className.match("closed"))
 			{
-				document.getElementById('fl' + ind).style.visibility = "visible";
-				document.getElementById('fl' + ind).className.replace('closed'," ");
+				document.getElementById('fl' + ind).style.display = "block";
+				//document.getElementById('fl' + ind).className.replace("closed"," ");
+				document.getElementById('fl' + ind).className -= "closed";
 				//document.getElementById('fl' + ind).className += " " + newClassName;
-				document.getElementById('fh' + ind).style.backgroundImage= "url('/static/styles/images/fminus.png')";
-				document.getElementById('fs' + ind).style.backgroundColor = "#A79D96";
+				//document.getElementById('fh' + ind).style.backgroundImage= "url('/static/styles/images/fminus.png')";
+				//document.getElementById('fs' + ind).style.backgroundColor = "#A79D96";
 			} 
 			else 
 			{
-				document.getElementById('fl' + ind).style.visibility= "hidden";
+				document.getElementById('fl' + ind).style.display= "none";
 				//document.getElementById('fl' + ind).classList.add ="closed";
 				document.getElementById('fl' + ind).className += " " + "closed";
-				document.getElementById('fh' + ind).style.backgroundImage= "url('/static/styles/images/fplus.png')";
-				document.getElementById('fs' + ind).style.backgroundColor = "#999";
+				//document.getElementById('fh' + ind).style.backgroundImage= "url('/static/styles/images/fplus.png')";
+				//document.getElementById('fs' + ind).style.backgroundColor = "#999";
 		  	}
 			//fhAdjust();
 	}

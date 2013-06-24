@@ -13,7 +13,7 @@ import shutil
 import logging.config
 #from LogConfigParser import Config
 import urllib2
-import base64, json
+import base64
 import urllib
 #from multipart import MultiPartFormData
 import SparqlQueryTestCase
@@ -26,18 +26,18 @@ class TestOaiClient(unittest.TestCase):
         return
     
     def setUp(self, datefile=None):
-        self.until = datetime.now().strftime("%Y-%m-%d")#%H:%M:%SZ")
+        self.until = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
         print "Sdsdsdsds"
         self.metadata_formats = ['oai_dc', 'mets']
         self.verbs = ['Identify', 'ListIdentifiers', 'ListRecords', 'ListSets', 'ListMetadataFormats', 'GetRecord']
         self.args = {'from':None, 'until':self.until}
         self.oai_ns = "{http://www.openarchives.org/OAI/2.0/}"
         #self.silo = "sandbox"
-        #  eprints-maths_sources = {
-        #  'maths':{'base':"http://eprints.maths.ox.ac.uk/cgi/oai2", 'records_base':'http://eprints.maths.ox.ac.uk/'}
-        # ,'sbs' : {'args':"set=6F72613D54525545", 'base':"http://eureka.sbs.ox.ac.uk/cgi/oai2", 'records_base':'http://eureka.sbs.ox.ac.uk/'}
-        # ,'economics':{'base':"http://economics.ouls.ox.ac.uk/cgi/oai2", 'records_base':'http://economics.ouls.ox.ac.uk/'}
-        # }
+  #  eprints-maths_sources = {
+  #  'maths':{'base':"http://eprints.maths.ox.ac.uk/cgi/oai2", 'records_base':'http://eprints.maths.ox.ac.uk/'}
+  # ,'sbs' : {'args':"set=6F72613D54525545", 'base':"http://eureka.sbs.ox.ac.uk/cgi/oai2", 'records_base':'http://eureka.sbs.ox.ac.uk/'}
+  # ,'economics':{'base':"http://economics.ouls.ox.ac.uk/cgi/oai2", 'records_base':'http://economics.ouls.ox.ac.uk/'}
+  # }
         #self.source = {'base':"http://eprints.maths.ox.ac.uk/cgi/oai2", 'records_base':'http://eprints.maths.ox.ac.uk/'}
         self.source = {'base':"https://databank.ora.ox.ac.uk/oaipmh", 'records_base':'https://databank.ora.ox.ac.uk/'}
         self.identifiers = []
@@ -135,33 +135,22 @@ class TestOaiClient(unittest.TestCase):
             self.logger.warn("Error retreiving identifiers for %s - %s (try # %d)"%(src['base'], src_url, tries))
             tries += 1
         urlcleanup()
-        self.logger.info('After cleanup')
         tree = ET.ElementTree(file=self.ids_data_file)
         rt = tree.getroot()
         ids = rt.findall("%(ns)sListIdentifiers/%(ns)sheader/%(ns)sidentifier"%{'ns':self.oai_ns})
-        self.logger.info('IDs = ' + str(ids))
         #self.oai_createSilo("eprints-maths")
-#        for ID in ids:
-#             self.logger.info('ID = ' +str(ID))
-#             if resumptionToken and 'deletion' in resumptionToken:
-#                self.delete_identifiers.append(ID.text)
-#             else:
-#                 self.identifiers.append(ID.text)
-#                 self.oai_createDataset( src, "ww1archives", ID.text)
-                 #break
+        for ID in ids:
+             if resumptionToken and 'deletion' in resumptionToken:
+                self.delete_identifiers.append(ID.text)
+             else:
+                 self.identifiers.append(ID.text)
+                 self.oai_createDataset( src, "ww1archives", ID.text)
+                 break
                  
-        f = open('ww1archivesIdsWithDOI.json', 'r')
-        ans = json.load(f)
-        f.close()
-        len(ans)
-        count = 0
-        for identifier in ans:
-            self.oai_createDataset( src, "ww1archives", identifier)
-                 
-#        rtoken = rt.findall("%(ns)sListIdentifiers/%(ns)sresumptionToken"%{'ns':self.oai_ns})
-#         #os.remove(self.ids_data_file)
-#        if rtoken:
-#             self.oai_listIdentifiers(src, resumptionToken=rtoken[0].text)
+        rtoken = rt.findall("%(ns)sListIdentifiers/%(ns)sresumptionToken"%{'ns':self.oai_ns})
+         #os.remove(self.ids_data_file)
+        if rtoken:
+             self.oai_listIdentifiers(src, resumptionToken=rtoken[0].text)
         #shutil.rmtree(self.tmpdir)
 
     def oai_getTitle(self, src, identifier):
@@ -378,114 +367,114 @@ class TestOaiClient(unittest.TestCase):
 
         #Get the ID from the data header
         #Don't need to find this as ID is passed as parameter to function
-        record_id = rt.find("%(ns)sGetRecord/%(ns)srecord/%(ns)sheader/%(ns)sidentifier"%{'ns':self.oai_ns})
-        if record_id:
-            ID = record_id.text
+        #record_id = rt.find("%(ns)sGetRecord/%(ns)srecord/%(ns)sheader/%(ns)sidentifier"%{'ns':self.oai_ns})
+        #if record_id:
+        #    ID = record_id.text
 
         #Get the DC metadata from the data
-        record_metadata = rt.find("%(ns)sGetRecord/%(ns)srecord/%(ns)smetadata"%{'ns':self.oai_ns})
-        #oai_dc = rt.find("%(ns)sGetRecord/%(ns)srecord/%(ns)smetadata/{%(oai_dc)s}dc"%{'ns':self.oai_ns,'oai_dc':namespaces['oai_dc']})
-        #oai_dc_string = ET.tostring(oai_dc)
-        #oai_dc_string=oai_dc_string.replace("oai_dc:dc","rdf:RDF")
-        #oai_dc_string=oai_dc_string.replace('xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"', '')
-        #oai_dc_string=oai_dc_string.replace('xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">', '><rdf:Description rdf:about="">')
-        #oai_dc_string=oai_dc_string.replace('xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"', 'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"')
-        #oai_dc_string=oai_dc_string.replace("</rdf:RDF>","</rdf:Description></rdf:RDF>")
+        #record_metadata = rt.find("%(ns)sGetRecord/%(ns)srecord/%(ns)smetadata"%{'ns':self.oai_ns})
+        oai_dc = rt.find("%(ns)sGetRecord/%(ns)srecord/%(ns)smetadata/{%(oai_dc)s}dc"%{'ns':self.oai_ns,'oai_dc':namespaces['oai_dc']})
+        oai_dc_string = ET.tostring(oai_dc)
+        oai_dc_string=oai_dc_string.replace("oai_dc:dc","rdf:RDF")
+        oai_dc_string=oai_dc_string.replace('xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"', '')
+        oai_dc_string=oai_dc_string.replace('xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">', '><rdf:Description rdf:about="">')
+        oai_dc_string=oai_dc_string.replace('xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"', 'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"')
+        oai_dc_string=oai_dc_string.replace("</rdf:RDF>","</rdf:Description></rdf:RDF>")
         
-        #print "OAI_DC TREE:   " + ET.tostring(oai_dc)
+        print "OAI_DC TREE:   " + ET.tostring(oai_dc)
         
-#        oai_dc_file = open(self.dc_data_file, 'w+')
-#        oai_dc_file.write(record_metadata)#ET.tostring(oai_dc)
-#        #The files are listed as identifiers in the metadata. Get them and remove the id tags
-#        record_ids = oai_dc.findall("{http://purl.org/dc/elements/1.1/}identifier")
-#        files = []
-#        for rid in record_ids:
-#            if rid.text and rid.text and rid.text.startswith('http://eureka'):
-#                files.append(rid.text)
-#            oai_dc.remove(rid)
-#
-#        #The types are listed as dc:type in the metadata. Get them
-#        record_types = oai_dc.findall("{http://purl.org/dc/elements/1.1/}type")
-#        types = []
-#        for typ in record_types:
-#            if typ.text and typ.text.strip() in self.types:
-#                types.append(self.types[typ.text.strip()])
-#        type = (' '.join(types)).strip()       
-#        #Title
-#        #The titles are listed as dc:title in the metadata. Get them
-#        record_titles = oai_dc.findall("{http://purl.org/dc/elements/1.1/}title")
-#        titles = []
-#        for t in record_titles:
-#            if t.text:
-#                titles.append(t.text)
-#        title = (' '.join(titles)).strip()  
-#
-#        #Identifier
-#        sid = ET.SubElement(oai_dc, "{http://purl.org/dc/elements/1.1/}identifier")
-#        sid.text = identifier
-#
-#        #Add the source identifier in relation
-#        sid = identifier.split(':')[-1]
-#        relele = ET.SubElement(oai_dc, "{http://purl.org/dc/elements/1.1/}relation")
-#        relele.text = "%s%s"%(src['records_base'], sid)
-#        relation = relele.text
-#
-#        #Source
-#        sid = identifier.split(':')[-1]
-#        srcele = ET.SubElement(oai_dc, "{http://purl.org/dc/elements/1.1/}source")
-#        srcele.text = src['records_base']
-#        source = srcele.text  
-#        
-#        #Creator
-#        creat = oai_dc.findall("{http://purl.org/dc/elements/1.1/}creator")
-#        creat_or =[]
-#        for c in creat:
-#            if c.text:
-#                creat_or.append(c.text)
-#        creator = (' '.join(creat_or)).strip()  
-#        
-#        #Subject
-#        sub = oai_dc.findall("{http://purl.org/dc/elements/1.1/}subject")
-#        subj =[]
-#        for s in sub:
-#            if s.text:
-#                subj.append(s.text)
-#        subject = (' '.join(subj)).strip()  
-#        #Date
-#        dat = oai_dc.findall("{http://purl.org/dc/elements/1.1/}date")
-#        dates =[]
-#        for d in dat:
-#            if d.text:
-#                dates.append(d.text)
-#        date = (' '.join(dates)).strip()  
-#        #Write oai_dc to the file oai_dc.xml. 
-#        #metadata_tree = ET.ElementTree(element=oai_dc)
-#        #metadata_tree.write('oai_dc.xml')
-#
-#        #Write the dc element to string
-#        dc = None
-#        dc = ET.tostring(oai_dc)
-#        if not dc:
-#            self.logger.warn('NO DC record for %s - %s'%(identifier, silo))
-#        else:
-#            self.logger.info('Retreived DC record for %s - %s'%(identifier, silo))
-#                
-#        #Return dc and list of files
-#        print  {'dc':dc, 'files':files, 'types':types, 'titles':titles}
-#        #return {'dc':dc, 'files':files, 'types':types, 'titles':titles}
-#        
-#
-#        metadata={'identifier':identifier,
-#                  'source':source,
-#                  'creator':creator,
-#                  'subject':subject,
-#                  'date':date,
-#                  'relation':relation,
-#                  'title':title,    
-#                  'type':type          
-#                  }
-#        print "Metadata : " + repr(metadata)
-        return record_metadata
+        oai_dc_file = open(self.dc_data_file, 'w+')
+        oai_dc_file.write(oai_dc_string)#ET.tostring(oai_dc)
+        #The files are listed as identifiers in the metadata. Get them and remove the id tags
+        record_ids = oai_dc.findall("{http://purl.org/dc/elements/1.1/}identifier")
+        files = []
+        for rid in record_ids:
+            if rid.text and rid.text and rid.text.startswith('http://eureka'):
+                files.append(rid.text)
+            oai_dc.remove(rid)
+
+        #The types are listed as dc:type in the metadata. Get them
+        record_types = oai_dc.findall("{http://purl.org/dc/elements/1.1/}type")
+        types = []
+        for typ in record_types:
+            if typ.text and typ.text.strip() in self.types:
+                types.append(self.types[typ.text.strip()])
+        type = (' '.join(types)).strip()       
+        #Title
+        #The titles are listed as dc:title in the metadata. Get them
+        record_titles = oai_dc.findall("{http://purl.org/dc/elements/1.1/}title")
+        titles = []
+        for t in record_titles:
+            if t.text:
+                titles.append(t.text)
+        title = (' '.join(titles)).strip()  
+
+        #Identifier
+        sid = ET.SubElement(oai_dc, "{http://purl.org/dc/elements/1.1/}identifier")
+        sid.text = identifier
+
+        #Add the source identifier in relation
+        sid = identifier.split(':')[-1]
+        relele = ET.SubElement(oai_dc, "{http://purl.org/dc/elements/1.1/}relation")
+        relele.text = "%s%s"%(src['records_base'], sid)
+        relation = relele.text
+
+        #Source
+        sid = identifier.split(':')[-1]
+        srcele = ET.SubElement(oai_dc, "{http://purl.org/dc/elements/1.1/}source")
+        srcele.text = src['records_base']
+        source = srcele.text  
+        
+        #Creator
+        creat = oai_dc.findall("{http://purl.org/dc/elements/1.1/}creator")
+        creat_or =[]
+        for c in creat:
+            if c.text:
+                creat_or.append(c.text)
+        creator = (' '.join(creat_or)).strip()  
+        
+        #Subject
+        sub = oai_dc.findall("{http://purl.org/dc/elements/1.1/}subject")
+        subj =[]
+        for s in sub:
+            if s.text:
+                subj.append(s.text)
+        subject = (' '.join(subj)).strip()  
+        #Date
+        dat = oai_dc.findall("{http://purl.org/dc/elements/1.1/}date")
+        dates =[]
+        for d in dat:
+            if d.text:
+                dates.append(d.text)
+        date = (' '.join(dates)).strip()  
+        #Write oai_dc to the file oai_dc.xml. 
+        #metadata_tree = ET.ElementTree(element=oai_dc)
+        #metadata_tree.write('oai_dc.xml')
+
+        #Write the dc element to string
+        dc = None
+        dc = ET.tostring(oai_dc)
+        if not dc:
+            self.logger.warn('NO DC record for %s - %s'%(identifier, silo))
+        else:
+            self.logger.info('Retreived DC record for %s - %s'%(identifier, silo))
+                
+        #Return dc and list of files
+        print  {'dc':dc, 'files':files, 'types':types, 'titles':titles}
+        #return {'dc':dc, 'files':files, 'types':types, 'titles':titles}
+        
+
+        metadata={'identifier':identifier,
+                  'source':source,
+                  'creator':creator,
+                  'subject':subject,
+                  'date':date,
+                  'relation':relation,
+                  'title':title,    
+                  'type':type          
+                  }
+        print "Metadata : " + repr(metadata)
+        return metadata
 
     
     def oai_getDCRecord(self, src, identifier, pid):

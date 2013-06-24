@@ -1,4 +1,4 @@
-body {
+.body {
     
     background: #ebf1f6 ;
     
@@ -211,6 +211,11 @@ div.label-field-pair.medium
      margin: 0px 0 1em 0px;
      padding: 0.3em 0.6em;
      
+ }
+ 
+ /* MMK - specific for the 'x' boxes on facet */
+ #mainContent input[type="submit"].x-box{
+ 	padding:0.2em 0.3em;
  }
  
   div.radio-set  {
@@ -488,7 +493,7 @@ display: block;
                   
     }
     
-
+.input_pad{padding:2px;} /*MMK added */
   
   form {
   
@@ -872,7 +877,7 @@ background-position: -2px -77px;
 
 }
 
-
+.paginated_results{padding:0 0 0 70px;}
 
 .pagination a.icon.first:hover,
 .pagination a.icon.first:focus {
@@ -1087,18 +1092,21 @@ font-size: 1.2em;
 
 #facet_container ul {
     
-    padding-left: 25px;
+    padding-left: 15px; /* MMK changed from 25px;*/
 }
 
 
 
 #facet_container ul li{
     
-       list-style-type: disc;
-    list-style-image:url("../images/icons/box-unticked.png");
+    list-style-type: none; /* MMK changed from disc;*/
+    /* MMK commented list-style-image:url("../images/icons/box-unticked.png");*/
     padding: 5px 0px ; 
+    line-height:0.9em;
     
 }
+
+#facet_container ul li:before{content: " \2724 "; color:#c2d7ed;}
 
 #link_to_this_search {
     
@@ -1920,7 +1928,7 @@ display: inline;
   
 .panel.pagination {
 
-padding: 5px;
+padding: 5px 10px;
 }
 
 #results-controls,
@@ -2023,6 +2031,24 @@ float: left;
 #
  */
  
+
+
+.main-label {
+  color: #4C637E;
+  display: inline-block;
+ font-size: 1.2em;
+  padding-top:15px;
+  padding-bottom:15px; /*super hack but ok*/
+}
+
+
+
+.subheading{
+  border-bottom: 1px solid #D2E0E8;
+  font-size: 1.2em;
+  margin: 15px 0px 5px;
+  padding: 5px;
+}
  
- 
+
  

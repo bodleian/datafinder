@@ -46,7 +46,7 @@ def resultsmockup(request,query=None, additional_fields=[]):
         context['field_names'] = term_list().get_search_field_dictionary()
         context['facetable_fields'] = term_list().get_all_facet_fields()
         context['types'] = term_list().get_type_field_dictionary()
-        context['search_fields'] = ['silo', 'id', 'title', 'uuid', 'embargoStatus', 'embargoedUntilDate', 'currentVersion', 'doi', 'publicationDate', 'abstract', 'description', 'creator', 'isVersionOf', 'isPartOf', 'subject', 'type']
+        context['search_fields'] = ['silo', 'id', 'identifier','doi', 'title', 'uuid', 'embargoStatus', 'embargoedUntilDate', 'currentVersion', 'doi', 'publicationDate', 'abstract', 'description', 'creator', 'isVersionOf', 'isPartOf', 'subject', 'type', 'relation', 'date', 'issued']
         context['sort_options'] = {'score desc':'Relevance',  'publicationDate desc':'Date (Latest to oldest)','publicationDate asc':'Date (Oldest to Latest)','silo asc':'Silo A to Z','silo desc':'Silo Z to A'}
 
         if query:
@@ -139,7 +139,18 @@ def resultsmockup(request,query=None, additional_fields=[]):
         
         for field in context['all_fields']:
             if request.REQUEST.get("filter"+field, None):
-                multi = request.REQUEST.getall("filter"+field)
+                
+                multi = []
+                filter_key = "filter"+field
+                iterkeys= request.GET
+                for key in iterkeys:  # "for key in request.GET" works too.
+                    if filter_key == key:
+                    # Add filtering logic here.
+                        multi = request.GET.getlist(key)
+                    #multi.extend(['%s=%s' % (key, val) for val in valuelist])
+                    #print '&'.join(mstring)
+                
+                #multi = request.REQUEST.getall("filter"+field)
                 context['chosen_facets'][field] = []
                 #search["filter"+field] = ""
                 for m in multi:
@@ -160,7 +171,7 @@ def resultsmockup(request,query=None, additional_fields=[]):
         
         for field in context['chosen_facets']:
             if field not in context['chosen_fields']:
-               context[' chosen_fields'].append(field)
+               context['chosen_fields'].append(field)
 
         context['truncate'] = 450
         context['start'] = 0
@@ -194,7 +205,8 @@ def resultsmockup(request,query=None, additional_fields=[]):
             context['rows'] = 5
         elif context['rows'] > 5000:
             context['rows']=5000
-            
+    
+        #print start  + start1        
         #search['rows'] = rows
         context['search']['truncate'] = context['truncate']
         context['search']['type'] = context['typ']
@@ -203,7 +215,7 @@ def resultsmockup(request,query=None, additional_fields=[]):
         #if q:
         #    search['q'] = q.encode('utf-8')
         solr_params = {}
-        
+
         if context['q']:
             if context['typ'] and 'silo' in context['typ']:
                 solr_params['q'] = context['q'].encode('utf-8')+query_filter+" AND type:silo"
@@ -338,11 +350,31 @@ def resultsmockup(request,query=None, additional_fields=[]):
                     offset_start = 0
                     
                     context['permissible_offsets'] = list( xrange( offset_start, offset_end, context['rows']) )
+
             except ValueError:
                 pass
 
             context['docs'] = search['response'].get('docs',None)
-        
+            #id =  list(set([id.text for id in sid if id.text.startswith("ww")]))[0]
+            context['doi'] =""
+            if len(context['docs'][0]['identifier']) > 1:
+                context['doi'] =  context['docs'][0]['identifier'][1]
+            if 'creator' in context['docs'][0]:
+                context['creator'] = context['docs'][0]['creator'][0]
+                if context['creator'].endswith("rdf"):
+                    context['creator'] = context['creator'].replace('https://databank.ora.ox.ac.uk/ww1archives/datasets/person/','')
+                    context['creator'] = context['creator'].replace('.rdf','')
+    #                context['creator'] = context['creator'].replace('-',' ')
+                    creator_list = context['creator'].split('-',1)
+                    context['creator'] = creator_list[1] + '  ' + creator_list[0]
+            #list(set([id for id in context['docs']['identifier'] if id.startswith("doi:")]))[0]
+            
+            context['doi'] = context['doi'].replace("doi:",'')
+            if context['doi'].endswith('pdf'):
+                context['doi'] = context['doi']
+            else:
+                context['doi'] = "http://dx.doi.org/" + context['doi']
+            
             if context['fields_to_facet']:
                 context['returned_facets'] = {}
                 for facet in search['facet_counts']['facet_fields']:       
@@ -493,7 +525,6 @@ def detailed(request,query=None, additional_fields=[]):
             'typ':"",
             'docs':"",
             }
-
         context['all_fields'] = term_list().get_all_search_fields()
         context['field_names'] = term_list().get_search_field_dictionary()
         context['facetable_fields'] = term_list().get_all_facet_fields()
@@ -522,6 +553,7 @@ def detailed(request,query=None, additional_fields=[]):
         start = request.REQUEST.get('start', None)
         rows = request.REQUEST.get('rows', None)
         sort = request.REQUEST.get('sort', None)
+ 
         fields = request.REQUEST.get('fl', None)
         res_format = request.REQUEST.get('format', None)
         if not res_format:
@@ -713,7 +745,7 @@ def detailed(request,query=None, additional_fields=[]):
                     context['numFound'] = 0
                     context['message']= 'Sorry, either that search "%s" resulted in no matches, or the search service is not functional.' % context['q']
                     #return render('/search.html')
-                    return render_to_response('search.html',context,context_instance=RequestContext(request))
+                    return render_to_response('searchresults-mockup.html',context,context_instance=RequestContext(request))
  
                 elif res_format == 'xml':
                     #response.headers['Content-Type'] = 'application/xml'
@@ -779,6 +811,7 @@ def detailed(request,query=None, additional_fields=[]):
                     offset_start = 0
                     
                     context['permissible_offsets'] = list( xrange( offset_start, offset_end, context['rows']) )
+            
             except ValueError:
                 pass
 
@@ -794,7 +827,7 @@ def detailed(request,query=None, additional_fields=[]):
                     for index in range(len(keys)):
                         context['returned_facets'][facet].append((keys[index],values[index]))
 
-            return render_to_response('search.html',context,context_instance=RequestContext(request))
+            return render_to_response('searchresults-mockup.html',context,context_instance=RequestContext(request))
 
 
 
