@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="/newbase.html" />
+<%inherit file="/base.html" />
 <%def name="head_tags()">
   <title>DataFinder:My records</title>
 </%def>
@@ -61,7 +61,7 @@ filter the listing by status or search within your records.
 			    	% else:
 			    	<td> </td>
 			    % endif
-			    <th><a href="">edit</a></th>                           
+			    <th><a href='/search/recordview?id=${df_record['title'][0]}'>edit</a></th>                           
 			</tr>
 			<!-- <tr>
 			    <td>  <input type="checkbox" name="select" value="select"/></td>

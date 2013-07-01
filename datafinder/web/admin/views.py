@@ -38,6 +38,7 @@ from datafinder.lib.conneg import MimeType as MT, parse as conneg_parse
 #sys.path.append("./..")
 from datafinder.web.core.models import SourceInfo, Users, DFSessions
 from datafinder.lib.CUD_request import CUDRequest
+from datafinder.lib.SolrQuery import SolrQuery
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +49,7 @@ def approvesource(request):
             return redirect("/login?redirectPath=admin")
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+            return redirect("/")
         
         context = {}
         if request.GET.has_key('source'):
@@ -118,7 +119,7 @@ def sourceinfo(request, source):
             return redirect("/login?redirectPath=admin")
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+            return redirect("/")
         
         context = { 
         #'DF_VERSION':settings.DF_VERSION,
@@ -292,12 +293,16 @@ def administration(request):
             return redirect("/login?redirectPath=admin")
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+            return redirect("/")
         
         context = { 
         'registered_sources':[],
         'unregistered_sources':[],
         }
+         
+        query = 'silo:"DataFinder"'
+        solr_query = SolrQuery(q=query)
+        context['solr_response'] = solr_query.get_solrresponse()
 
         if request.GET.has_key('message'):    
             context["message"]=request.GET['message']
@@ -354,7 +359,7 @@ def adduser(request):
             return redirect("/login?redirectPath=admin")
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+            return redirect("/")
         
         context = {}
                    
@@ -437,7 +442,7 @@ def deluser(request):
             return redirect("/login?redirectPath=admin")
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+            return redirect("/")
         
         context = {}        
             
@@ -498,7 +503,7 @@ def edituser(request):
         return redirect("/login?redirectPath=admin")
     # Test if the user is Data Finder authorised user
     if  request.session['DF_USER_ROLE'] != "admin" :
-        return redirect("/home")
+        return redirect("/")
 
     context = {}
     
@@ -576,7 +581,7 @@ def addsource(request):
             return redirect("/login?redirectPath=admin")
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+            return redirect("/")
         
         context = {}
         
@@ -628,7 +633,7 @@ def delsource(request):
             return redirect("/login?redirectPath=admin")
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+            return redirect("/")
         
         context = {}        
             
@@ -711,7 +716,7 @@ def editsource(request):
             return redirect("/login?redirectPath=admin")
             # Test if the user is Data Finder authorised user
         if  request.session['DF_USER_ROLE'] != "admin" :
-            return redirect("/home")
+            return redirect("/")
         
         context = {}
                 

@@ -1607,6 +1607,14 @@ padding: 0px 23.8px;
       margin-top: 10px;
   }
   
+.lt {
+    float: left;
+}
+
+.rt {
+    float: right;
+}
+  
  #bodlogo img {
           
           padding-top: 8px;
@@ -2050,5 +2058,7 @@ float: left;
   padding: 5px;
 }
  
-
+div.dropdown{
+width:160px !important; 
+}
  

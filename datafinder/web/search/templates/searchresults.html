@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="/newbase.html" />
+<%inherit file="/base.html" />
 <%namespace name="options" file="/search_response_options.html" />
 
 <%def name="head_tags()">
@@ -102,11 +102,9 @@
 		<div class="search-result">
 			<!-- <div> ${search} </div> -->			
 			
-			% if 'doi':
-				<h2 class="record-title"><a href=${doi}> ${docs[doc_index]['id']} </a></h2>
-			% else:	
-				<h2 class="record-title"><a href=${relation}>${docs[doc_index]['id']}</a></h2>
-			% endif 
+			<h2 class="record-title"><a href="/search/recordview?id=${docs[doc_index]['id']}"> ${docs[doc_index]['id']} </a></h2>
+		
+
 			<div class="record-publish-info"><span class="author">
 				% if 'creator' in docs[doc_index]:
 					% if docs[doc_index]['creator'][0].endswith("rdf"):

@@ -22,7 +22,7 @@ def login(request):
         redirectPath = request.GET.get('redirectPath')
         return HttpResponseRedirect(redirectPath)
     else:
-        return HttpResponseRedirect('home')
+        return HttpResponseRedirect('/')
     
 
 def logout(request):
@@ -41,5 +41,5 @@ def logout(request):
         del request.session['DF_USER_EMAIL']
         request.session.modified = True
         
-    return HttpResponseRedirect('home')
+    return HttpResponseRedirect('/')
     #return render_to_response("home.html",context, context_instance=RequestContext(request))

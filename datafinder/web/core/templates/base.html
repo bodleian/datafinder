@@ -8,16 +8,77 @@
 <!--[if (gt IE 9)|!(IE)]><!--> 
 <html lang="en"> 
 <!--<![endif]-->
-<head>
+<head> 
 
 <meta charset="utf-8" /> 
 
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <!-- <title>DataFinder</title> -->
   
-  <script type="text/javascript" src="/static/jquery.js"></script>
+  <!-- Included CSS Files (Uncompressed) -->
+  <!--
+  <link rel="stylesheet" href="/static/foundation/stylesheets/foundation.css">
+  -->
+  
+  <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="/static/foundation/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="/static/foundation/stylesheets/app.css">
+
+  <!-- Foundation css customised for DataFinder   -->
+  <link rel="stylesheet" href="/static/foundation/stylesheets/foundation_enhance.css">
+
+  <script src="/static/foundation/javascripts/modernizr.foundation.js"></script>
+
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+   <script src="http://datafinder-d2v.bodleian.ox.ac.uk:8080/js/piwik.js"></script>
+  <!-- Included JS Files (Compressed) -->
+  <script src="/static/foundation/javascripts/jquery.js"></script>
+  <script src="/static/foundation/javascripts/foundation.min.js"></script>
+  
+  <!-- Initialize JS Plugins -->
+  <script src="/static/foundation/javascripts/app.js"></script>
+  
+
+
+   <style>
+	.ui-autocomplete {
+	max-height: 100px;
+	overflow-y: auto;
+	/* prevent horizontal scrollbar */
+	overflow-x: hidden;
+	}
+	/* IE 6 doesn't support max-height
+	* we use height instead, but this forces the menu to always be this tall
+	*/
+	* html .ui-autocomplete {
+	height: 100px;
+	}
+  </style>
+
+  <script src="http://code.jquery.com/ui/1.8.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.2/themes/smoothness/jquery-ui.css" />
+  <script>
+     <!-- $(window).load(function(){
+ $("#featured").orbit();
+    }); -->
+    </script> 
+ <!-- <script type="text/javascript" src="/static/jquery.js"></script> -->
 
   ${self.head_tags()}
-  <script type="text/javascript">
+  
+ <script type="text/javascript">
+
   $(document).ready( function() {
+   var projects = {}
+   var $=jQuery.noConflict(); 
+
+  setUpExamplePage();
+  setUpPage();
   
   $('#save').click( function()
 	{
@@ -25,22 +86,211 @@
 	    $('#form1').attr('action', actionURL);  
 	    $("#form1")[0].submit();    
 	});
-	
-  $('#project_desc').onchange( function()
-	{
-	  $.ajax({
-	      url: "/contribute/projects/",
-	      type: "POST",
-	      data: $(this).val(),
-	      success: function(data){
-	          alert(data);
-	      },
-	      error:function(){
-	          alert("failure");
-	      }   
-	    }); 
+
+	var availableTags = ['proj 1','proj 2'];
+	$( "#pproject_desc" ).autocomplete({
+	source: availableTags
+	});
+
+   
+   $("#project_desc").autocomplete({
+   
+     //if ($(this).val().length >= 2 ) {
+		  
+			source: function( request, response ) 
+			{	var list;	 
+			  	 $.ajax({
+			      url: "/contribute/projects/",
+			      type: "POST",
+			      data: "{'Project_ID':'1'}",
+			      contentType: "application/json",
+                  dataType: "json",
+			      success: function(data)
+				      {  projects = data;
+				         var keys=[];
+				         for( var key in data)
+				         {
+				            keys.push(key);
+				         }
+				         response( keys);
+				      },
+			      error:function()
+				      {
+				          alert("failure");
+				      }   
+			    });
+		    },
+		    select: function(event,ui) 
+		    {   var key = ui.item.value;
+		        var value = projects[key];
+		    	
+		     	$("#project_website").val(value);
+		     	return true;
+		    }   
+			    
 	 });
+
+
+	 $("#main_language").autocomplete({
+			source: function( request, response ) 
+			{	 var list;	 
+			     //if(request.term.length >= 2)
+			  	 //{
+				  	  $.ajax({
+				      url: "/contribute/languages/?lang="+request.term,
+				      type: "GET",
+				      data: "{'Project_ID':'1'}",
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      {
+					         response( data);
+					      },
+				      error:function()
+					      {
+					          alert("failure");
+					      }   
+					  });
+				 //}
+		    } 	
+	 }); 
+	 
+	 $("#author_lastname_1").autocomplete({
+			source: function( request, response ) 
+			{	 var data_dict = {}
+			     data_dict['lastname'] = request.term 
+			     data_dict['firstname'] = $("#author_firstname_1").val() 
+			     data_dict['middlename'] = $("#author_middlename_1").val() 
+                 data_dict['email'] = $("#author_email_1").val() 
+			     if(request.term.length >= 1)
+			  	 {
+				  	  $.ajax({
+				      url: "/contribute/people/",
+				      type: "POST",
+				      data:  data_dict ,
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      {  if (data.firstname.length == 1)
+					      		$("#author_firstname_1").val(data.firstname[0])
+					      	 if (data.middlename.length == 1)
+					      		$("#author_middlename_1").val(data.middlename[0])
+					      	 if (data.email.length == 1)
+					      		$("#author_email_1").val(data.email[0])
+					         response( data.lastname);
+					      },
+				      error: function(jqXHR, textStatus, errorThrown)
+				          {
+  							alert(textStatus + errorThrown);
+					   	  }  
+					  });
+				 }
+		    } 	
+	 }); 
+	 
+	  
+	 $("#author_firstname_1").autocomplete({
+			source: function( request, response ) 
+			{	 var data_dict = {}
+			     data_dict['lastname'] = $("#author_lastname_1").val()
+			     data_dict['firstname'] =  request.term 
+			     data_dict['middlename'] = $("#author_middlename_1").val() 
+                 data_dict['email'] = $("#author_email_1").val() 
+			     if(request.term.length >= 2)
+			  	 {
+				  	  $.ajax({
+				      url: "/contribute/people/",
+				      type: "POST",
+				      data:  data_dict ,
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      { 
+					      	 if (data.middlename.length == 1)
+					      		$("#author_middlename_1").val(data.middlename[0])
+					      	 if (data.email.length == 1)
+					      		$("#author_email_1").val(data.email[0])
+					      	 if (data.lastname.length == 1)
+					      		$("#author_lastname_1").val(data.lastname[0])
+					         response( data.firstname);
+					      },
+				      error: function(jqXHR, textStatus, errorThrown)
+				          {
+  							alert(textStatus + errorThrown);
+					   	  }  
+					  });
+				 }
+		    } 	
+	 }); 
+	 
+	  $("#author_middlename_1").autocomplete({
+			source: function( request, response ) 
+			{	 var data_dict = {}
+			     data_dict['lastname'] = $("#author_lastname_1").val()
+			     data_dict['firstname'] = $("#author_firstname_1").val() 
+			     data_dict['middlename'] =request.term 
+                 data_dict['email'] = $("#author_email_1").val() 
+			     if(request.term.length >= 2)
+			  	 {
+				  	  $.ajax({
+				      url: "/contribute/people/",
+				      type: "POST",
+				      data:  data_dict ,
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      {  if (data.firstname.length == 1)
+					      		$("#author_firstname_1").val(data.firstname[0])
+					      	 if (data.email.length == 1)
+					      		$("#author_email_1").val(data.email[0])
+					      	 if (data.lastname.length == 1)
+					      		$("#author_lastname_1").val(data.lastname[0])
+					         response( data.middlename);
+					      },
+				      error: function(jqXHR, textStatus, errorThrown)
+				          {
+  							alert(textStatus + errorThrown);
+					   	  }  
+					  });
+				 }
+		    } 	
+	 }); 
+	 
  
+	  $("#author_email_1").autocomplete({
+			source: function( request, response ) 
+			{	 var data_dict = {}
+			     data_dict['lastname'] = $("#author_lastname_1").val()
+			     data_dict['firstname'] = $("#author_firstname_1").val() 
+			     data_dict['middlename'] = $("#author_middlename_1").val() 
+                 data_dict['email'] = request.term 
+			     if(request.term.length >= 2)
+			  	 {
+				  	  $.ajax({
+				      url: "/contribute/people/",
+				      type: "POST",
+				      data:  data_dict ,
+				      contentType: "application/json",
+	                  dataType: "json",
+				      success: function(data)
+					      { 
+					         if (data.firstname.length == 1)
+					      		$("#author_firstname_1").val(data.firstname[0])
+					      	 if (data.middlename.length == 1)
+					      		$("#author_middlename_1").val(data.middlename[0])
+					      	 if (data.lastname.length == 1)
+					      		$("#author_lastname_1").val(data.lastname[0])
+					         response( data.email);
+					      },
+				      error: function(jqXHR, textStatus, errorThrown)
+				          {
+  							alert(textStatus + errorThrown);
+					   	  }  
+					  });
+				 }
+		    } 	
+	 }); 
+	 
   $('#depositDataYes').change(function() 
     {
 	    if($(this).val()=='yes') {   
@@ -109,11 +359,103 @@
       });
     return false;
   });
+  
+  $('#adduser').click( function()
+	{   var user_sso_id =   $('#user_sso_id').val()
+	    var actionURL = "/admin/users/add/?user_sso_id=" + user_sso_id;
+	    $('#manageusers').attr('action', actionURL);  
+	    $("#manageusers")[0].submit();    
+	});
+  $('#edituser').click( function()
+	{   var user_sso_id =   $('#user_sso_id').val()
+	    var actionURL = "/admin/users/edit/?user_sso_id=" + user_sso_id;
+	    $('#manageusers').attr('action', actionURL);  
+	    $("#manageusers")[0].submit();    
+	});
+	
+  $('#deluser').click( function()
+	{
+	    var actionURL = "/admin/users/del/?user_sso_id=" + user_sso_id;
+	    $('#manageusers').attr('action', actionURL);  
+	    $("#manageusers")[0].submit();    
+	});
+	
+     //$("input:radio[name=deposit_data]").change(function() {
+      //   alert("fsdfd");
+         //var deposit_data_value = $('input[name=deposit_data]:radio:checked').val();
+        //if (deposit_data_value == 'yes')
+        //{
+        //  alert("fsdfd")
+        //}
+   // });
+   
+  $("#deposit_data_yes").change(function() 
+    {
+     window.open("https://databank.ora.ox.ac.uk/", '_blank');
+    });
+   
+
 });
-  </script>
+
+	//search 
+
+	function fhAdjust(){
+		//Make sure facets do not stick beneath footer
+		navh = document.getElementById('facet_wrapper').style.height;
+		navh = navh + 211;
+		wrah = document.getElementById('results-controls').style.height;
+		if (navh > wrah)
+		 {
+			document.getElementById('results-controls').style.height =  navh + 100;
+		}
+		 else 
+		{
+			mainh = document.getElementById('mainContent').height;
+			mainh = mainh + 91;
+			if (mainh > navh){
+				document.getElementById('results-controls').style.height = mainh + 100;
+			} else {
+				document.getElementById('results-controls').style.height =  navh + 100;
+			}
+		}
+	}
+	
+	function bindItem(ind){  
+		    //$('#fh' + ind).click(function(event) {
+		    //$("[id^=fh]").click(function(event) {
+		    //$('#fh1').click(function(event) {
+			//event.preventDefault();
+			//alert("i am here");
+			//if ((document.getElementById('fl' + ind)).classList.contains("closed"))
+			if((document.getElementById('fl' + ind)).className.match("closed"))
+			{
+				document.getElementById('fl' + ind).style.display = "block";
+				//document.getElementById('fl' + ind).className.replace("closed"," ");
+				document.getElementById('fl' + ind).className -= "closed";
+				//document.getElementById('fl' + ind).className += " " + newClassName;
+				//document.getElementById('fh' + ind).style.backgroundImage= "url('/static/styles/images/fminus.png')";
+				//document.getElementById('fs' + ind).style.backgroundColor = "#A79D96";
+			} 
+			else 
+			{
+				document.getElementById('fl' + ind).style.display= "none";
+				//document.getElementById('fl' + ind).classList.add ="closed";
+				document.getElementById('fl' + ind).className += " " + "closed";
+				//document.getElementById('fh' + ind).style.backgroundImage= "url('/static/styles/images/fplus.png')";
+				//document.getElementById('fs' + ind).style.backgroundColor = "#999";
+		  	}
+			//fhAdjust();
+	}
+	
+	
+</script>
+
+  <script src="/static/js/assignFASTPage.js" type="text/javascript"></script>
+  <script src="/static/js/assignFASTExample.js" type="text/javascript"></script>
+  <script src="/static/js/assignFASTGadget.js" type="text/javascript"></script> 
+  <script src="/static/js/assignFASTComplete.js" type="text/javascript"></script>
   
-  
-  <!--[if lt IE 9]>
+ <!--[if lt IE 9]>
 
   <script type="text/javascript" src="/static/js/html5.js" />
   <![endif]-->
@@ -122,29 +464,29 @@
   <link rel="http://purl.org/net/sword/discovery/service-document" href="/swordv2/service-document"/>
   
   <!-- print stylesheet for print stlying -->
-  <link media="print"  href="/static/styles/print.css" rel="stylesheet" type="text/css"/>
+  <!-- <link media="print"  href="/static/styles/print.css" rel="stylesheet" type="text/css"/>-->
   
   
   <!-- general reset styles for getting rid of annoying browser defaults -->
-  <link media="all"  href="/static/styles/reset.css" rel="stylesheet" type="text/css"/>
+  <!-- <link media="all"  href="/static/styles/reset.css" rel="stylesheet" type="text/css"/> -->
 
   <!-- basic styles suitable for all devices *DO NOT put layout stuff here * -->
-<link media="all"  href="/static/styles/basic.css" rel="stylesheet" type="text/css"/>
+  <!-- <link media="all"  href="/static/styles/basic.css" rel="stylesheet" type="text/css"/> -->
 
   <!-- styles for mobile devices-->
-  <link href="/static/styles/marmoset.css" rel="stylesheet" type="text/css" media="screen and (max-width: 639px)"/> 
+  <!-- <link href="/static/styles/marmoset.css" rel="stylesheet" type="text/css" media="screen and (max-width: 639px)"/> -->
 
   <!-- styles for smallscreen devices-->
-  <link href="/static/styles/squirrelMonkey.css" rel="stylesheet" type="text/css" media="(min-width: 640px)"/> 
+  <!-- <link href="/static/styles/squirrelMonkey.css" rel="stylesheet" type="text/css" media="(min-width: 640px)"/> --> 
 
 
   <!-- styles for small-to-medium screen desktop  devices-->
-  <link rel="stylesheet" type="text/css" href="/static/styles/chimpanzee.css"
-media="(min-width: 1100px) and (max-width: 1600px)"/> 
+  <!-- <link rel="stylesheet" type="text/css" href="/static/styles/chimpanzee.css"
+media="(min-width: 1100px) and (max-width: 1600px)"/> -->
 
 
   <!-- styles for large screen desktop devices-->
-  <link  rel="stylesheet" type="text/css" href="/static/styles/silverback.css" media="screen and (min-width: 1601px)"/> 
+  <!-- <link  rel="stylesheet" type="text/css" href="/static/styles/silverback.css" media="screen and (min-width: 1601px)"/> --> 
 
 
   <!-- styles for Internet explorer - imports the small/medium desktop stylesheet and contains  any ie-specific styles -->
@@ -162,16 +504,14 @@ media="(min-width: 1100px) and (max-width: 1600px)"/>
   </head>
 <body>
   <div id="page" >
-  
+  <!--
   <ul class="skipLinks">
-  <li><a href="#mainContent">skip to content</a></li>
-   <li><a href="#mainnav">skip to navigation</a></li>
-  
+	  <li><a href="#mainContent">skip to content</a></li>
+	  <li><a href="#mainnav">skip to navigation</a></li>
   </ul>
+  -->
   
   
-  
-    <header class="pageHeader">
       <%include file="/header.html"/>
      
        <%doc>
@@ -188,44 +528,21 @@ media="(min-width: 1100px) and (max-width: 1600px)"/>
 	      %> 
        </%doc>
       <nav>
-
-     <!--  mainnav div starts -->
-	<span class="nonVis"  >main navigation</span>
-
-	<div id="mainmenu">
-		<a href="/search/detailed" id="nav-index" >Search</a> <span> | </span>
-		<a href="/contribute" id="nav-index" >Contribute</a> <span> | </span>
-		<a href="/home" >Browse</a> <span> | </span>
-        <a href="/admin/list_sources" >admin</a><span> | </span>
-
-		% if showAdmin:
-		<a href="/admin">${showAdmin}</a><span> | </span>
-		% endif
-	    <a href="/about" >about</a> <span> | </span>
-		<a href="/" >Help</a> 
-	</div>
-<div id="links">
-    <a href="/search/detailed">SEARCH</a><a href="/contribute">CONTRIBUTE</a>
-    <a href="/home">BROWSE</a>
-    <%include file="/quick_search_form.html"/> 
-</div>
+<%doc>
 <div id="login">
 
-<%doc>
+
   % if user_logged_in_name:
     Welcome <a href="/users/${user_logged_in_name}">${user_logged_in_name}</a>   
     <a href="/logout_handler?came_from=${current_url}">Logout</a>
   % else:
     <a href="/login?came_from=${current_url}">Login</a>
   % endif
-</%doc>
 
-    <a href="">Logout</a>
 
-    <a href="/login/">Login</a>
 
 </div>
-
+</%doc>
 <%doc>
 <span class="nonVis" >breadcrumb trail</span>
 <ul class="breadcrumb" >
@@ -254,8 +571,6 @@ path_url = "/%s/datasets/%s"%(silo_name,id)
 </ul>
 </%doc>
 </nav>
-     
-</header>
 
 
 
@@ -263,7 +578,7 @@ path_url = "/%s/datasets/%s"%(silo_name,id)
 
     <article class="content" >
 
-	<div class="wrapper">
+	<div class="wrapper row">
     ${self.body()}
       	</div>
 
@@ -275,6 +590,20 @@ path_url = "/%s/datasets/%s"%(silo_name,id)
 <footer class="site">
   <%include file="/footer.html"/>
 </footer>
-    </div><!-- /end #page -->
+ </div> <!-- end page --> 
+ 
+ <!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = "http://datafinder-d2v.bodleian.ox.ac.uk:8080/";
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://datafinder-d2v.bodleian.ox.ac.uk:8080/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
   </body>
 </html>

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="/newbase.html" />
+<%inherit file="/base.html" />
 <%def name="head_tags()">
   <title> DataFinder </title>
 </%def>
@@ -9,6 +9,8 @@
 % endif
 
 <h1>Contribute a record</h1>
+
+<!--
 
 <div class="row">
 
@@ -27,12 +29,12 @@
 			    <div class="content" data-section-content>
 			      <p>Content of section 2.</p>
 			    </div>
-			    </section>
+</section>
 			  
 			  
 			</div>
 			
-</div>		
+</div>		-->
 			
 <form class="abau custom" id="form-contribute" name="form1" method="post" enctype="multipart/form-data" action="/contribute/" accept-charset="UTF-8">
   <div class="section-container accordion" data-section="accordion">
@@ -56,7 +58,7 @@
 		  		  	<label for="data_format_yes">Deposit data in DataBank</label>
 	  		  </div>
 		      <div class="label-field-pair radio" >
-		      		<input type ="radio" name="deposit_data" value="no" id="deposit_data_no" />
+		      		<input type ="radio" name="deposit_data" value="no" id="deposit_data_no" checked />
 		      		<label for="data_format_no">Create Record only</label>
 		      </div>
 		      
@@ -192,7 +194,7 @@
           <div class="radio-set" >
 	    	  <p>Is your data in digital format?</p>
 	    	  <div class="label-field-pair radio" >
-		  		  	<input type ="radio" name="data-format" value="yes" id="data_format_yes" />
+		  		  	<input type ="radio" name="data-format" value="yes" id="data_format_yes" checked />
 		  		  	<label for="data_format_yes">yes</label>
 	  		  </div>
 		      <div class="label-field-pair radio" >
@@ -275,7 +277,7 @@
 	       <div class="radio-set" >
 	           <p>Is your data an output of a funded research?</p>
 	    	   <div class="label-field-pair radio" >
-	    	        <input type ="radio" name="funded_research" value="yes" id="funded_research_yes" />
+	    	        <input type ="radio" name="funded_research" value="yes" id="funded_research_yes" checked />
 	    	        <label for="funded_research_yes" >yes</label>
 	    	   </div>
 	    	   <div class="label-field-pair radio" >  
@@ -315,14 +317,20 @@
 	         <!--
 	            <input type="text" name="publication_relationship_of_data_1" id="publication_relationship_of_data_1"/>
 	            -->
-	            	            <select  name="publication_relationship_of_data_1" id="publication_relationship_of_data_1">
-	            	            
-
-                                <option value="option-1">option 1</option>
-                                <option value="option-2">option 2</option>
-                                <option value="option-3">option 3</option>
-                                <option value="option-4">option 4</option>
-
+	            	            <select  name="publication_relationship_of_data_1" id="publication_relationship_of_data_1">                         
+									     <option value="HasPart">HasPart</option>
+									     <option value="isPartOf">isPartOf</option>
+									     <option value="Otherversion">Otherversion</option>
+									     <option value="isVersionOf">isVersionOf</option>
+									     <option value="hasVersion">hasVersion</option>
+									     <option value="isFormatOf">isFormatOf</option>
+									     <option value="hasFormat">hasFormat</option>
+									     <option value="References">References</option>
+									     <option value="isReferencedBy">isReferencedBy</option>
+									     <option value="Replaces">Replaces</option>
+									     <option value="IsReplacedBy">IsReplacedBy</option>
+									     <option value="Requires">Requires</option>
+									     <option value="IsRequiredBy">IsRequiredBy</option>
 	            	            </select>
 
 	       </div>
@@ -342,13 +350,21 @@
 	            
 	            -->
 	            
-	            <select  type="text" name="dataset_relationship_of_data_1" id="dataset_relationship_of_data_1">
-	              <option value="option-1">option 1</option>
-                                <option value="option-2">option 2</option>
-                                <option value="option-3">option 3</option>
-                                <option value="option-4">option 4</option>
-
-	            </select>
+	            <select  type="text"  name="dataset_relationship_of_data_1" id="dataset_relationship_of_data_1">                         
+									     <option value="HasPart">HasPart</option>
+									     <option value="isPartOf">isPartOf</option>
+									     <option value="Otherversion">Otherversion</option>
+									     <option value="isVersionOf">isVersionOf</option>
+									     <option value="hasVersion">hasVersion</option>
+									     <option value="isFormatOf">isFormatOf</option>
+									     <option value="hasFormat">hasFormat</option>
+									     <option value="References">References</option>
+									     <option value="isReferencedBy">isReferencedBy</option>
+									     <option value="Replaces">Replaces</option>
+									     <option value="IsReplacedBy">IsReplacedBy</option>
+									     <option value="Requires">Requires</option>
+									     <option value="IsRequiredBy">IsRequiredBy</option>
+           		 </select>
 	       </div>
 	       <div class="label-field-pair stacked-inline-wide" >
 	       		<label for="dataset_related_url_1">URl of the dataset or DataFinder record for the dataset</label>

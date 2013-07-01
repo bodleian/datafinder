@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="/newbase.html" />
+<%inherit file="/base.html" />
 <%def name="head_tags()">
   <title>DataFinder:Administration</title>
 </%def>
@@ -13,6 +13,17 @@
 
 <div class="row"><h5>Records for review</h5></div>
 
+<div class="2 columns">
+	 <select>
+	 	<option> Draft </option>
+	 	<option> Awaiting Review </option>
+	 	<option> Rejected </option>
+	 	<option> Escalated </option>
+	 	<option> Locked for Review </option>
+	 	<option> Published </option>
+	 	<option> Referred to Contributer </option>
+	</select>
+</div>
 
 <div class="row">
 	<table>
@@ -44,7 +55,29 @@
 			    <th>status</th>
 			    <th>action</th>                  
 			</tr>
+			% for df_record in solr_response['docs']:
 			<tr>
+			    % if 'title' in df_record:
+			    	<td>${df_record['title']}</td>
+			    % else:
+			    	<td>${df_record['id']} </td>
+			    % endif
+			    <td>36KB</td>
+			    <td>${df_record['created'][0]}</td>
+			    <td>${df_record['timestamp']}</td>
+			    % if 'depositor' in df_record:
+			    	<td>${df_record['depositor']}</td>
+			    % else:
+			    	<td> </td>
+			    % endif
+			    % if 'status' in df_record:
+			    	<td>${df_record['status']}</td>
+			    	% else:
+			    	<td> </td>
+			    % endif
+			    <td>review</td>                     
+			</tr>
+			<!-- <tr>
 			    <td>A record</td>
 			    <td>36KB</td>
 			    <td>16/04/2012</td>
@@ -52,35 +85,8 @@
 			    <td>another researcher</td>
 			    <td>awaiting review</td>   
 			    <td>review</td>                     
-			</tr>
-			<tr>
-			    <td>some record</td>
-			    <td>36KB</td>
-			    <td>06/07/2007</td>
-			    <td>17/04/2012</td>
-			    <td>some researcher</td>
-			    <td>referred to contributor</td>   
-			    <td></td>       			    		                 
-			</tr>
-			<tr>
-			    <td>another record</td>
-			    <td>36KB</td>
-			    <td>16/04/2012</td>
-			    <td>17/04/2012</td>
-			    <td>a researcher</td>
-			    <td>escalated</td>   
-			    <td>review (only shown to admin users)</td>       			                     
-			</tr>
-			<tr>
-			    <td>this is a record</td>
-			    <td>36KB</td>
-			    <td>16/04/2012</td>
-			    <td>17/04/2012</td>
-			    <td>a researcher</td>
-			    <td>lockedforreview</td>   
-			    <td></td>       			                        
-			</tr>
-			
+			</tr> -->
+			% endfor
 		</thead>
 	</table>
 </div>

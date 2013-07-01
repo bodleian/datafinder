@@ -12,35 +12,56 @@ from datafinder.lib.search_term import term_list
 from datafinder.lib.conneg import MimeType as MT, parse as conneg_parse
 from datafinder.config import settings
 from urllib import urlencode, unquote, quote
+from django.shortcuts import redirect
+from datafinder.lib.SolrQuery import SolrQuery
 import logging    
 
 def search(request):
-    context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,3
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'q':"",
-        'typ':"",
-        }
+    context = {}
 
     return render_to_response('index.html',context, context_instance=RequestContext(request))
     #return render_to_response('home.html',context, context_instance=RequestContext(request))
 
-def resultsmockup(request,query=None, additional_fields=[]):
-#        context = { 
-#            'DF_VERSION':settings.DF_VERSION,
-#            'STATIC_URL': settings.STATIC_URL,
-#            'silo_name':"",
-#            'ident' : "",
-#            'id':"",
-#            'path' :"",
-#            'q':"",
-#            'typ':"",
-#            'docs':"",
-#            }
+def recordview(request): 
+    context = {}  
+    if request.GET.has_key('id'):                
+          
+        #query = 'silo:"DataFinder" AND id:"' + request.GET['id'] + '"'
+        query = 'id:"' + request.GET['id'] + '"'
+        solr_query = SolrQuery(q=query)
+    
+        context['solr_response'] = solr_query.get_solrresponse()
+        
+        context['docs'] = context['solr_response'].get('docs',None)
+       
+        if len(context['docs'])<1:
+            return redirect("/search/detailed")
+        #id =  list(set([id.text for id in sid if id.text.startswith("ww")]))[0]
+        context['doi'] =""
+        if len(context['docs']) >0 and ('identifier' in context['docs'][0]) and (len(context['docs'][0]['identifier']) > 1):
+                context['doi'] =  context['docs'][0]['identifier'][1]
+        if len(context['docs']) >0 and 'creator' in context['docs'][0]:
+            context['creator'] = context['docs'][0]['creator'][0]
+            if context['creator'].endswith("rdf"):
+                    context['creator'] = context['creator'].replace('https://databank.ora.ox.ac.uk/ww1archives/datasets/person/','')
+                    context['creator'] = context['creator'].replace('.rdf','')
+    #                context['creator'] = context['creator'].replace('-',' ')
+                    creator_list = context['creator'].split('-',1)
+                    context['creator'] = creator_list[1] + '  ' + creator_list[0]
+            #list(set([id for id in context['docs']['identifier'] if id.startswith("doi:")]))[0]
+            
+        context['doi'] = context['doi'].replace("doi:",'')
+        if context['doi'].endswith('pdf'):
+                context['doi'] = context['doi']
+        else:
+                context['doi'] = "http://dx.doi.org/" + context['doi']
+            
+       
+    return render_to_response('record_view.html',context, context_instance=RequestContext(request))
+
+
+def searchresults(request,query=None, additional_fields=[]):
+
         context = {}
         context['all_fields'] = term_list().get_all_search_fields()
         context['field_names'] = term_list().get_search_field_dictionary()
@@ -274,7 +295,7 @@ def resultsmockup(request,query=None, additional_fields=[]):
                     context['message']= 'Sorry, either that search "%s" resulted in no matches, or the search service is not functional.' % context['q']
                     #return render('/search.html')
 #                    return render_to_response('search.html',context,context_instance=RequestContext(request))                   
-                    return render_to_response('searchresults-mockup.html',context, context_instance=RequestContext(request))
+                    return render_to_response('searchresults.html',context, context_instance=RequestContext(request))
  
                 elif res_format == 'xml':
                     #response.headers['Content-Type'] = 'application/xml'
@@ -357,7 +378,7 @@ def resultsmockup(request,query=None, additional_fields=[]):
             context['docs'] = search['response'].get('docs',None)
             #id =  list(set([id.text for id in sid if id.text.startswith("ww")]))[0]
             context['doi'] =""
-            if len(context['docs'][0]['identifier']) > 1:
+            if 'identifier' in context['docs'][0] and len(context['docs'][0]['identifier']) > 1:
                 context['doi'] =  context['docs'][0]['identifier'][1]
             if 'creator' in context['docs'][0]:
                 context['creator'] = context['docs'][0]['creator'][0]
@@ -386,7 +407,7 @@ def resultsmockup(request,query=None, additional_fields=[]):
                         context['returned_facets'][facet].append((keys[index],values[index]))
 
 #            return render_to_response('search.html',context,context_instance=RequestContext(request))
-            return render_to_response('searchresults-mockup.html',context, context_instance=RequestContext(request))
+            return render_to_response('searchresults.html',context, context_instance=RequestContext(request))
 
 
 
@@ -745,7 +766,7 @@ def detailed(request,query=None, additional_fields=[]):
                     context['numFound'] = 0
                     context['message']= 'Sorry, either that search "%s" resulted in no matches, or the search service is not functional.' % context['q']
                     #return render('/search.html')
-                    return render_to_response('searchresults-mockup.html',context,context_instance=RequestContext(request))
+                    return render_to_response('searchresults.html',context,context_instance=RequestContext(request))
  
                 elif res_format == 'xml':
                     #response.headers['Content-Type'] = 'application/xml'
@@ -827,7 +848,7 @@ def detailed(request,query=None, additional_fields=[]):
                     for index in range(len(keys)):
                         context['returned_facets'][facet].append((keys[index],values[index]))
 
-            return render_to_response('searchresults-mockup.html',context,context_instance=RequestContext(request))
+            return render_to_response('searchresults.html',context,context_instance=RequestContext(request))
 
 
 

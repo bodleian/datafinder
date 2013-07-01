@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="/newbase.html" />
+<%inherit file="/base.html" />
 <%def name="head_tags()">
   <title> DataFinder : Record Name</title>
 </%def>
@@ -8,22 +8,35 @@
 	<p><span style="color:red;">${message}</span></p>
 % endif
 <div class="record-entry">
-<h1>Record Name</h1>
+<% df_record = solr_response['docs'][0] %>
+<h1>${df_record['id']}</h1>
 
 
  <div class="main-col">
   
     <div class="record-intro">
-     <p class="citation"><span class="record-author">author</span> (<span class="publication-date">publication date</span>). <span class="record-title">publication title</span>. <span class="record-publisher">Publisher</span>. doi:<span class="record-doi">doi number</span></p>
+     <p class="citation"><span class="record-author">
+		% if creator:
+			${creator}
+		% else:
+			Creator:
+		% endif
+
+     </span> (<span class="publication-date">publication date</span>). <span class="record-title">publication title</span>. <span class="record-publisher">Publisher</span>. doi:<span class="record-doi">doi number</span></p>
     
     <p class="citation-url"><label>Use this url to cite this item:</label> <span class="record-url"><a href="#" >record url</a></span></p>
 
 <div class="record-abstract" >
 <h2>Abstract</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
+% if 'description' in df_record:
+	<% count = len(df_record['description']) %>
+	<% i = 0 %>
+	% while i < count:
+	<p>${df_record['description'][i]} </p>
+	<% i = i + 1 %>
+	% endwhile
+% endif
 </div>
     
         <div class="section-container accordion" data-section="accordion">
@@ -236,14 +249,19 @@
   <div class="side-col">
   
     <div class="record-status">
-    <label>status:</label> <span class="status">under review</span>
+    <label>status:</label> <span class="status">Published</span>
     
     </div>
     <div class="panel record-links">
     <h2>Links and Downloads</h2>
     
     <ul>    
-      <li><a href="#">dataset</a></li>
+      % if 'doi':
+     	 <li><a href="${doi}">dataset</a></li>
+      % else:	
+      	 <li><a href="${relation}">dataset</a></li>
+      % endif 
+      	 
       <li><a href="#">project website</a></li>
       <li><a href="#">documentation</a></li>
       <li><a href="#">user guide</a></li>

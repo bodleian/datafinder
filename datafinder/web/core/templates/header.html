@@ -1,16 +1,61 @@
 # -*- coding: utf-8 -*-
-<h1><a  href="/home" id="homelink">Data F i n d e r
+  <div class="header">
+    <div class="row">
 
-		%if DF_VERSION:
-		  <span class="small">${ DF_VERSION }  static url ${ STATIC_URL }</span>
-		%endif
+					<a id="dflogo" href="/">
+						<img src="${ STATIC_URL }images/df-logo.png"    alt="Data Finder" />
+					</a>
+		<div class="header-forms" >   
+			    	  <%include file="/quick_login_form.html"/> 
+		   
+	    	  <%include file="/quick_search_form.html"/> 
+	  
+	  
 
-	  </a>
-	  <span id="bodlogo">
-				<a href="http://www.bodleian.ox.ac.uk">
-					<img src="${ STATIC_URL }bodtrans.png" alt="Bodleian Library Logo" />
-				</a>
-	  </span>
-	</h1>
 	
+		</div>
+		<div class="header-logos">
+					<a id="bodlogo" href="http://www.bodleian.ox.ac.uk">
+						<img src="${ STATIC_URL }images/bod.png" alt="Bodleian Library" />
+					</a>
+	
+	
+					<a id="unilogo" href="http://www.bodleian.ox.ac.uk">
+						<img src="${ STATIC_URL }images/ox_brand1_rev.gif" alt="University of Oxford" />
+					</a>
+		</div>
+		
+  </div>
+  </div>
+  
 
+  
+  <div class="row nav">
+	 
+	 
+	 <ul class="menu">
+        <li class="home first">
+             <a href="/"> Home </a>
+        </li>
+        <li>
+             <a href="/browse">browse</a>
+        </li>
+        <li>
+             <a href="/search/">Search</a>
+        </li>
+        <li>
+            <a href="/contribute">Contribute</a>
+        </li>
+        <li>
+         <a href="/about">About</a>
+        </li>
+        <li>
+         <a href="/help">Help</a>
+        </li>
+        <li>
+        <a href="/contact">Contact</a>
+</li></ul>
+  </div>
+
+  
+  

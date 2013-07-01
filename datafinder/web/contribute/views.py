@@ -20,26 +20,12 @@ import xml.etree.ElementTree as ET
 import xml
 from datafinder.config import settings
 from datafinder.lib.broadcast import BroadcastToRedis
-
+from datafinder.lib.SolrQuery import SolrQuery
+from django.http import HttpResponseRedirect
 try: 
     import simplejson as json
 except ImportError: 
     import json
-
-def recordsmockup(request):
-    context = { 
-        #'DF_VERSION':settings.DF_VERSION,
-        #'STATIC_URL': settings.STATIC_URL,3
-        'silo_name':"",
-        'ident' : "",
-        'id':"",
-        'path' :"",
-        'user_logged_in_name':"",
-        'q':"",
-        'typ':"",
-        }
-
-    return render_to_response('records_mockup.html',context, context_instance=RequestContext(request))
     
 def contribute(request):
    try:
@@ -87,16 +73,39 @@ def contribute(request):
                 literals[DCTERMS['language']]=request.POST['main_language']
                 
                 literals[DCTERMS['status']]='Seeking Approval'
-                
-#               cud_authenticator = settings.get('main:cud_proxy.host')
-#               cudReq = CUDRequest(cud_proxy_host=cud_authenticator, {'sso_username':request.session['DF_USER_SSO_ID']})
                 literals[OXDS['depositor']] = request.session['DF_USER_SSO_ID']
-                #context["author_firstname_1"]=request.GET['author_firstname_1']
                 
-                #context["author_lastname_1"]=request.GET['author_lastname_1']        
-                #context["author_role_1"]=request.GET['author_role_1']
-                #context["author_affiliation_1"]=request.GET['author_affiliation_1']
-                #context["record_contact"]=request.GET['record_contact']  
+                person_title = request.POST['author_firstname_1'] + '-' +request.POST['author_middlename_1'] + '-' +request.POST['author_lastname_1'] 
+                                  
+                person[FOAF["givenName"]]=request.POST['author_firstname_1']
+                person[FOAF["middleName"]]=request.POST['author_middlename_1']   
+                person[FOAF["familyName"]]=request.POST['author_lastname_1']    
+                person[FOAF["mbox"]]=request.POST['author_email_1']     
+                person[OXDS['role']]=request.POST['author_role_1']             
+                person[FOAF["Organization"]]=request.POST['author_affiliation_1']
+                
+                
+                people_path = settings.get("main:granary.people_path")        
+                people_manifest_filename = os.path.join(people_path, 'people.rdf')
+                people_manifest = bind_namespaces(rdflib.ConjunctiveGraph())
+                
+                try:
+                    with open(people_manifest_filename, 'r') as f:
+                        people_manifest.parse(f, base=people_manifest_filename)
+                except IOError, e:
+                    pass
+                
+                if people_manifest.value(FOAF[person_title], None, None) == None:
+                        people_manifest.add((FOAF[person_title], RDF.type, FOAF.Person))
+                        for key, value in person.items():
+                                people_manifest.add((FOAF[person_title], key, Literal(value)))
+                                             
+                
+                with open(people_manifest_filename, 'w') as f:
+                    people_manifest.serialize(f, 'better-pretty-xml', base=people_manifest_filename)
+                os.chown(people_manifest_filename,  getpwnam('www-data').pw_uid, getpwnam('www-data').pw_gid)
+                
+           
                 
                 literals[OXDS['contact']] = request.POST['record_contact']
                 #literals[OXDS['isEmbargoed']] = 'False'
@@ -108,18 +117,19 @@ def contribute(request):
                     literals[OXDS['Filesize']]=request.POST['digital_filesize']
                     literals[DCTERMS['format']]=request.POST['digital_format']
                     literals[OXDS['currentversion']]=request.POST['digital_version']
-#                    literals[DCTERMS['publisher']]=request.POST['digital_publisher']
+                    literals[DCTERMS['publisher']]=request.POST['digital_publisher']
                     literals[DCTERMS['issued']]=request.POST['digital_publish_year']
                     #context["whereis_non_digital"]=request.POST['whereis_non_digital']
-                if literals[OXDS['isDigital']] == "no":                    
-                    context[DCTERMS['format']]=request.POST['non_digital_format']
-                    context[DCTERMS['publisher']]=request.POST['non_digital_publisher']
-                    context[DCTERMS['issued']]=request.POST['non_digital_publish_year']
+                if literals[OXDS['isDigital']] == "no":     
+                    literals[OXDS['DataLocation']]=request.POST['digital_location']               
+                    literals[DCTERMS['format']]=request.POST['non_digital_format']
+                    literals[DCTERMS['publisher']]=request.POST['non_digital_publisher']
+                    literals[DCTERMS['issued']]=request.POST['non_digital_publish_year']
                 
-                funded_research = ''#request.POST['funded_research']
+                funded_research = request.POST['funded_research']
                 if funded_research == "yes":
-                    context[FUND['FundingBody']]=request.POST['funding_agency']
-                    context[FUND['grantNumber']]=request.POST['grant_number']
+                    literals[FUND['FundingBody']]=request.POST['funding_agency']
+                    literals[FUND['grantNumber']]=request.POST['grant_number']
                     
                      
 
@@ -138,8 +148,7 @@ def contribute(request):
                 #projects_package = rdflib.URIRef(projects_path)
                 
                 
-                projects_path = settings.get("main:granary.projects_path")
-        
+                projects_path = settings.get("main:granary.projects_path")        
                 projects_manifest_filename = os.path.join(projects_path, 'projects.rdf')
                 projects_manifest = bind_namespaces(rdflib.ConjunctiveGraph())
 #              
@@ -153,7 +162,6 @@ def contribute(request):
                 for key, value in project.items():
                     # Will raise UniquenessError if >1 value returned, must be one or None
                     if projects_manifest.value(None, DCTERMS['title'], Literal(value)) == None:                        
-                        projects_manifest.add((FUND[project[DCTERMS['title']]], key, Literal(value)))
                         projects_manifest.add((FUND[project[DCTERMS['title']]], key, Literal(value)))
                     
                 with open(projects_manifest_filename, 'w') as f:
@@ -234,8 +242,9 @@ def projects(request):
             return redirect("/login?redirectPath=contribute")    
         
         #context = {}
-        projects = []
-    
+        projects = {}
+
+       
         projects_path = settings.get("main:granary.projects_path")
         
         projects_manifest_filename = os.path.join(projects_path, 'projects.rdf')
@@ -258,9 +267,15 @@ def projects(request):
    #projects[o1] =projects_manifest.value(s1,DCTERMS['URI'],None)
 
             for s1,p1,o1 in projects_manifest.triples((None,DCTERMS['title'],None)):
-                                       projects.append(o1)
+                     for s2,p2,o2 in projects_manifest.triples((s1,DCTERMS['URI'],None)):
+                                       #projects.append(o1)
+                                       projects[o1]=o2
+
+                                       
+
             #context['projects'] = projects
             
+       
             return HttpResponse(json.dumps(projects), mimetype="application/json")
             #return render_to_response('contribute.html', context, context_instance=RequestContext(request))  
        # elif http_method == "POST":             
@@ -268,7 +283,6 @@ def projects(request):
    except Exception, e:
         raise
     
-
 
 def languages(request):
    try:
