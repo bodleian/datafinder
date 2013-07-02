@@ -69,19 +69,32 @@ def searchresults(request,query=None, additional_fields=[]):
         context['types'] = term_list().get_type_field_dictionary()
         context['search_fields'] = ['silo', 'id', 'identifier','doi', 'title', 'uuid', 'embargoStatus', 'embargoedUntilDate', 'currentVersion', 'doi', 'publicationDate', 'abstract', 'description', 'creator', 'isVersionOf', 'isPartOf', 'subject', 'type', 'relation', 'date', 'issued']
         context['sort_options'] = {'score desc':'Relevance',  'publicationDate desc':'Date (Latest to oldest)','publicationDate asc':'Date (Oldest to Latest)','silo asc':'Silo A to Z','silo desc':'Silo Z to A'}
-
+        
+        keyword = "*:*"
+        context['q'] = "*:*"
+        author= ""
+        
         if query:
             context['q'] = query
         else:        
-            context['q'] = request.REQUEST.get('q',None)
+            context['q'] = request.REQUEST.get("q",None)
+#            if request.GET.has_key('keyword'):    
+#                keyword = request.GET['keyword']
+#                if not keyword or keyword == '*' or keyword== "":
+#                    keyword = "*:*"                    
+#                context['q'] =  keyword 
+#            if request.GET.has_key('author'):
+#                author = request.GET['author']
+#                context['q'] =  context['q'] + ' AND creator:"' +  author +'"'
+
         try:
             context['q'] = unquote(context['q'])
         except:
             pass
 
         context['typ'] = 'all'
-        if request.REQUEST.get("type",None):
-            context['typ'] = request.REQUEST.get("type",None)
+
+        context['typ'] = request.REQUEST.get("type",None)
 
         if not context['q'] or context['q'] == '*' or context['q'] == "":
             context['q'] = "*:*"
@@ -131,7 +144,7 @@ def searchresults(request,query=None, additional_fields=[]):
              context['sort_text'] =  context['sort_options'][ context['sort']]
         
         context['chosen_fields'] = []
-        context['chosen_fields'].extend( context['search_fields'])
+        context['chosen_fields'].extend(context['search_fields'])
 
         if fields:
             fields = fields.split(',')
@@ -378,16 +391,17 @@ def searchresults(request,query=None, additional_fields=[]):
             context['docs'] = search['response'].get('docs',None)
             #id =  list(set([id.text for id in sid if id.text.startswith("ww")]))[0]
             context['doi'] =""
-            if 'identifier' in context['docs'][0] and len(context['docs'][0]['identifier']) > 1:
-                context['doi'] =  context['docs'][0]['identifier'][1]
-            if 'creator' in context['docs'][0]:
-                context['creator'] = context['docs'][0]['creator'][0]
-                if context['creator'].endswith("rdf"):
-                    context['creator'] = context['creator'].replace('https://databank.ora.ox.ac.uk/ww1archives/datasets/person/','')
-                    context['creator'] = context['creator'].replace('.rdf','')
-    #                context['creator'] = context['creator'].replace('-',' ')
-                    creator_list = context['creator'].split('-',1)
-                    context['creator'] = creator_list[1] + '  ' + creator_list[0]
+            if len( context['docs'])!=0:
+                if 'identifier' in context['docs'][0] and len(context['docs'][0]['identifier']) > 1:
+                    context['doi'] =  context['docs'][0]['identifier'][1]
+                if 'creator' in context['docs'][0]:
+                    context['creator'] = context['docs'][0]['creator'][0]
+                    if context['creator'].endswith("rdf"):
+                        context['creator'] = context['creator'].replace('https://databank.ora.ox.ac.uk/ww1archives/datasets/person/','')
+                        context['creator'] = context['creator'].replace('.rdf','')
+        #                context['creator'] = context['creator'].replace('-',' ')
+                        creator_list = context['creator'].split('-',1)
+                        context['creator'] = creator_list[1] + '  ' + creator_list[0]
             #list(set([id for id in context['docs']['identifier'] if id.startswith("doi:")]))[0]
             
             context['doi'] = context['doi'].replace("doi:",'')
@@ -556,27 +570,28 @@ def detailed(request,query=None, additional_fields=[]):
         if query:
             context['q'] = query
         else:        
-            context['q'] = request.REQUEST.get('q',None)
+            context['q'] = request.GET('q',None)
         try:
             context['q'] = unquote(context['q'])
         except:
             pass
 
         context['typ'] = 'all'
-        if request.REQUEST.get("type",None):
-            context['typ'] = request.REQUEST.get("type",None)
+        if request.GET("type",None):
+            context['typ'] = request.GET("type",None)
 
         if not context['q'] or context['q'] == '*' or context['q'] == "":
             context['q'] = "*:*"
  
+        a=b+1
         # Search controls
-        truncate = request.REQUEST.get('truncate', None)
-        start = request.REQUEST.get('start', None)
-        rows = request.REQUEST.get('rows', None)
-        sort = request.REQUEST.get('sort', None)
+        truncate = request.GET('truncate', None)
+        start = request.GET('start', None)
+        rows = request.GET('rows', None)
+        sort = request.GET('sort', None)
  
-        fields = request.REQUEST.get('fl', None)
-        res_format = request.REQUEST.get('format', None)
+        fields = request.GET('fl', None)
+        res_format = request.GET('format', None)
         if not res_format:
             accept_list = None
             if 'HTTP_ACCEPT' in request.environ:
@@ -643,7 +658,7 @@ def detailed(request,query=None, additional_fields=[]):
         filter_url = ""
         
         for field in context['all_fields']:
-            if request.REQUEST.get("filter"+field, None):
+            if request.GET("filter"+field, None):
                 multi = request.REQUEST.getall("filter"+field)
                 context['chosen_facets'][field] = []
                 #search["filter"+field] = ""
