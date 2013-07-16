@@ -221,8 +221,8 @@ div.label-field-pair.medium
   div.radio-set  {
      
    /*  border: 1px solid #ccc;
-     */
-     clear: both;
+     
+     clear: both;*/
      padding: 10px;
  }
  
@@ -233,14 +233,17 @@ div.label-field-pair.medium
  }
  
  div.radio {
-   
-   
    clear: none;
    float: left;
    margin-right: 10px;
-   width: 45%;
-   
-   
+  /* width: 45%;  */
+ }
+ 
+  div.radio.short_desc {
+   clear: none;
+   float: left;
+   margin-right: 10px;
+   width: 14%;    
  }
  div.radio label {
      
@@ -274,7 +277,9 @@ div.label-field-pair.medium
     
 }
 
-
+#mainContent form  fieldset fieldset{ 
+    margin: 1em 0px;       
+}
 #mainContent form  fieldset div,
 #mainContent form  fieldset input,
 #mainContent form  fieldset label,
@@ -363,7 +368,7 @@ display: block;
    clear: none;
    margin: 0px 5px 10px 0px;
    float: left;
-   width: 24%;
+  /* width: 24%; */
    
  }
  
@@ -373,7 +378,7 @@ display: block;
    clear: none;
    margin: 0px 5px 10px 10px;
    float: left;
-   width: 69%;
+   width: 45%;
    
  }
  
@@ -396,8 +401,6 @@ display: block;
    
  }
  
-
-
  
  
  #mainContent form .label-field-pair.full-width {
@@ -409,6 +412,7 @@ display: block;
   #mainContent form .label-field-pair.full-width .url {
    
    width: 60%;
+   
  }
 
  
@@ -435,10 +439,17 @@ display: block;
  
   
  #mainContent form  .label-field-pair.inline-stacked label {
-   
-
-   width: 24%;
-   
+   width: 24%; 
+ }
+ 
+  #mainContent form  .label-field-pair.radio.inline-stacked.wide label {
+   width: 75%; 
+   text-align: right;
+ }
+ 
+   #mainContent form  .label-field-pair.radio.inline-stacked label {
+   width: 25%; 
+   text-align: right;
  }
  
  
@@ -2062,3 +2073,7 @@ div.dropdown{
 width:160px !important; 
 }
  
+ 
+.moreinfo{
+font-size: 0.6em !important;
+}

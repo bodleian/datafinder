@@ -63,9 +63,9 @@
   <script src="http://code.jquery.com/ui/1.8.2/jquery-ui.js"></script>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.2/themes/smoothness/jquery-ui.css" />
   <script>
-     <!-- $(window).load(function(){
- $("#featured").orbit();
-    }); -->
+    // $(window).load(function(){
+    // $("#featured").orbit();
+    // });
     </script> 
  <!-- <script type="text/javascript" src="/static/jquery.js"></script> -->
 
@@ -310,6 +310,7 @@
     } 
   });
   
+  
   $('#fundedResearch').click(function() 
     { 
 	    if($(this).is(':checked')) {   	    
@@ -379,24 +380,362 @@
 	    $('#manageusers').attr('action', actionURL);  
 	    $("#manageusers")[0].submit();    
 	});
-	
-     //$("input:radio[name=deposit_data]").change(function() {
-      //   alert("fsdfd");
-         //var deposit_data_value = $('input[name=deposit_data]:radio:checked').val();
-        //if (deposit_data_value == 'yes')
-        //{
-        //  alert("fsdfd")
-        //}
-   // });
+	;
    
   $("#deposit_data_yes").change(function() 
     {
-     window.open("https://databank.ora.ox.ac.uk/", '_blank');
+     if($(this).is(':checked') == true){
+    		 window.open("https://databank.ora.ox.ac.uk/", '_blank');
+    		 }
     });
    
+  $("#data_format_yes").change(function() 
+    {   
+	     if($(this).is(':checked') == true)
+	     {
+	    		$("#Digital").css("display", "block");
+	    		$("#NonDigital").css("display", "none");
+	     }
+	});
+	
+	
+ $("#data_format_no").change(function() 
+    {	
+	     if( $(this).is(':checked') == true)
+	     {
+	        	$("#Digital").css("display", "none");
+	    		$("#NonDigital").css("display", "block");
+	     }
+	});
+	
+    
+   
+  $("#funded_research_yes").change(function() 
+    {   
+	     if($(this).is(':checked') == true)
+	     {
+	    		$("#fund_and_grant").css("display", "block");
+	     }
+	});
+	
+  $("#funded_research_no").change(function() 
+    {   
+	     if($(this).is(':checked') == true)
+	     {
+	    		$("#fund_and_grant").css("display", "none");
+	     }
+	});
+	
+  $("#title_more_info").click(function() 
+    {   
+         right_arrow = '${ STATIC_URL }/right_circled_arrow.png'
+         down_arrow = '${ STATIC_URL }/down_circled_arrow.png'
+         
+         if ($(this).attr('src') == right_arrow )
+         {
+	    		$(this).attr('src', down_arrow);
+	    		$("#alt_title").css("display", "block");
+	     }
+	     else
+	     {
+	     		$(this).attr('src', right_arrow);
+	     		$("#alt_title").css("display", "none");
+	     }
+	    return false;
+	});
+	
 
+
+  $("#project_more_info").click(function() 
+    {   
+         right_arrow = '${ STATIC_URL }/right_circled_arrow.png'
+         down_arrow = '${ STATIC_URL }/down_circled_arrow.png'
+         
+         if ($(this).attr('src') == right_arrow )
+         {
+	    		$(this).attr('src', down_arrow);
+	    		$("#proj_info").css("display", "block");
+	     }
+	     else
+	     {
+	     		$(this).attr('src', right_arrow);
+	     		$("#proj_info").css("display", "none");
+	     }
+	    return false;
+	});
+	
+	$("#subject_more_info").click(function() 
+    {   
+         right_arrow = '${ STATIC_URL }/right_circled_arrow.png'
+         down_arrow = '${ STATIC_URL }/down_circled_arrow.png'
+         
+         if ($(this).attr('src') == right_arrow )
+         {
+	    		$(this).attr('src', down_arrow);
+	    		$("#subj_info").css("display", "block");
+	     }
+	     else
+	     {
+	     		$(this).attr('src', right_arrow);
+	     		$("#subj_info").css("display", "none");
+	     }
+	    return false;
+	});
+	
+	$("#digital_more_info").click(function() 
+    {   
+         right_arrow = '${ STATIC_URL }/right_circled_arrow.png'
+         down_arrow = '${ STATIC_URL }/down_circled_arrow.png'
+         
+         if ($(this).attr('src') == right_arrow )
+         {
+	    		$(this).attr('src', down_arrow);
+	    		$("#digital_info").css("display", "block");
+	     }
+	     else
+	     {
+	     		$(this).attr('src', right_arrow);
+	     		$("#digital_info").css("display", "none");
+	     }
+	    return false;
+	});
+	
+	$("#non_digital_more_info").click(function() 
+    {   
+         right_arrow = '${ STATIC_URL }/right_circled_arrow.png'
+         down_arrow = '${ STATIC_URL }/down_circled_arrow.png'
+         
+         if ($(this).attr('src') == right_arrow )
+         {
+	    		$(this).attr('src', down_arrow);
+	    		$("#non_digital_info").css("display", "block");
+	     }
+	     else
+	     {
+	     		$(this).attr('src', right_arrow);
+	     		$("#non_digital_info").css("display", "none");
+	     }
+	    return false;
+	});
+	
+	
+	$("#related_more_info").click(function() 
+    {   
+         right_arrow = '${ STATIC_URL }/right_circled_arrow.png'
+         down_arrow = '${ STATIC_URL }/down_circled_arrow.png'
+         
+         if ($(this).attr('src') == right_arrow )
+         {
+	    		$(this).attr('src', down_arrow);
+	    		$("#related_info").css("display", "block");
+	     }
+	     else
+	     {
+	     		$(this).attr('src', right_arrow);
+	     		$("#related_info").css("display", "none");
+	     }
+	    return false;
+	});
+	
+
+	
+	$('div').on('click','img[id^="subject_add_more"]', function() 
+    {   
+         plus = '${ STATIC_URL }/gplus.png'
+         minus = '${ STATIC_URL }/gminus.png'
+         
+         if ($(this).attr('src') == plus )
+         { 		
+			    var currentCount =  $('.subject_area_repeatable').length ; 
+			    var newCount = currentCount+1;
+			    var lastRepeatingGroup = $('.subject_area_repeatable').last();
+			    var newSection = lastRepeatingGroup.clone();
+			    newSection.insertAfter(lastRepeatingGroup);
+			    newSection.find("input").each(function (index, input) {
+			        input.id = input.id.replace("_" + currentCount, "_" + newCount);
+			        input.name = input.name.replace("_" + currentCount, "_" + newCount);
+			        var i = $(input);
+			        i.val("");
+			    });
+			    newSection.find("img").each(function (index, img) {
+			        img.id = img.id.replace("_" + currentCount, "_" + newCount);
+			        img.src = img.src.replace("gplus", "gminus");
+			    });
+			    newSection.find("label").each(function (index, label) {			    
+			         var l = $(label);
+			         l.text("");
+			        // l.attr('for', l.attr('for').replace("_" + currentCount, "_" + newCount));
+			    }); 
+	    	
+	     }
+	     else
+	     {
+	     		$(this).parent('div').remove();
+   		 		return false; 
+	     		
+	     }
+	    return false;
+	});
+	
+	$('div').on('click','img[id^="keyword_add_more"]', function() 
+    {   
+         plus = '${ STATIC_URL }/gplus.png'
+         minus = '${ STATIC_URL }/gminus.png'
+         
+         if ($(this).attr('src') == plus )
+         { 		
+			    var currentCount =  $('.keywords_repeatable').length ; 
+			    var newCount = currentCount+1;
+			    var lastRepeatingGroup = $('.keywords_repeatable').last();
+			    var newSection = lastRepeatingGroup.clone();
+			    newSection.insertAfter(lastRepeatingGroup);
+			    newSection.find("input").each(function (index, input) {
+			        input.id = input.id.replace("_" + currentCount, "_" + newCount);
+			        input.name = input.name.replace("_" + currentCount, "_" + newCount);
+			        var i = $(input);
+			        i.val("");
+			    });
+			    newSection.find("img").each(function (index, img) {
+			        img.id = img.id.replace("_" + currentCount, "_" + newCount);
+			        img.src = img.src.replace("gplus", "gminus");
+			    });
+			    newSection.find("label").each(function (index, label) {			    
+			         var l = $(label);
+			         l.text("");
+			        // l.attr('for', l.attr('for').replace("_" + currentCount, "_" + newCount));
+			    }); 
+	    	
+	     }
+	     else
+	     {
+	     		$(this).parent('div').remove();
+   		 		return false; 
+	     		
+	     }
+	    return false;
+	});
+	
+	$('div').on('click','img[id^="funding_add_more"]', function() 
+    {   
+         plus = '${ STATIC_URL }/gplus.png'
+         minus = '${ STATIC_URL }/gminus.png'
+         
+         if ($(this).attr('src') == plus )
+         { 		
+			    var currentCount =  $('.funding_repeatable').length ; 
+			    var newCount = currentCount+1;
+			    var lastRepeatingGroup = $('.funding_repeatable').last();
+			    var newSection = lastRepeatingGroup.clone();
+			    newSection.insertAfter(lastRepeatingGroup);
+			    newSection.find("input").each(function (index, input) {
+			        input.id = input.id.replace("_" + currentCount, "_" + newCount);
+			        input.name = input.name.replace("_" + currentCount, "_" + newCount);
+			        var i = $(input);
+			        i.val("");
+			    });
+			    newSection.find("img").each(function (index, img) {
+			        img.id = img.id.replace("_" + currentCount, "_" + newCount);
+			        img.src = img.src.replace("gplus", "gminus");
+			    });
+			    newSection.find("label").each(function (index, label) {			    
+			         var l = $(label);
+			         l.text("");
+			        // l.attr('for', l.attr('for').replace("_" + currentCount, "_" + newCount));
+			    }); 
+	    	
+	     }
+	     else
+	     {
+	     		$(this).parent('div').remove();
+   		 		return false; 
+	     		
+	     }
+	    return false;
+	});
+	
+		$('div').on('click','img[id^="publication_add_more"]', function() 
+    {   
+         plus = '${ STATIC_URL }/gplus.png'
+         minus = '${ STATIC_URL }/gminus.png'
+         
+         if ($(this).attr('src') == plus )
+         { 		
+			    var currentCount =  $('.publication_repeatable').length ; 
+			    var newCount = currentCount+1;
+			    var lastRepeatingGroup = $('.publication_repeatable').last();
+			    var newSection = lastRepeatingGroup.clone();
+			    newSection.insertAfter(lastRepeatingGroup);
+			    newSection.find("select").each(function (index, select) {
+			        select.id = select.id.replace("_" + currentCount, "_" + newCount);
+			        select.name = select.name.replace("_" + currentCount, "_" + newCount);
+			    });
+			    newSection.find("input").each(function (index, input) {
+			        input.id = input.id.replace("_" + currentCount, "_" + newCount);
+			        input.name = input.name.replace("_" + currentCount, "_" + newCount);
+			        var i = $(input);
+			        i.val("");
+			    });
+			    newSection.find("img").each(function (index, img) {
+			        img.id = img.id.replace("_" + currentCount, "_" + newCount);
+			        img.src = img.src.replace("gplus", "gminus");
+			    });
+			    newSection.find("label").each(function (index, label) {			    
+			         var l = $(label);
+			        l.attr('for', l.attr('for').replace("_" + currentCount, "_" + newCount));
+			    }); 
+	    	
+	     }
+	     else
+	     {
+	     		$(this).parent('div').remove();
+   		 		return false; 
+	     		
+	     }
+	    return false;
+	});
+	
+		
+		$('div').on('click','img[id^="dataset_add_more"]', function() 
+    {   
+         plus = '${ STATIC_URL }/gplus.png'
+         minus = '${ STATIC_URL }/gminus.png'
+         
+         if ($(this).attr('src') == plus )
+         { 		
+			    var currentCount =  $('.dataset_repeatable').length ; 
+			    var newCount = currentCount+1;
+			    var lastRepeatingGroup = $('.dataset_repeatable').last();
+			    var newSection = lastRepeatingGroup.clone();
+			    newSection.insertAfter(lastRepeatingGroup);
+			    newSection.find("select").each(function (index, select) {
+			        select.id = select.id.replace("_" + currentCount, "_" + newCount);
+			        select.name = select.name.replace("_" + currentCount, "_" + newCount);
+			    });
+			    newSection.find("input").each(function (index, input) {
+			        input.id = input.id.replace("_" + currentCount, "_" + newCount);
+			        input.name = input.name.replace("_" + currentCount, "_" + newCount);
+			        var i = $(input);
+			        i.val("");
+			    });
+			    newSection.find("img").each(function (index, img) {
+			        img.id = img.id.replace("_" + currentCount, "_" + newCount);
+			        img.src = img.src.replace("gplus", "gminus");
+			    });
+			    newSection.find("label").each(function (index, label) {			    
+			         var l = $(label);
+			        l.attr('for', l.attr('for').replace("_" + currentCount, "_" + newCount));
+			    }); 
+	    	
+	     }
+	     else
+	     {
+	     		$(this).parent('div').remove();
+   		 		return false; 
+	     		
+	     }
+	    return false;
+	});
 });
-
 	//search 
 
 	function fhAdjust(){

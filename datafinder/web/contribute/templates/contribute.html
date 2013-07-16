@@ -39,34 +39,19 @@
 <form class="abau custom" id="form-contribute" name="form1" method="post" enctype="multipart/form-data" action="/contribute/" accept-charset="UTF-8">
   <div class="section-container accordion" data-section="accordion">
 
-	<div class="label-field-pair" >
-		<label for="dataset_title" >The title of this dataset (to use in citation)</label>
-		<input type="text" name="record_title" id="record_title"/> 
-	</div>
-
-    <div class="label-field-pair" >
-         <label for="alt_title">If there is an alternative title, please enter it here:</label>    
-   		 <input type="text" name="alt_title" id="alt_title"/>
-    </div>   
-    
-    
-    
-              <div class="radio-set deposit-data" >
-	    	  <p>Do you wish to deposit the Data you are describing in DataBank now, or are you just creating a DataFinder record for the data?</p>
-	    	  <div class="label-field-pair radio" >
-		  		  	<input type ="radio" name="deposit_data" value="yes" id="deposit_data_yes" />
-		  		  	<label for="data_format_yes">Deposit data in DataBank</label>
-	  		  </div>
-		      <div class="label-field-pair radio" >
-		      		<input type ="radio" name="deposit_data" value="no" id="deposit_data_no" checked />
-		      		<label for="data_format_no">Create Record only</label>
-		      </div>
-		      
-		      <div class="clear-fix" ></div>
-		  </div>
-    
+    <div class="radio-set deposit-data" >
+	   <p>Do you wish to deposit the Data you are describing in DataBank now, or are you just creating a DataFinder record for the data?</p>
+	    <div class="label-field-pair radio inline-stacked wide" >
+		  		<input type ="radio" name="deposit_data" value="yes" id="deposit_data_yes" />
+		  		<label for="data_format_yes">Deposit data in DataBank</label>
+	    </div>
+		<div class="label-field-pair radio inline-stacked wide" >
+		        <input type ="radio" name="deposit_data" value="no" id="deposit_data_no" checked />
+		        <label for="data_format_no">Create Record only</label>
+		</div>		      
+    </div>
         
-  
+          
       <!--   <fieldset id="deposit_data">    
     	<legend>Data Deposit</legend> 
     	<section>
@@ -77,25 +62,26 @@
    
         <p class="instruction">Do you wish this data to be embargoed?</p>	       		
 		<div class="radio-set" >	       		     		
-		<div class="label-field-pair radio" >
+		<div class="label-field-pair radio inline-stacked" >
 			<input name="deposit_data_embargo_options" type ="radio" value="deposit_data_embargo_no" id="deposit_data_embargo_no" /><label for="deposit_data_embargo_no" >no</label>
 		</div>
-		<div class="label-field-pair radio" >
+		<div class="label-field-pair radio inline-stacked" >
 			<input  name="deposit_data_embargo_options" type ="radio" value="deposit_data_embargo_yes" id="deposit_data_embargo_yes" /><label for="deposit_data_embargo_yes" >yes</label>
 			 		     
 
 		</div>     
 		
-		 <div class="clear-fix" ></div> 
+	  <div class="clear-fix"></div>
+	    
 		<div class="label-field-pair" >   
 			<label for="deposit_data_embrago_release_date">release date</label>   
 		    <input type="text" name="deposit_data_embrago_release_date" id="deposit_data_embrago_release_date"/>
 		</div>
-	    <div class="label-field-pair radio" >
+	    <div class="label-field-pair radio inline-stacked" >
 			<input name="deposit_data_embargo_options_type" type ="radio" value="deposit_data_embargo_dark" id="deposit_data_embargo_dark" />
 			<label for="deposit_data_embargo_dark" >Dark archive (Data never publicly accessible)</label>
 		</div>
-	    <div class="label-field-pair radio" >
+	    <div class="label-field-pair radio inline-stacked" >
        		<input  name="deposit_data_embargo_options_type" type ="radio" value="deposit_data_embargo_invisible" id="deposit_data_embargo_invisible" />
        		<label for="deposit_data_embargo_invisible" >Invisible archive (neither data nor this record every publicly accessible)</label>
        	</div>	       		
@@ -108,41 +94,71 @@
        		  </div> 
        		  </section>
 	</fieldset> -->
-
+    <div class="clear-fix"></div>
     <fieldset> 
     	<legend>Describe your data</legend>
-	    <div class="label-field-pair" >
-	          <label for="data_description">Please write a short description of your data (max characters?)</label>   
-	          <input type="text" name="data_description" id="data_description"/>
-	    </div>        
-        <div class="label-field-pair" >
-            <label for="data_process">By what process was the data assembled/generated?</label>
-            <input type="text" name="data_process" id="data_process"/>
-        </div>
-        
-         <div class="label-field-pair" >
-            <label for="project_desc">Please write a short description of the research project that the data forms part of:</label>
-            <input name="project_desc" id="project_desc"/>
-        </div>
-        
-         <div class="label-field-pair" >
-            <label for="project_website">If you have a website for this research project, please enter the URL:</label>
-            <input type="text" name="project_website" id="project_website"/>
-        </div>
-        <!-- <span id="exampleXtra"> </span> -->
-        <div class="label-field-pair ui-widget inline-stacked" ><label for="subject_areas">Subject Area(s)</label>
-            <input type="text" name="subject_areas" id="subject_areas"/>
-        </div>
-        
-        <div class="label-field-pair inline-stacked" >
-        	<label for="record_keywords">Keyword(s)</label>
-        	<input type="text" name="record_keywords" id="record_keywords"/>
-        </div>
-        
-        <div class="label-field-pair inline-stacked" >
-            <label for="main_language">Main Language</label>
-        	<input type="text" name="main_language" id="main_language"/>
-        </div>               
+        <fieldset>	       
+	    	<div class="label-field-pair" >
+			  	<label for="dataset_title" >The title of this dataset (to use in citation)
+			  	</label>
+			  	<input type="text" name="record_title" id="record_title"/>		  	 
+		    </div>
+           
+	        <span for="alt_title">Add more info</span>    
+			<img id="title_more_info" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Info" />
+		
+
+	        <div class="label-field-pair" id="alt_title" style="display:none;" >
+	         	<label for="alt_title">If there is an alternative title, please enter it here: (optional)</label>    
+	   		 	<input type="text" name="alt_title" id="alt_title"/>
+	        </div>   
+    	</fieldset>
+    	
+    	<fieldset>
+			    <div class="label-field-pair" >
+			          <label for="data_description">Please write a short description of your data </label>   
+			          <input type="text" name="data_description" id="data_description"/>
+			    </div>	
+		    	<span for="alt_title">Add more info</span>    
+				<img id="project_more_info" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Project Info" />   
+			    <div id="proj_info" style="display:none;">  
+		        	<div class="label-field-pair" >
+		          		  <label for="data_process">By what process was the data assembled/generated?  (optional) </label>
+		           		 <input type="text" name="data_process" id="data_process"/>
+		        	</div>       
+		         	<div class="label-field-pair" >
+		          		  <label for="project_desc">Please write a short description of the research project that the data forms part of:  (optional) </label>
+		          		  <input name="project_desc" id="project_desc"/>
+		        	</div>       
+		            <div class="label-field-pair" >
+		            	<label for="project_website">If you have a website for this research project, please enter the URL:  (optional) </label>
+		            	<input type="text" name="project_website" id="project_website"/>
+		        	</div>
+				</div> 
+		</fieldset>
+		
+		<fieldset>
+	        <div class="label-field-pair ui-widget inline-stacked subject_area_repeatable" >
+	            <label for="subject_area_1">Subject Area(s)</label>
+	            <input type="text" class="subject_area" name="subject_area_1" id="subject_area_1"/>
+	            <img id="subject_add_more_1" src="${ STATIC_URL }/gplus.png" alt="Add More Subjects" />
+	        </div>
+	        <div class="label-field-pair inline-stacked" >
+		        <span for="alt_title">Add more info</span>    
+				<img id="subject_more_info" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Subject Info" />
+			</div>
+			<div id="subj_info" style="display:none;">    
+		        <div class="label-field-pair inline-stacked keywords_repeatable" >
+		        	<label for="record_keywords_1">Keyword(s)  (optional)</label>
+		        	<input type="text" name="record_keywords_1" id="record_keywords_1"/>
+		        	<img id="keyword_add_more_1" src="${ STATIC_URL }/gplus.png" alt="Add More Keywords" />
+		        </div>	        
+		        <div class="label-field-pair inline-stacked" >
+		            <label for="main_language">Main Language  (optional)</label>
+		        	<input type="text" name="main_language" id="main_language" value="English"/>
+		        </div>
+		    </div>
+        </fieldset>               
     </fieldset>
     
     
@@ -159,7 +175,7 @@
 	    </div>
 	    <div class="label-field-pair stacked-inline" >
 		    <label for="author_middlename_1">Middle Name</label>           
-		    <input type="text" name="author_middlename_1" id="author_middlename_1"/>            
+		    <input type="text" size="5" name="author_middlename_1" id="author_middlename_1"/>            
 	    </div>
 	    <div class="label-field-pair stacked-inline" >
 	        <label for="author_email_1">Email</label>
@@ -167,15 +183,15 @@
 		</div>	
 		<div class="label-field-pair stacked-inline" >
 	        <label for="author_role_1">Role</label>
-	        <input type="text" name="author_role_1" id="author_role_1"/>
+	        <input type="text"  size="10" name="author_role_1" id="author_role_1"/>
 		</div>	      
 	    <div class="label-field-pair stacked-inline" >
 	        <label for="author_affiliation_1">Affiliation</label>
-	        <input type="text" name="author_affiliation_1" id="author_affiliation_1"/>
+	        <input type="text"  name="author_affiliation_1" id="author_affiliation_1"/>
 	    </div>
 		<div class="form-button">
 	        <input type="submit" name="add_author" id="add_author" value="add author"/>
-	        </div>
+	    </div>
     </fieldset>
 
     
@@ -192,70 +208,122 @@
     <fieldset class="contacts" >
     	<legend>About your data</legend>
           <div class="radio-set" >
-	    	  <p>Is your data in digital format?</p>
-	    	  <div class="label-field-pair radio" >
+	    	  <div    class="label-field-pair radio inline-stacked">Is your data in digital format?</div>
+	    	  <div class="label-field-pair radio short_desc inline-stacked" >
 		  		  	<input type ="radio" name="data-format" value="yes" id="data_format_yes" checked />
 		  		  	<label for="data_format_yes">yes</label>
 	  		  </div>
-		      <div class="label-field-pair radio" >
+		      <div class="label-field-pair radio short_desc inline-stacked" >
 		      		<input type ="radio" name="data-format" value="no" id="data_format_no" />
 		      		<label for="data_format_no">no</label>
 		      </div>
-		      		      <div class="clear-fix" ></div>
-
 		  </div>
-	</fieldset>
-	       
-	      
-	<fieldset>
-	           <legend>Digital data</legend>       	        
+   
+	<div name="Digital" id="Digital">	                	        
 	            <div class="label-field-pair" >
 	            	<label for="digital_location">Location of data</label>
 		        	<input type="text" name="digital_location" id="digital_location"/>
 		        </div>
-		        
-		        <div class="label-field-pair inline-stacked" >
-		        	<label for="digital_resource_type">Resource type</label>
-		        	<input type="text" name="digital_resource_type" id="digital_resource_type"/>
-		        </div>
-		        
-		        <div class="label-field-pair inline-stacked" >
-		        	<label for="digital_filesize">Filesize</label>
-		        	<input type="text" name="digital_filesize" id="digital_filesize"/>
-		        </div>
-		            
-		        <div class="label-field-pair inline-stacked" >
-		        	<label for="digital_format">Format(s)</label>
-		        	<input type="text" name="digital_format" id="digital_format"/>
-		        </div>
-		        
-		        <div class="label-field-pair inline-stacked" >
-		        	<label for="digital_version">Version (if versioned)</label>
-		        	<input type="text" name="digital_version" id="digital_version"/>
+		        	        		        
+		        <div class="label-field-pair" >
+			        	<div class="radio-set" >
+			        	    <div class="label-field-pair radio inline-stacked" >
+			        			      Description about dataset and processes: when and why the data were gathered (optional)
+			        	    </div>
+				        	<div class="label-field-pair radio short_desc inline-stacked" >
+					  		  	<input type ="radio" name="doc-format" value="text" id="doc_format_text" checked />
+					  		  	<label for="Text">Text</label>
+			  		 		 </div>	  		 		      
+			  		 		<div class="label-field-pair radio short_desc inline-stacked" >
+					      		<input type ="radio" name="doc-format" value="URL" id="doc_format_url" />
+					      		<label for="url">URL</label>
+				      		</div>
+				      	</div>
+		        		<input type="text" name="digital_publisher_doc" id="digital_publisher_doc"/>
 		        </div>
 		        
 		        <div class="label-field-pair inline-stacked" >
 		        	<label for="digital_publisher">Publisher</label>
-		        	<input type="text" name="digital_publisher" id="digital_publisher"/>
-		        </div>
+		        	<input type="text" name="digital_publisher" value="University of Oxford" id="digital_publisher"/>
+		        </div>	
 		        
-		       	<div class="label-field-pair inline-stacked" >
+		        <div class="label-field-pair inline-stacked" >
 		       		<label for="digital_publish_year">Publication year</label>
 		       		<input type="text" name="digital_publish_year" id="digital_publish_year"/>
 		       	</div>
-	</fieldset>
+		       	
+		       	<div class="label-field-pair inline-stacked" >
+			       	<span for="alt_title">Add more info</span>    
+				    <img id="digital_more_info" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Digital Info" />
+				</div>
+			
+			    <div id="digital_info" style="display:none;"> 		        
+			        <div class="label-field-pair" >
+			        	<label for="digital_publisher_doi">Unique identifier assigned to your dataset - DOI (Optional)</label>
+			        	<input type="text" name="digital_publisher_doi" id="digital_publisher_doi"/>
+			        </div>
+			        
+			        <div class="label-field-pair" >
+			        	<label for="temporal_coverage">Temporal coverage of your data (Optional)</label>
+			        	<input type="text" name="temporal_coverage" id="temporal_coverage"/>
+			        </div>
+			        
+			        <div class="label-field-pair" >
+			        	<label for="exact_date">Date when the data was collected (Optional)</label>
+			        	<input type="text" name="exact_date" id="exact_date"/>
+			        </div>
+	
+	   
+			        <div class="label-field-pair" >
+			        	<label for="geo_location">Geographical location/coverage of the data(Optional)</label>
+			        	<input type="text" name="geo_location" id="geo_location"/>
+			        </div>
+			        
+			        <div class="label-field-pair inline-stacked" >
+			        	<label for="digital_resource_type">Resource type  (Optional)</label>
+			        	<input type="text" name="digital_resource_type" id="digital_resource_type"/>
+			        </div>
+			        
+			        <div class="label-field-pair inline-stacked" >
+			        	<label for="digital_filesize">Filesize  (Optional)</label>
+			        	<input type="text" name="digital_filesize" id="digital_filesize"/>
+			        </div>
+			            
+			        <div class="label-field-pair inline-stacked" >
+			        	<label for="digital_format">Format(s)  (Optional)</label>
+			        	<input type="text" name="digital_format" id="digital_format"/>
+			        </div>
+			        
+			        <div class="label-field-pair inline-stacked" >
+			        	<label for="digital_version">Version (if versioned, optional)</label>
+			        	<input type="text" name="digital_version" id="digital_version"/>
+			        </div>
+			    </div>
+		        
+		       
+	</div>
 	
 	       
-	<fieldset>
-	       <legend>Non-digital data</legend>	       
+	<div name="NonDigital" id="NonDigital" style="display:none;">      
 	       <div class="label-field-pair" >
-	       		<label for="whereis_non_digital">Where is your data held</label>
+	       		<label for="whereis_non_digital">Where is your data held? Provide the address of the location 
+	       		of your data or the contact details of the person to contact to enquire about the data. </label>
 	       		<input type="text" name="whereis_non_digital" id="whereis_non_digital"/>
 	       </div>
-		   <div class="label-field-pair inline-stacked" >
-	            <label for="non_digital_format">Format</label>
-	            <input type="text" name="non_digital_format" id="non_digital_format"/>
-	       </div>	            
+	       <div class="label-field-pair" >
+		        		<label for="non_digital_publisher_doc"> Description about your dataset and processes: when and why the data were gathered (optional)</label>
+			        	<div class="radio-set" >
+				        	<div class="label-field-pair radio short_desc inline-stacked" >
+					  		  	<input type ="radio" name="non-doc-format" value="text" id="non-doc_format_text" checked />
+					  		  	<label for="Text">Text</label>
+			  		 		 </div>	  		 		      
+			  		 		<div class="label-field-pair radio short_desc inline-stacked" >
+					      		<input type ="radio" name="doc-format" value="URL" id="non_doc_format_url" />
+					      		<label for="url">URL</label>
+				      		</div>
+				      	</div>
+		        		<input type="text" name="digital_publisher_doc" id="digital_publisher_doc"/>
+		    </div>		        
 	       <div class="label-field-pair inline-stacked" >
 	       		<label for="non_digital_publisher">Publisher</label>
 	            <input type="text" name="non_digital_publisher" id="non_digital_publisher"/>
@@ -263,116 +331,160 @@
 	       <div class="label-field-pair inline-stacked" >
 	            <label for="non_digital_publish_year">Publication year</label>
 	            <input type="text" name="non_digital_publish_year" id="non_digital_publish_year"/>
-	       </div>	            
-	</fieldset>   
-	           	 
-	           	       
-	           	       
-	           	       
-	           	       
-	           	       
-	           	       
-	           	       
-	<fieldset id="funding-information" ><legend>Funding information</legend>	 
+	       </div>	 
+	       <div class="label-field-pair inline-stacked" >
+			    <span for="alt_title">Add more info</span>    
+				<img id="non_digital_more_info" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Non-Digital Info" />
+		   </div>
+			
+		   <div id="non_digital_info" style="display:none;"> 	
+		       <div class="label-field-pair" >
+				    <label for="non_digital_temporal_coverage">Temporal coverage of your data (Optional)</label>
+				    <input type="text" name="non_digital_temporal_coverage" id="non_digital_temporal_coverage"/>
+			   </div>
+			   <div class="label-field-pair" >
+				    <label for="exact_date">Date when the data was collected (Optional)</label>
+				    <input type="text" name="non_digital_exact_date" id="non_digital_exact_date"/>
+			   </div>
+		       <div class="label-field-pair" >
+				    <label for="non_digital_geo_location">Geographical location/coverage of the data(Optional)</label>
+				    <input type="text" name="non_digital_geo_location" id="non_digital_geo_location"/>
+			   </div>
+		   </div>  
+		           	                
+	</div>   
+</fieldset>	           	 
+	                 	       
+	<fieldset id="funding-information" >
+		   <legend>Funding information</legend>	 
 	       <div class="radio-set" >
-	           <p>Is your data an output of a funded research?</p>
-	    	   <div class="label-field-pair radio" >
-	    	        <input type ="radio" name="funded_research" value="yes" id="funded_research_yes" checked />
+	           <div class="label-field-pair radio inline-stacked" >Is your data an output of a funded research?</div>
+	    	   <div class="label-field-pair radio short_desc inline-stacked" >
+	    	        <input type ="radio" name="funded_research" value="yes" id="funded_research_yes"  />
 	    	        <label for="funded_research_yes" >yes</label>
 	    	   </div>
-	    	   <div class="label-field-pair radio" >  
-	    	   		<input type ="radio" name="funded_research" value="no" id="funded_research_no" />
+	    	   <div class="label-field-pair radio short_desc inline-stacked" >  
+	    	   		<input type ="radio" name="funded_research" value="no" id="funded_research_no" checked />
 	    	   		<label for="funded_research_no" >no</label>
 	    	   </div>
-	    	    <div class="clear-fix" ></div>
+	    	    <!-- <div class="clear-fix"></div> -->
 		   </div>
-		   <div class="label-field-pair inline-inline" >
-		            <label for="funding_agency">Funding agency:</label>
-		            <input type="text" name="funding_agency" id="funding_agency"/>
-	       </div>
-	       <div class="label-field-pair inline-inline" >
-		            <label for="grant_number">Grant number:</label>
-		            <input type="text" name="grant_number" id="grant_number"/>
-	       </div>
+		  
+		 <div id="fund_and_grant"  style="display:none; " >
+			    <div class="funding_repeatable">
+			    	   <div class="clear-fix"></div>
+					   <div class="label-field-pair stacked-inline" >
+					            <label for="funding_agency_1">Funding agency:</label>
+					            <input type="text" name="funding_agency_1" id="funding_agency_1"/>
+				       </div>
+				       <div class="label-field-pair stacked-inline" >
+					            <label for="grant_number_1">Grant number:</label>
+					            <input type="text" name="grant_number_1" id="grant_number_1"/>
+				       </div>		
+				       
+					   <img id="funding_add_more_1" src="${ STATIC_URL }/gplus.png" alt="Add More Funding" />				      
+			    </div>
+
+	      </div>
 	</fieldset>
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
+       
 	           
 	<fieldset id="data_management">
-	       <legend>Related information</legend>	 	       
-	       <div class="label-field-pair full-width" >
-	       		<label for="data_management_plan_location">If you have a Data management Plan for the project for which this data was created, 
-	        	      please enter the location where it can be accessed here:</label>
-	            <input type="text" name="data_management_plan_location" id="data_management_plan_location"/>
-	       </div>	       
-		   <p class="instructions">If you are aware of any publications based  on this data, please add references to them here:</p>
-		   <div class="label-field-pair stacked-inline" >
-		   		<label for="publication_relationship_of_data_1">Relationship of Data</label>
-	         <!--
-	            <input type="text" name="publication_relationship_of_data_1" id="publication_relationship_of_data_1"/>
-	            -->
-	            	            <select  name="publication_relationship_of_data_1" id="publication_relationship_of_data_1">                         
-									     <option value="HasPart">HasPart</option>
-									     <option value="isPartOf">isPartOf</option>
-									     <option value="Otherversion">Otherversion</option>
-									     <option value="isVersionOf">isVersionOf</option>
-									     <option value="hasVersion">hasVersion</option>
-									     <option value="isFormatOf">isFormatOf</option>
-									     <option value="hasFormat">hasFormat</option>
-									     <option value="References">References</option>
-									     <option value="isReferencedBy">isReferencedBy</option>
-									     <option value="Replaces">Replaces</option>
-									     <option value="IsReplacedBy">IsReplacedBy</option>
-									     <option value="Requires">Requires</option>
-									     <option value="IsRequiredBy">IsRequiredBy</option>
-	            	            </select>
-
-	       </div>
-	       <div class="label-field-pair stacked-inline-wide" >
-	       		<label for="related_publication_url_1">URl of publication</label>
-	            <input type="text" class="url" name="related_publication_url_1" id="related_publication_url_1"/>
-	       </div>
-		   <div class="form-button">
-		   		<input type="submit" name="add_publication" id="add_publication" value="add publication"/>
-		   </div>
-	       <p class="instruction">If this data was based on any previous datasets, or is in some way related to other datasets, please add references to them here:</p>
-  		   <div class="label-field-pair stacked-inline" >
-  		   		<label for="dataset_relationship_of_data_1">Relationship of Data</label>
-  		   		<!--
-  		   		
-	            <input type="text" name="dataset_relationship_of_data_1" id="dataset_relationship_of_data_1"/>
-	            
-	            -->
-	            
-	            <select  type="text"  name="dataset_relationship_of_data_1" id="dataset_relationship_of_data_1">                         
-									     <option value="HasPart">HasPart</option>
-									     <option value="isPartOf">isPartOf</option>
-									     <option value="Otherversion">Otherversion</option>
-									     <option value="isVersionOf">isVersionOf</option>
-									     <option value="hasVersion">hasVersion</option>
-									     <option value="isFormatOf">isFormatOf</option>
-									     <option value="hasFormat">hasFormat</option>
-									     <option value="References">References</option>
-									     <option value="isReferencedBy">isReferencedBy</option>
-									     <option value="Replaces">Replaces</option>
-									     <option value="IsReplacedBy">IsReplacedBy</option>
-									     <option value="Requires">Requires</option>
-									     <option value="IsRequiredBy">IsRequiredBy</option>
-           		 </select>
-	       </div>
-	       <div class="label-field-pair stacked-inline-wide" >
-	       		<label for="dataset_related_url_1">URl of the dataset or DataFinder record for the dataset</label>
-	            <input type="text"  class="url" name="dataset_related_url_1" id="dataset_related_url_1"/>
-	       </div>
-	       <div class="form-button">
-	       		<input type="submit" name="add_dataset" id="add_dataset" value="add dataset"/>
-	       </div>	            
+	       <legend>Related information</legend>	
+	       <div class="label-field-pair inline-stacked" >
+			       	<span for="alt_title">Add more info</span>    
+				    <img id="related_more_info" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Related Info" />
+		   </div>			
+		   <div id="related_info" style="display:none;"> 	 	       
+		       <div class="label-field-pair full-width" >
+		       		<label for="data_management_plan_location">If you have a Data management Plan for the project for which this data was created, 
+		        	      please enter the location where it can be accessed here:</label>
+		            <input type="text" name="data_management_plan_location" id="data_management_plan_location"/>
+		       </div>	       
+			   <p class="instructions">If you are aware of any publications based  on this data, please add references to them here:</p>
+			   <div  class="publication_repeatable" >
+				    <div class="label-field-pair stacked-inline" >
+				   						<label for="publication_relationship_of_data_1">Relationship of Data</label>
+			            	            <select  name="publication_relationship_of_data_1" id="publication_relationship_of_data_1">                         
+											     <option value="HasPart">HasPart</option>
+											     <option value="isPartOf">isPartOf</option>
+											     <option value="Otherversion">Otherversion</option>
+											     <option value="isVersionOf">isVersionOf</option>
+											     <option value="hasVersion">hasVersion</option>
+											     <option value="isFormatOf">isFormatOf</option>
+											     <option value="hasFormat">hasFormat</option>
+											     <option value="References">References</option>
+											     <option value="isReferencedBy">isReferencedBy</option>
+											     <option value="Replaces">Replaces</option>
+											     <option value="IsReplacedBy">IsReplacedBy</option>
+											     <option value="Requires">Requires</option>
+											     <option value="IsRequiredBy">IsRequiredBy</option>
+			            	            </select>		
+			       </div>
+			       <div class="radio-set" >
+					    	   <div class="label-field-pair radio short_desc stacked-inline" >
+					    	        <input type ="radio" name="pub_url_1" value="URL" id="pub_url_1"  />
+					    	        <label for="pub_url" >URL</label>
+					    	   </div>
+					    	   <div class="label-field-pair radio short_desc stacked-inline" >  
+					    	   		<input type ="radio" name="pub_doi_1" value="DOI" id="pub_doi_1" checked />
+					    	   		<label for="pub_doi" >DOI</label>
+					    	   </div>
+					    	   <!-- <div class="clear-fix"></div> -->
+						       <div class="label-field-pair stacked-inline-wide" >
+						       		<label for="related_publication_url_1"></label>       		
+						            <input type="text" class="url" name="related_publication_url_1" id="related_publication_url_1"/>		
+						       </div>
+				   </div>
+				   <img id="publication_add_more_1" src="${ STATIC_URL }/gplus.png" alt="Add More Publication" />	 
+				   <div class="clear-fix"></div>   
+			   </div>
+			   <!-- <div class="form-button">
+			   		<input type="submit" name="add_publication" id="add_publication" value="add publication"/>
+			   </div> -->
+			   <div class="clear-fix"></div>
+		       <p class="instructions">If this data was based on any previous datasets, or is in some way related to other datasets, please add references to them here:</p>
+	  		   <div  class="dataset_repeatable" >
+		  		   <div class="label-field-pair stacked-inline" >
+		  		   		<label for="dataset_relationship_of_data_1">Relationship of Data</label>
+			            <select  type="text"  name="dataset_relationship_of_data_1" id="dataset_relationship_of_data_1">                         
+											     <option value="HasPart">HasPart</option>
+											     <option value="isPartOf">isPartOf</option>
+											     <option value="Otherversion">Otherversion</option>
+											     <option value="isVersionOf">isVersionOf</option>
+											     <option value="hasVersion">hasVersion</option>
+											     <option value="isFormatOf">isFormatOf</option>
+											     <option value="hasFormat">hasFormat</option>
+											     <option value="References">References</option>
+											     <option value="isReferencedBy">isReferencedBy</option>
+											     <option value="Replaces">Replaces</option>
+											     <option value="IsReplacedBy">IsReplacedBy</option>
+											     <option value="Requires">Requires</option>
+											     <option value="IsRequiredBy">IsRequiredBy</option>
+		           		 </select>
+			       </div>
+		       	   <div class="radio-set" >
+			    	   <div class="label-field-pair radio short_desc stacked-inline" >
+			    	        <input type ="radio" name="dat_url_1" value="URL" id="dat_url_1"  />
+			    	        <label for="pub_url" >URL</label>
+			    	   </div>
+			    	   <div class="label-field-pair radio short_desc stacked-inline" >  
+			    	   		<input type ="radio" name="dat_doi_1" value="DOI" id="dat_doi_1" checked />
+			    	   		<label for="pub_doi" >DOI</label>
+			    	   </div>
+			    	   <!-- <div class="clear-fix"></div> -->
+				       <div class="label-field-pair radio stacked-inline-wide" >
+				       		<label for="dataset_related_url_1"></label>
+				            <input type="text"  class="url" name="dataset_related_url_1" id="dataset_related_url_1"/>
+				       </div>			       
+		          </div>
+		          <img id="dataset_add_more_1" src="${ STATIC_URL }/gplus.png" alt="Add More Datasets" />	
+		          <div class="clear-fix"></div>
+		       </div>  	
+		       <!-- <div class="form-button">
+				       		<input type="submit" name="add_dataset" id="add_dataset" value="add dataset"/>
+		       </div> -->
+		   </div>            
 	</fieldset>
 	       
 	<fieldset>
@@ -386,23 +498,23 @@
 	       	</div>
 	       <div class="radio-set" >
 	       		<p class="instruction">If the data you are describing is currently under the embargo, please indicate its public release date below:</p>	       		
-	       		<div class="label-field-pair radio" >
+	       		<div class="label-field-pair radio inline-stacked wide" >
 	       			<input name="embargo-options" type ="radio" value="embargo_not_under" id="embargo_not_under" />
 	       			<label for="embargo_not_under" >Data not under embargo</label>
 	       		</div>
-	       		<div class="label-field-pair radio" >
+	       		<div class="label-field-pair radio inline-stacked wide" >
 	       			<input  name="embargo-options" type ="radio" value="embargo_status_unknown" id="embargo_status_unknown" />
 	       			<label for="embargo_status_unknown" >Embargo status unknown</label>
 	       		</div>
-	       		<div class="label-field-pair radio" >
+	       		<div class="label-field-pair radio inline-stacked wide" >
 	       			<input  name="embargo-options" type ="radio" value="embargoed_indefinitely" id="embargoed_indefinitely" />
 	       			<label for="embargoed_indefinitely" >Embargoed indefinitely</label>
 	       		</div>
-	       		<div class="label-field-pair radio" ><input  name="embargo-options" type ="radio" value="embargoed_until" id="embargoed_until" />
+	       		<div class="label-field-pair radio inline-stacked wide" ><input  name="embargo-options" type ="radio" value="embargoed_until" id="embargoed_until" />
 	       			<label for="embargoed_until" >Embargoed until</label>	
 	       		</div>   
 	       		
-	       		 <div class="clear-fix" ></div>    		
+	       		 <!-- <div class="clear-fix"></div>   --> 		
                 <label for="embargo_end_date" id="embargo_end_date_label">Embargoed end date:</label>
 				<input type="text" name="embargo_end_date" id="embargo_end_date" />	       
 	       	</div>

@@ -183,6 +183,10 @@ def contribute(request):
                 #except IOError, e:
                 #    pass
                 
+                for x in list(literals.keys()):
+                    if literals[x] == "":
+                        del literals[x]
+                
                 for key, value in literals.items():
                     manifest.add((subject, key, Literal(value)))
                 
