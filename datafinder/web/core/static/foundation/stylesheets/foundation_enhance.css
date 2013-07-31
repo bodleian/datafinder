@@ -267,7 +267,9 @@ div.label-field-pair.medium
     width: 100%;
         
 }
-
+#data_standard_licence + div.custom.dropdown{
+ width: 600px !important;
+}
 #mainContent form  fieldset{
   background-color: #f7fafd ;
 

@@ -32,7 +32,7 @@ RDF = Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
 HTML = Namespace('http://www.w3.org/1999/xhtml')
 XHTML = Namespace('http://www.w3.org/1999/xhtml#')
 FUND = Namespace('http://vocab.ox.ac.uk/projectfunding#')
-
+DOI =  Namespace("http://purl.org/ontology/bibo/doi")
 namespaces = {}
 
 for name, value in locals().items():

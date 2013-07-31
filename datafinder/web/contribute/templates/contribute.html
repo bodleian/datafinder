@@ -140,7 +140,7 @@
 		<fieldset>
 	        <div class="label-field-pair ui-widget inline-stacked subject_area_repeatable" >
 	            <label for="subject_area_1">Subject Area(s)</label>
-	            <input type="text" class="subject_area" name="subject_area_1" id="subject_area_1"/>
+	            <input type="text" class="subject_area" name="subject_area" id="subject_area_1"/>
 	            <img id="subject_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Subjects" />
 	        </div>
 	        <div class="label-field-pair inline-stacked" >
@@ -150,7 +150,7 @@
 			<div id="subj_info" style="display:none;">    
 		        <div class="label-field-pair inline-stacked keywords_repeatable" >
 		        	<label for="record_keywords_1">Keyword(s)  (optional)</label>
-		        	<input type="text" name="record_keywords_1" id="record_keywords_1"/>
+		        	<input type="text" name="record_keyword" id="record_keywords_1"/>
 		        	<img id="keyword_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Keywords" />
 		        </div>	        
 		        <div class="label-field-pair inline-stacked" >
@@ -189,11 +189,34 @@
 
 			<div class="label-field-pair stacked-inline" >
 		        <label for="author_role_1">Role</label>
-		        <input type="text"  size="40" name="author_role_1" id="author_role_1"/>
+		        <!-- <input type="text"  size="40" name="author_role_1" id="author_role_1"/> -->
+		        <select name="author_role_1" id="author_role_1">                         
+						<option value="Author">Author</option>
+						<option value="Collaborator">Collaborator</option>
+						<option value="Commentator">Commentator</option>
+						<option value="Creator">Creator</option>
+						<option value="Contributor">Contributor</option>
+						<option value="Other">Other</option>
+						<option value="Owner">Owner</option>
+						<option value="Publisher">Publisher</option>
+						<option value="Performer">Performer</option>
+						<option value="Principal Investigator">Principal Investigator</option>
+						<option value="Researcher">Researcher</option>
+						<option value="Research team head">Research team head</option>
+						<option value="Translator">Translator</option>
+						<option value="Adapter">Adapter</option>
+						<option value="Editor">Editor</option>
+						<option value="Reviewer">Reviewer</option>
+						<option value="Funder">Funder</option>
+						<option value="Copyright holder">Copyright holder</option>
+						<option value="Supervisor">Supervisor</option>
+						<option value="Sponsor">Sponsor</option>
+				</select>	
 			</div>	      
 		    <div class="label-field-pair stacked-inline" >
 		        <label for="author_affiliation_1">Affiliation</label>
-		        <input type="text" size="30" name="author_affiliation_1" id="author_affiliation_1"/>
+		        <!-- <input type="text" size="30" name="author_affiliation_1" id="author_affiliation_1"/> -->
+		        <select name="author_affiliation_1" id="author_affiliation_1"><option></option> </select>
 		    </div>
 			<!-- <div class="form-button">
 		        <input type="submit" name="add_author" id="add_author" value="add author"/>
@@ -207,11 +230,58 @@
     
     <fieldset class="contacts" >
     	<legend>Contact details</legend>
-		<div class="label-field-pair" >    	  
-	    	<label for="record_contact">Who should we contact in future with information and updates about the data you are depositing? 
-	    	             (this will normally be your department or research group)</label>
-	    	<input type="text" name="record_contact" id="record_contact"/>
-    	</div>  	             
+    	<p class="instruction">Who should we contact in future with information and updates about the data you are depositing? 
+	    	             (this will normally be your department or research group)</p>		 
+		    <div class="label-field-pair stacked-inline" >
+			    <label for="contact_lastname">Last Name</label>           
+			    <input type="text" size="40" name="contact_lastname" id="contact_lastname"/>            
+		    </div>
+			<div class="label-field-pair stacked-inline" >
+	    	    <label for="contact_firstname">First Name</label>
+		        <input type="text" size="40" name="contact_firstname" id="contact_firstname"/>
+		    </div>
+		    <div class="label-field-pair stacked-inline" >
+			    <label for="contact_middlename">Middle Name</label>           
+			    <input type="text" size="30" name="contact_middlename" id="contact_middlename"/>            
+		    </div>
+		    <div class="clear-fix"></div> 	
+		    <div class="label-field-pair stacked-inline" >
+		        <label for="contact_email">Email</label>
+		        <input type="text" size="40" name="contact_email" id="contact_email"/>
+			</div>	
+
+			<div class="label-field-pair stacked-inline" >
+		        <label for="contact_role">Role</label>
+		        <!-- <input type="text"  size="40" name="contact_role" id="contact_role"/> -->
+		        <select name="contact_role" id="contact_role">                         
+						<option value="Author">Author</option>
+						<option value="Collaborator">Collaborator</option>
+						<option value="Commentator">Commentator</option>
+						<option value="Creator">Creator</option>
+						<option value="Contributor">Contributor</option>
+						<option value="Other">Other</option>
+						<option value="Owner">Owner</option>
+						<option value="Publisher">Publisher</option>
+						<option value="Performer">Performer</option>
+						<option value="Principal Investigator">Principal Investigator</option>
+						<option value="Researcher">Researcher</option>
+						<option value="Research team head">Research team head</option>
+						<option value="Translator">Translator</option>
+						<option value="Adapter">Adapter</option>
+						<option value="Editor">Editor</option>
+						<option value="Reviewer">Reviewer</option>
+						<option value="Funder">Funder</option>
+						<option value="Copyright holder">Copyright holder</option>
+						<option value="Supervisor">Supervisor</option>
+						<option value="Sponsor">Sponsor</option>
+				</select>	
+			</div>	      
+		    <div class="label-field-pair stacked-inline" >
+		        <label for="contact_affiliation">Affiliation</label>
+		        <!-- <input type="text" size="50" name="contact_affiliation" id="contact_affiliation"/> -->
+		        <select name="contact_affiliation" id="contact_affiliation"><option></option> </select>
+		    </div>
+		    <div class="clear-fix"></div> 	          
     </fieldset>
     
     
@@ -235,34 +305,36 @@
 		      </div>
 		      <div class="label-field-pair" >
 			        <div class="radio-set" >
-			        	<div class="label-field-pair radio inline-stacked" >
+			        	<div class="eight columns label-field-pair radio inline-stacked" >
 			        			Description about dataset and processes: when and why the data were gathered (optional)
 			         	</div>
-				        <div class="label-field-pair radio short_desc inline-stacked" >
+				        <div class="two columns label-field-pair radio short_desc inline-stacked" >
 					  		  <input type ="radio" name="doc-format" value="text" id="doc_format_text" checked />
 					  		  <label for="Text">Text</label>
 			  		 	</div>	  		 		      
-			  		 	<div class="label-field-pair radio short_desc inline-stacked" >
+			  		 	<div class="two colummns label-field-pair radio short_desc inline-stacked" >
 					      	<input type ="radio" name="doc-format" value="URL" id="doc_format_url" />
 					      	<label for="url">URL</label>
 				      	</div>
 				    </div>
 		        	<input type="text" name="digital_publisher_doc" id="digital_publisher_doc"/>
-		      </div>		  
-		      <div class="label-field-pair inline-stacked" >
+		      </div>		 
+		      		      
+		      <div class=" label-field-pair inline-stacked" >
 		        	<label for="publisher">Publisher</label>
 		        	<input type="text" name="publisher" value="University of Oxford" id="publisher"/>
-		      </div>			        
-		      <div class="label-field-pair inline-stacked">
-		       		<label for="publication_year">Publication year</label>
-		       		<select  name="publication_year" id="publication_year"></select>
-					<!-- <ul id="publication_year" class="f-dropdown" data-dropdown-content=""></ul> -->
-		       		<!--  style="display:none;" -->		
-		      </div>	
-		      <div class="label-field-pair inline-stacked" >
-			       	<span for="alt_title">Add more info</span>    
-				    <img id="data_more_info" class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Data Info" />
-			  </div>				      
+		      </div>		
+		      <p>&nbsp;</p>		      		      	        
+		      <div class="row label-field-pair inline-stacked " style="position:absolute; background: #f7fafd; ">
+		       		<div class="eight columns"><label for="publication_year">Publication year</label></div>
+		       		<div class="four columns"><select  name="publication_year" id="publication_year"></select></div>				
+		      </div>
+		      <p>&nbsp;</p>
+		      <p>&nbsp;</p>
+		      <div class="row label-field-pair inline-stacked"  style="background: #f7fafd;">
+			       	<div class="twelve columns"><span for="alt_title">Add more info</span>    
+				    <img id="data_more_info" class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Data Info" /></div>
+			  </div>		      <p>&nbsp;</p>				      
 		  </div>
    
 	<div name="more_about_data" id="more_about_data" style="display:none;" >		        	       
@@ -272,13 +344,13 @@
 				    </div>
 				        
 					<div class="radio-set" >
-				           <div class="label-field-pair radio inline-stacked" >Temporal coverage of your data (Optional)</div>
-				    	   <div class="label-field-pair radio short_desc inline-stacked wide" >
-				    	        <input type ="radio" name="temporal_choice" value="single_date" id="single_date"  />
+				           <div class="six columns label-field-pair radio inline-stacked" >Temporal coverage of your data (Optional)</div>
+				    	   <div class="three columns label-field-pair radio short_desc inline-stacked wide" >
+				    	        <input type ="radio" name="temporal_choice" value="single_date" id="single_date"  checked/>
 				    	        <label for="temporal_choice" >Single Date</label>
 				    	   </div>
-				    	   <div class="label-field-pair radio short_desc inline-stacked wide" >  
-				    	   		<input type ="radio" name="temporal_choice" value="date_range" id="date_range" checked />
+				    	   <div class="three columns label-field-pair radio short_desc inline-stacked wide" >  
+				    	   		<input type ="radio" name="temporal_choice" value="date_range" id="date_range"  />
 				    	   		<label for="temporal_choice" >Date Range</label>
 				    	   </div>
 				    </div>		  
@@ -355,7 +427,7 @@
 			    	   <div class="clear-fix"></div>
 					   <div class="label-field-pair stacked-inline" >
 					            <label for="funding_agency_1">Funding agency:</label>
-					            <input type="text" name="funding_agency_1" id="funding_agency_1"/>
+					            <input type="text" size="50" name="funding_agency_1" id="funding_agency_1"/>
 				       </div>
 				       <div class="label-field-pair stacked-inline" >
 					            <label for="grant_number_1">Grant number:</label>
@@ -474,14 +546,25 @@
 	       <input type="text" name="terms_and_conditions" id="terms_and_conditions"/></div>	       		
 	       <div class="label-field-pair" >
 	       		<label for="data_standard_licence">If your data is available under a standard license, please name the license here:</label>
-	       		<input type="text" name="data_standard_licence" id="data_standard_licence"/>
+	       		<!-- <input type="text" name="data_standard_licence" id="data_standard_licence"/> -->
+			    <select  type="text"  name="data_standard_licence" id="data_standard_licence">                         
+					   <option value="Creative Commons Attribution (CC BY)">Creative Commons Attribution (CC BY)</option>
+					   <option value="Creative Commons Attribution Share Alike (CC BY-SA)">Creative Commons Attribution (CC BY)</option>
+					   <option value="Creative Commons Attribution No Derivatives (CC BY-ND)">Creative Commons Attribution No Derivatives (CC BY-ND)</option>
+					   <option value="Creative Commons Attribution Non-Commercial (CC BY-NC)">Creative Commons Attribution Non-Commercial (CC BY-NC)</option>
+					   <option value="Creative Commons Attribution Non-Commercial Share Alike (CC BY-NC-SA)">Creative Commons Attribution Non-Commercial Share Alike (CC BY-NC-SA)</option>
+					   <option value="Creative Commons Attribution Non-Commercial No Derivatives (CC BY-NC-ND)">Creative Commons Attribution Non-Commercial No Derivatives (CC BY-NC-ND)</option>
+					   <option value="Open Data Commons Attribution Licence (ODC-By)">Open Data Commons Attribution Licence (ODC-By)</option>
+					   <option value="Open Data Commons Open Database Licence (ODC-ODbL)">Open Data Commons Open Database Licence (ODC-ODbL)</option>
+					   <option value="Open Data Commons Database Contents Licence (ODC-DbCL)">Open Data Commons Database Contents Licence (ODC-DbCL)</option>
+				</select>	       		      		
 	       	</div>
 	       <div class="radio-set" >
 	       		<p class="instruction">If the data you are describing is currently under the embargo, please indicate its public release date below:</p>	       		
-	       		<div class="label-field-pair radio inline-stacked wide" >
+	       		<!-- <div class="label-field-pair radio inline-stacked wide" >
 	       			<input name="embargo-options" type ="radio" value="embargo_not_under" id="embargo_not_under" />
 	       			<label for="embargo_not_under" >Data not under embargo</label>
-	       		</div>
+	       		</div> -->
 	       		<div class="label-field-pair radio inline-stacked wide" >
 	       			<input  name="embargo-options" type ="radio" value="embargo_status_unknown" id="embargo_status_unknown" />
 	       			<label for="embargo_status_unknown" >Embargo status unknown</label>
@@ -490,12 +573,12 @@
 	       			<input  name="embargo-options" type ="radio" value="embargoed_indefinitely" id="embargoed_indefinitely" />
 	       			<label for="embargoed_indefinitely" >Embargoed indefinitely</label>
 	       		</div>
-	       		<div class="label-field-pair radio inline-stacked wide" ><input  name="embargo-options" type ="radio" value="embargoed_until" id="embargoed_until" />
+	       		<!-- <div class="label-field-pair radio inline-stacked wide" ><input  name="embargo-options" type ="radio" value="embargoed_until" id="embargoed_until" />
 	       			<label for="embargoed_until" >Embargoed until</label>	
-	       		</div>   
+	       		</div>  -->
 	       		
 	       		 <!-- <div class="clear-fix"></div>   --> 		
-                <label for="embargo_end_date" id="embargo_end_date_label">Embargoed end date:</label>
+                <label for="embargo_end_date" id="embargo_end_date_label">Earliest Access date:</label>
 				<input type="text" name="embargo_end_date" id="embargo_end_date" />	       
 	       	</div>
 	</fieldset>

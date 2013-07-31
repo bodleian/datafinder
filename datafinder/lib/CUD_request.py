@@ -66,9 +66,19 @@ class CUDRequest():
         element_list = []
         for element in root.findall('.//cudAttribute[name="cud:cas:' + filter_key + '"]/value'):
             element_list.append(element.text)
-            logger.info('filter_value =' + element.text)       
+            logger.info('filter_value =' + repr(element.text) )      
         #filter_value = root.findtext('.//cudAttribute[name="cud:cas:' + filter_key + '"]/value')
         return element_list 
+    
+    def get_affiliation(self):
+        root=self.root
+        element_list = []
+        for element in root.findall('.//cudAttribute[name="cud:cas:current_affiliation"]/value/string'):
+            element_list.append(element.text)
+            logger.info('filter_value =' + repr(element.text) )      
+        #filter_value = root.findtext('.//cudAttribute[name="cud:cas:' + filter_key + '"]/value')
+        return element_list 
+
     
     def get_firstName(self):
         root=self.root

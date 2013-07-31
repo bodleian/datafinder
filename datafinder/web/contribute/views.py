@@ -6,7 +6,7 @@ import logging,os, sys
 import rdflib
 from rdflib import Literal, URIRef
 import datafinder.util.serializers
-from datafinder.namespaces import OXDS, DCTERMS, RDF, FOAF, FUND, bind_namespaces, FUND
+from datafinder.namespaces import OXDS, DCTERMS, RDF, FOAF, FUND, bind_namespaces, FUND, DOI
 from pwd import  getpwnam 
 sys.path.append("../..")
 from django.http import HttpResponse
@@ -67,64 +67,115 @@ def contribute(request):
                 
                 project[DCTERMS['title']]=request.POST['project_desc']
                 project[DCTERMS['URI']]=request.POST['project_website']
-                 
-                literals[DCTERMS['subject']]=request.POST['subject_areas']
-                literals[DCTERMS['keywords']]=request.POST['record_keywords']
+                
+                subjects = request.POST.getlist('subject_area')
+                for subject in subjects:
+                    literals[DCTERMS['subject']]= subject
+                    
+                keywords = request.POST.getlist('record_keyword')                
+                for keyword in keywords:
+                    literals[DCTERMS['keywords']]=keyword
+                    
                 literals[DCTERMS['language']]=request.POST['main_language']
                 
                 literals[DCTERMS['status']]='Seeking Approval'
                 literals[OXDS['depositor']] = request.session['DF_USER_SSO_ID']
                 
-                person_title = request.POST['author_firstname_1'] + '-' +request.POST['author_middlename_1'] + '-' +request.POST['author_lastname_1'] 
-                                  
-                person[FOAF["givenName"]]=request.POST['author_firstname_1']
-                person[FOAF["middleName"]]=request.POST['author_middlename_1']   
-                person[FOAF["familyName"]]=request.POST['author_lastname_1']    
-                person[FOAF["mbox"]]=request.POST['author_email_1']     
-                person[OXDS['role']]=request.POST['author_role_1']             
-                person[FOAF["Organization"]]=request.POST['author_affiliation_1']
+                i = 1
+                while True:
+                     if request.GET.has_key('author_firstname_' + str(i)):                
+                            person_title = request.POST['author_firstname_' + str(i)] + '-' +request.POST['author_middlename_' + str(i)] + '-' +request.POST['author_lastname_' + str(i)] 
+                                              
+                            person[FOAF["givenName"]]=request.POST['author_firstname_' + str(i)]
+                            person[FOAF["middleName"]]=request.POST['author_middlename_' + str(i)]   
+                            person[FOAF["familyName"]]=request.POST['author_lastname_' + str(i)]    
+                            person[FOAF["mbox"]]=request.POST['author_email_' + str(i)]     
+                            person[OXDS['role']]=request.POST['author_role_' + str(i)]             
+                            person[FOAF["Organization"]]=request.POST['author_affiliation_' + str(i)]
+                            
+                            
+                            people_path = settings.get("main:granary.people_path")        
+                            people_manifest_filename = os.path.join(people_path, 'people.rdf')
+                            people_manifest = bind_namespaces(rdflib.ConjunctiveGraph())
+                            
+                            try:
+                                with open(people_manifest_filename, 'r') as f:
+                                    people_manifest.parse(f, base=people_manifest_filename)
+                            except IOError, e:
+                                pass
+                            
+                            if people_manifest.value(FOAF[person_title], None, None) == None:
+                                    people_manifest.add((FOAF[person_title], RDF.type, FOAF.Person))
+                                    for key, value in person.items():
+                                            people_manifest.add((FOAF[person_title], key, Literal(value)))
+                                                         
+                            
+                            with open(people_manifest_filename, 'w') as f:
+                                people_manifest.serialize(f, 'better-pretty-xml', base=people_manifest_filename)
+                            os.chown(people_manifest_filename,  getpwnam('www-data').pw_uid, getpwnam('www-data').pw_gid)
+                            i = i + 1
+                     else:
+                         break
+                        
                 
-                
+                #literals[OXDS['contact']] = request.POST['record_contact']
+                #Save the contact details       
+                person_title = request.POST['contact_firstname'] + '-' +request.POST['contact_middlename'] + '-' +request.POST['contact_lastname'] 
+                person[FOAF["givenName"]]=request.POST['contact_firstname']
+                person[FOAF["middleName"]]=request.POST['contact_middlename']   
+                person[FOAF["familyName"]]=request.POST['contact_lastname']    
+                person[FOAF["mbox"]]=request.POST['contact_email']     
+                person[OXDS['role']]=request.POST['contact_role']             
+                person[FOAF["Organization"]]=request.POST['contact_affiliation']
+                            
+                            
                 people_path = settings.get("main:granary.people_path")        
                 people_manifest_filename = os.path.join(people_path, 'people.rdf')
                 people_manifest = bind_namespaces(rdflib.ConjunctiveGraph())
-                
+                            
                 try:
                     with open(people_manifest_filename, 'r') as f:
                         people_manifest.parse(f, base=people_manifest_filename)
                 except IOError, e:
                     pass
-                
+                            
                 if people_manifest.value(FOAF[person_title], None, None) == None:
                         people_manifest.add((FOAF[person_title], RDF.type, FOAF.Person))
                         for key, value in person.items():
                                 people_manifest.add((FOAF[person_title], key, Literal(value)))
-                                             
-                
+                                                         
+                            
                 with open(people_manifest_filename, 'w') as f:
                     people_manifest.serialize(f, 'better-pretty-xml', base=people_manifest_filename)
-                os.chown(people_manifest_filename,  getpwnam('www-data').pw_uid, getpwnam('www-data').pw_gid)
+                os.chown(people_manifest_filename,  getpwnam('www-data').pw_uid, getpwnam('www-data').pw_gid)      
                 
-           
+                #end of saving contact details
                 
-                literals[OXDS['contact']] = request.POST['record_contact']
+                          
                 #literals[OXDS['isEmbargoed']] = 'False'
                 if request.POST.has_key('data-format'):
                     literals[OXDS['isDigital']]=request.POST['data-format']
+                
+                literals[OXDS['DataLocation']]=request.POST['data_location']
+                if request.POST['doc-format'] =="URL":
+                    resources[OXDS['doc-format']]=request.POST['digital_publisher_doc']
+                else:
+                    literals[OXDS['dataset-process']]=request.POST['digital_publisher_doc']
+                    
+                literals[DCTERMS['publisher']]=request.POST['publisher']
+                literals[DCTERMS['issued']]=request.POST['publication_year']
+                literals[OXDS['spatialcoverage']]=""
+                literals[OXDS['temporal coverage']]=""
+                
+                
+                    
                 if literals[OXDS['isDigital']] == "yes":
-                    literals[OXDS['DataLocation']]=request.POST['digital_location']
+                    literals[DOI['doi']]=request.POST['digital_object_identifier']  
                     literals[DCTERMS['type']]=request.POST['digital_resource_type']      
                     literals[OXDS['Filesize']]=request.POST['digital_filesize']
                     literals[DCTERMS['format']]=request.POST['digital_format']
                     literals[OXDS['currentversion']]=request.POST['digital_version']
-                    literals[DCTERMS['publisher']]=request.POST['digital_publisher']
-                    literals[DCTERMS['issued']]=request.POST['digital_publish_year']
-                    #context["whereis_non_digital"]=request.POST['whereis_non_digital']
-                if literals[OXDS['isDigital']] == "no":     
-                    literals[OXDS['DataLocation']]=request.POST['digital_location']               
-                    literals[DCTERMS['format']]=request.POST['non_digital_format']
-                    literals[DCTERMS['publisher']]=request.POST['non_digital_publisher']
-                    literals[DCTERMS['issued']]=request.POST['non_digital_publish_year']
+                                       
                 
                 funded_research = request.POST['funded_research']
                 if funded_research == "yes":
@@ -138,8 +189,9 @@ def contribute(request):
                 #context["related_publication_url_1"]=request.GET['related_publication_url_1']
                 #context["dataset_relationship_of_data_1"]=request.GET['dataset_relationship_of_data_1']
                 #context["dataset_related_url_1"]=request.GET['dataset_related_url_1']
-                #context["terms_and_conditions"]=request.GET['terms_and_conditions']
-                #context["data_standard_licence"]=request.GET['data_standard_licence']
+                
+                literals[DCTERMS['rights']]=request.POST['terms_and_conditions']
+                literals[DCTERMS['license']]=request.POST['data_standard_licence']
                 #context["embargo-options"]=request.GET['embargo-options']
                 #context["subject_specific_metadata_file"]=request.GET['subject_specific_metadata_file']
                 #context["xml_schema_type"]=request.GET['xml_schema_type']
@@ -183,9 +235,9 @@ def contribute(request):
                 #except IOError, e:
                 #    pass
                 
-                for x in list(literals.keys()):
-                    if literals[x] == "":
-                        del literals[x]
+                #for x in list(literals.keys()):
+                #    if literals[x] == "":
+                #        del literals[x]
                 
                 for key, value in literals.items():
                     manifest.add((subject, key, Literal(value)))
@@ -351,7 +403,8 @@ def peopleFromCUD(request):
             context["lastname"]  = sorted(set(cudReq.get_filter_values('lastname')))
             context["middlename"]  = sorted(set(cudReq.get_filter_values('middlename')))
             context["email"]  = sorted(set(cudReq.get_filter_values('oxford_email')))            
-            
+            context["affiliation"]  =  sorted(set(cudReq.get_affiliation())) #cudReq.get_affiliation()#sorted(set(cudReq.get_affiliation()))
+
         return HttpResponse(json.dumps(context), mimetype="application/json")
             #return render_to_response('contribute.html', context, context_instance=RequestContext(request))  
        # elif http_method == "POST":             

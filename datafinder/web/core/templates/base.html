@@ -77,7 +77,13 @@
   $(document).ready( function() {
    var projects = {}
    var $=jQuery.noConflict(); 
+   $("#single_temporal_date").datepicker();
+   $("#start_date_range").datepicker();
+   $("#end_date_range").datepicker();
    $("#embargo_end_date").datepicker();
+   var myDate = new Date();
+   var prettyDate = myDate.getDate() + '/' + (myDate.getMonth()+1) + '/' + myDate.getFullYear();
+   $("#embargo_end_date").val(prettyDate);
    
  /*  $("select#publication_year option").each(function(){
     for(i=1971; i<=2020; i++){
@@ -176,17 +182,39 @@
 		    } 	
 	 }); 
 	 
+
+	var funders = [
+							"AcademyofScienceofSouthAf",
+							"B.P.InternationalLtd",
+							"C.LouisMeyerFamilyFoundati",
+							"D.Swarovski&amp;Co.",
+							"E.H.LaneFoundation",
+							"F.M.KIRBYFOUNDATION",
+							"1675 Foundation",
+							"973 Programme of China"
+				  ];
+						
+	jQuery("div :input[id^='funding_agency']").live("focus.autocomplete", null, function () {
+	        var thisEl = jQuery(this);
+	        thisEl.autocomplete({ 
+				source: funders
+	 	}); 
+	 }); 
+						
 	 //$("input[id^='author_lastname']").autocomplete({
 	    jQuery("div :input[id^='author_lastname']").live("focus.autocomplete", null, function () {
 	        var thisEl = jQuery(this);
 	        thisEl.autocomplete({ 
 				source: function( request, response ) 
 						{	 var data_dict = {}
-						     data_dict['lastname'] = request.term 
+						     var lastname = request.term 
+						     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
 						     currentId = thisEl.attr("id");
 						     currentCount = currentId.substr(currentId.length - 1);
-						     data_dict['firstname'] = $("#author_firstname_"+currentCount).val() 
-						     data_dict['middlename'] = $("#author_middlename_"+currentCount).val() 
+						     var firstname = $("#author_firstname_"+currentCount).val() 
+						     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+						     var middlename = $("#author_middlename_"+currentCount).val() 
+						     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
 			                 data_dict['email'] = $("#author_email_"+currentCount).val() 
 						     if(request.term.length >= 1)
 						  	 {
@@ -215,6 +243,41 @@
 	 	}); 
 	 }); 
 	 
+	 $("#contact_lastname").autocomplete({	    
+				source: function( request, response ) 
+						{	 var data_dict = {}
+						     var lastname =  request.term 
+						     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+						     var firstname = $("#contact_firstname").val() 
+						     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+						     var middlename = $("#contact_middlename").val() 
+						     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
+			                 data_dict['email'] = $("#contact_email").val() 
+						     if(request.term.length >= 1)
+						  	 {
+							  	  $.ajax({
+								      url: "/contribute/people/",
+								      type: "POST",
+								      data:  data_dict ,
+								      contentType: "application/json",
+					                  dataType: "json",
+								      success: function(data)
+									      {  if (data.firstname.length == 1)
+									      		$("#contact_firstname").val(data.firstname[0])
+									      	 if (data.middlename.length == 1)
+									      		$("#contact_middlename").val(data.middlename[0])
+									      	 if (data.email.length == 1)
+									      		$("#contact_email").val(data.email[0])
+									         response( data.lastname);
+									      },
+								      error: function(jqXHR, textStatus, errorThrown)
+								          {
+				  							alert(textStatus + errorThrown);
+									   	  }  
+								  });
+							 }
+					    } 	
+	 });
 	  
 	 //$("#author_firstname_1").autocomplete({
 	 jQuery("div :input[id^='author_firstname']").live("focus.autocomplete", null, function () {
@@ -224,9 +287,12 @@
 					{	 var data_dict = {}
                          currentId = thisEl.attr("id");
                          currentCount = currentId.substr(currentId.length - 1);
-					     data_dict['lastname'] = $("#author_lastname_"+currentCount).val()
-					     data_dict['firstname'] =  request.term 
-					     data_dict['middlename'] = $("#author_middlename_"+currentCount).val() 
+					     var lastname = $("#author_lastname_"+currentCount).val()
+					     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+					     var firstname =  request.term 
+					     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+					     var middlename = $("#author_middlename_"+currentCount).val() 
+					     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
 		                 data_dict['email'] = $("#author_email_"+currentCount).val() 
 					     if(request.term.length >= 2)
 					  	 {
@@ -256,6 +322,43 @@
 	 	}); 
 	 }); 
 	 
+	 $("#contact_firstname").autocomplete({
+			source: function( request, response ) 
+					{	 var data_dict = {}
+					     var lastname = $("#contact_lastname").val()
+					     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+					     var firstname =  request.term 
+					     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+					     var middlename = $("#contact_middlename").val() 
+					     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
+		                 data_dict['email'] = $("#contact_email").val() 
+					     if(request.term.length >= 2)
+					  	 {
+						  	  $.ajax({
+						      url: "/contribute/people/",
+						      type: "POST",
+						      data:  data_dict ,
+						      contentType: "application/json",
+			                  dataType: "json",
+						      success: function(data)
+							      { 
+							      	 if (data.middlename.length == 1)
+							      		$("#contact_middlename").val(data.middlename[0])
+							      	 if (data.email.length == 1)
+							      		$("#contact_email").val(data.email[0])
+							      	 if (data.lastname.length == 1)
+							      		$("#contact_lastname").val(data.lastname[0])
+							         response( data.firstname);
+							      },
+						      error: function(jqXHR, textStatus, errorThrown)
+						          {
+							alert(textStatus + errorThrown);
+							   	  }  
+							  });
+						 }
+				    } 	
+	 }); 
+	 
 	  //$("#author_middlename_1").autocomplete({
 	  jQuery("div :input[id^='author_middlename']").live("focus.autocomplete", null, function () {
 	 	    var thisEl = jQuery(this);
@@ -264,9 +367,12 @@
 								{	 var data_dict = {}
 					                 currentId = thisEl.attr("id");
 					                 currentCount = currentId.substr(currentId.length - 1);			
-								     data_dict['lastname'] = $("#author_lastname_"+currentCount).val()
-								     data_dict['firstname'] = $("#author_firstname_"+currentCount).val() 
-								     data_dict['middlename'] =request.term 
+								     lastname = $("#author_lastname_"+currentCount).val()
+								     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+								     firstname = $("#author_firstname_"+currentCount).val() 
+								     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+								     middlename=request.term 
+								     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
 					                 data_dict['email'] = $("#author_email_"+currentCount).val() 
 								     if(request.term.length >= 2)
 								  	 {
@@ -294,18 +400,55 @@
 		    					} 	
 	 						  }); 
 	});
- 
-	  //$("#author_email_1").autocomplete({	  
-	  jQuery("div :input[id^='author_email']").live("focus.autocomplete", null, function () {
-	 	    var thisEl = jQuery(this);
-	        thisEl.autocomplete({ 
+	
+	
+		 
+	 $("#contact_middlename").autocomplete({
 								source: function( request, response ) 
 								{	 var data_dict = {}
-					                 currentId = thisEl.attr("id");
-					                 currentCount = currentId.substr(currentId.length - 1);											
-								     data_dict['lastname'] = $("#author_lastname_"+currentCount).val()
-								     data_dict['firstname'] = $("#author_firstname_"+currentCount).val() 
-								     data_dict['middlename'] = $("#author_middlename_"+currentCount).val() 
+								     lastname = $("#contact_lastname").val()
+								     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+								     firstname = $("#contact_firstname").val() 
+								     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+								     middlename = request.term 
+								     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
+					                 data_dict['email'] = $("#contact_email").val() 
+								     if(request.term.length >= 2)
+								  	 {
+									  	  $.ajax({
+									      url: "/contribute/people/",
+									      type: "POST",
+									      data:  data_dict ,
+									      contentType: "application/json",
+						                  dataType: "json",
+									      success: function(data)
+										      {  if (data.firstname.length == 1)
+										      		$("#contact_firstname").val(data.firstname[0])
+										      	 if (data.email.length == 1)
+										      		$("#contact_email").val(data.email[0])
+										      	 if (data.lastname.length == 1)
+										      		$("#contact_lastname").val(data.lastname[0])
+										         response( data.middlename);
+										      },
+									      error: function(jqXHR, textStatus, errorThrown)
+									          {
+					  							alert(textStatus + errorThrown);
+										   	  }  
+										  });
+									}
+		    					} 		 						  
+	});
+ 
+	 function email_function(thisEl) {
+	        data_dict = {};
+			currentId = thisEl.attr("id");
+            currentCount = currentId.substr(currentId.length - 1);
+		    data_dict['lastname'] = $("#author_lastname_"+currentCount).val();
+		    data_dict['firstname'] = $("#author_firstname_"+currentCount).val() ;
+		    data_dict['middlename'] = $("#author_middlename_"+currentCount).val() ;
+	        thisEl.autocomplete({         							
+								source: function( request, response ) 
+								{						                 																			    
 					                 data_dict['email'] = request.term 
 								     if(request.term.length >= 2)
 								  	 {
@@ -323,6 +466,111 @@
 										      		$("#author_middlename_"+currentCount).val(data.middlename[0])
 										      	 if (data.lastname.length == 1)
 										      		$("#author_lastname_"+currentCount).val(data.lastname[0])
+										      		
+										         $("#author_affiliation_"+currentCount).empty();
+										      	 if (data.affiliation.length > 1){
+										      	       for(i=0; i<=data.affiliation.length; i++)
+													   {	
+											      	 	 $("<option/>")
+														       .attr("value", data.affiliation[i])
+														       .text( data.affiliation[i])
+														       .appendTo("#author_affiliation_"+currentCount); 
+													   }
+														 $("#author_affiliation_"+currentCount).trigger("change");
+													}
+										         response( data.email);
+										      },
+									      error: function(jqXHR, textStatus, errorThrown)
+									          {
+					  							alert(textStatus + errorThrown);
+										   	  }  
+										  });
+									 }
+							    },
+							    select: function(event,ui) 
+		    					{  	
+		    						 emailString = ui.item.value
+					                 data_dict['email'] =  emailString; 
+								     if(emailString.length >= 2)
+								  	 {
+									  	  $.ajax({
+									      url: "/contribute/people/",
+									      type: "POST",
+									      data:  data_dict ,
+									      contentType: "application/json",
+						                  dataType: "json",
+									      success: function(data)
+										      { 
+										         if (data.firstname.length == 1)
+										      		$("#author_firstname_"+currentCount).val(data.firstname[0])
+										      	 if (data.middlename.length == 1)
+										      		$("#author_middlename_"+currentCount).val(data.middlename[0])
+										      	 if (data.lastname.length == 1)
+										      		$("#author_lastname_"+currentCount).val(data.lastname[0])
+										         $("#author_affiliation_"+currentCount).empty();
+										      	 if (data.affiliation.length > 1){
+										      	       for(i=0; i<=data.affiliation.length; i++)
+													   {	
+											      	 	 $("<option/>")
+														       .attr("value", data.affiliation[i])
+														       .text( data.affiliation[i])
+														       .appendTo("#author_affiliation_"+currentCount); 
+													   }
+														 $("#author_affiliation_"+currentCount).trigger("change");
+													}
+										        // response( data.email);
+										      },
+									      error: function(jqXHR, textStatus, errorThrown)
+									          {
+					  							alert(textStatus + errorThrown);
+										   	  }  
+										  });
+									 }
+							    } 	
+	 						});  	
+
+	 }
+ 
+	  jQuery("div :input[id^='author_email']").live("focus.autocomplete", null, function(){
+	    var thisEl = jQuery(this);
+	    email_function(thisEl);
+     });
+
+ 	 
+ 	 $("#contact_email").autocomplete({	  
+								source: function( request, response ) 
+								{	 var data_dict = {}								
+								     data_dict['lastname'] = $("#contact_lastname").val()
+								     data_dict['firstname'] = $("#contact_firstname").val() 
+								     data_dict['middlename'] = $("#contact_middlename").val() 
+					                 data_dict['email'] = request.term 
+								     if(request.term.length >= 2)
+								  	 {
+									  	  $.ajax({
+									      url: "/contribute/people/",
+									      type: "POST",
+									      data:  data_dict ,
+									      contentType: "application/json",
+						                  dataType: "json",
+									      success: function(data)
+										      { 
+										         if (data.firstname.length == 1)
+										      		$("#contact_firstname").val(data.firstname[0])
+										      	 if (data.middlename.length == 1)
+										      		$("#contact_middlename").val(data.middlename[0])
+										      	 if (data.lastname.length == 1)
+										      		$("#contact_lastname").val(data.lastname[0])
+										      	$("#contact_affiliation").empty();
+										        if (data.affiliation.length > 1){
+										      	       for(i=0; i<=data.affiliation.length; i++)
+													   {	
+											      	 	 $("<option/>")
+														       .attr("value", data.affiliation[i])
+														       .text( data.affiliation[i])
+														       .appendTo("#contact_affiliation"); 
+													   }
+														 $("#contact_affiliation").trigger("change");
+													}
 										         response( data.email);
 										      },
 									      error: function(jqXHR, textStatus, errorThrown)
@@ -332,9 +580,11 @@
 										  });
 									 }
 							    } 	
-	 						}); 
 	 });
- 	 
+	 
+	 
+	 
+	 
      $('#single_date').change(function() 
      {
 	    if($(this).val()=='single_date')
@@ -609,7 +859,6 @@
 			    newSection.insertAfter(lastRepeatingGroup);
 			    newSection.find("input").each(function (index, input) {
 			        input.id = input.id.replace("_" + currentCount, "_" + newCount);
-			        input.name = input.name.replace("_" + currentCount, "_" + newCount);
 			        var i = $(input);
 			        i.val("");
 			    });
@@ -647,7 +896,6 @@
 			    newSection.insertAfter(lastRepeatingGroup);
 			    newSection.find("input").each(function (index, input) {
 			        input.id = input.id.replace("_" + currentCount, "_" + newCount);
-			        input.name = input.name.replace("_" + currentCount, "_" + newCount);
 			        var i = $(input);
 			        i.val("");
 			    });
@@ -689,6 +937,15 @@
 			        input.name = input.name.replace("_" + currentCount, "_" + newCount);
 			        var i = $(input);
 			        i.val("");
+			    });
+			    newSection.find("select").each(function (index, select) {
+			        select.id = select.id.replace("_" + currentCount, "_" + newCount);
+			        select.name = select.name.replace("_" + currentCount, "_" + newCount);
+			        var i = $(select);			        
+			        i.text("");
+			        i.html('');
+			        //i.empty();
+			        i.trigger("change");
 			    });
 			    newSection.find("img").each(function (index, img) {
 			        img.id = img.id.replace("_" + currentCount, "_" + newCount);
