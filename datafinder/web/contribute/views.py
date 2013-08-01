@@ -401,7 +401,7 @@ def peopleFromCUD(request):
             context["firstname"]  =  sorted(set(cudReq.get_filter_values('firstname')))
             #str(cudReq.get_filter_values('sso_username'))
             context["lastname"]  = sorted(set(cudReq.get_filter_values('lastname')))
-            context["middlename"]  = sorted(set(cudReq.get_filter_values('middlename')))
+            context["middlename"]  = sorted(set(cudReq.get_filter_values('middlenames')))
             context["email"]  = sorted(set(cudReq.get_filter_values('oxford_email')))            
             context["affiliation"]  =  sorted(set(cudReq.get_affiliation())) #cudReq.get_affiliation()#sorted(set(cudReq.get_affiliation()))
 

@@ -68,6 +68,8 @@ class CUDRequest():
             element_list.append(element.text)
             logger.info('filter_value =' + repr(element.text) )      
         #filter_value = root.findtext('.//cudAttribute[name="cud:cas:' + filter_key + '"]/value')
+        if len(element_list) == 0:
+            element_list.append("");
         return element_list 
     
     def get_affiliation(self):
@@ -92,7 +94,7 @@ class CUDRequest():
     
     def get_middleName(self):
         root=self.root
-        middlename = root.findtext('.//cudAttribute[name="cud:cas:middlename"]/value')
+        middlename = root.findtext('.//cudAttribute[name="cud:cas:middlenames"]/value')
         return middlename 
     
         
