@@ -100,7 +100,8 @@ class CUDRequest():
         
     def get_fullName(self):
         root=self.root
-        fullname = root.findtext('.//cudAttribute[name="cud:cas:fullname"]/value')
+        fullname = self.get_firstName() + " " + self.get_lastName() 
+        #fullname = root.findtext('.//cudAttribute[name="cud:cas:fullname"]/value')
         return fullname 
     
     def get_email(self):

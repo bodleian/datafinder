@@ -156,9 +156,15 @@ def contribute(request):
                 if request.POST.has_key('data-format'):
                     literals[OXDS['isDigital']]=request.POST['data-format']
                 
-                literals[OXDS['DataLocation']]=request.POST['data_location']
+                #literals[OXDS['DataLocation']]=request.POST['data_location']
+                
+                if request.POST['loc-format'] =="URL":
+                    resources[OXDS['DataLocation']]=request.POST['data_location']
+                else:
+                    literals[OXDS['DataLocation']]=request.POST['data_location']
+                
                 if request.POST['doc-format'] =="URL":
-                    resources[OXDS['doc-format']]=request.POST['digital_publisher_doc']
+                    resources[OXDS['dataset-process']]=request.POST['digital_publisher_doc']
                 else:
                     literals[OXDS['dataset-process']]=request.POST['digital_publisher_doc']
                     

@@ -47,6 +47,8 @@ class DFAuthSession():
             user_logged_in_name = str(cudReq.get_fullName())
             user_email = str(cudReq.get_email())
             
+            if not request.session.exists(request.session.session_key):
+                        request.session.create()
         #set up the session variables
             request.session['DF_USER_SSO_ID'] = df_user_sso_id
             request.session['DF_USER_FULL_NAME'] = user_logged_in_name
@@ -68,13 +70,13 @@ class DFAuthSession():
                         request.session['DF_USER_ROLE'] = user.role           
             except Exception:
                self.authenticated=False           
-           
+            
             request.session.modified = True
              # Save the session key in DFSessions
             try:
-                    usersession= DFSessions.objects.get(sso_id=request.session['DF_USER_SSO_ID'])                      
-                    usersession.session_id = request.session.session_key
-                    usersession.save()
+                    usersession= DFSessions.objects.get(session_id=request.session.session_key)                      
+                    #usersession.session_id = request.session.session_key
+                    #usersession.save()
             except DFSessions.DoesNotExist,e:
                     usersession =  DFSessions()
                     usersession.sso_id= request.session['DF_USER_SSO_ID']
@@ -83,6 +85,7 @@ class DFAuthSession():
             except Exception,e:
                     logger.error("User session could not be saved in DF.")
         
+        request.session.modified = True
         self.authenticated=True
 
 

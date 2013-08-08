@@ -33,5 +33,5 @@ class DFSessions(models.Model):
     Table to store the data-finder's user session key information 
     """
     
-    sso_id = models.TextField(primary_key=True)
+    sso_id = models.TextField()
     session_id =   models.TextField()

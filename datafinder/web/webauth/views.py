@@ -28,7 +28,8 @@ def login(request):
 def logout(request):
     if request.session.has_key('DF_USER_SSO_ID'):
         try:
-            usersession= DFSessions.objects.get(sso_id=request.session['DF_USER_SSO_ID'])                      
+            #usersession= DFSessions.objects.get(sso_id=request.session['DF_USER_SSO_ID'])      
+            usersession= DFSessions.objects.get(session_id=request.session.session_key)                    
             usersession.delete()
         except DFSessions.DoesNotExist,e:
             pass

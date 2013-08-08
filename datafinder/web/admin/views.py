@@ -482,6 +482,34 @@ def deluser(request):
                             user.delete()
                             context['message']="Thanks, "+ context["user_sso_id"] +" has been successfully deleted."
                             context['status']="success"
+                            
+                            # Update any active  user session with the admin changes made so that the changes start to reflect straight away
+                            dfusersessions = DFSessions.objects.filter(sso_id=request.POST.get("user_sso_id"))
+                            current_session_same_as_session_of_del_user = False
+                            for dfusersession in dfusersessions:      
+                                session=SessionStore(session_key=dfusersession.session_id)   
+                                if request.session['DF_USER_SSO_ID']==session['DF_USER_SSO_ID']:
+                                    current_session_same_as_session_of_del_user = True       
+                                del session['DF_USER_SSO_ID']
+                                del session['DF_USER_FULL_NAME']
+                                del session['DF_USER_ROLE']
+                                del session['DF_USER_EMAIL']
+                                session.save() # save the changes for the deleted env_vars in active client sessions
+                                dfusersession.delete() # delete the session entry in datafinder
+  
+                            if current_session_same_as_session_of_del_user:                                                        
+                                return redirect("/")
+                            #session.modified = True 
+                       except DFSessions.DoesNotExist,e :
+                            logger.error("No active DF user sessions.")
+                            pass
+                       except SessionStore.DoesNotExist, e:
+                            pass
+                            logger.error("No active user sessions.")
+                       except Exception,e:
+                            pass
+                            logger.error("User session could not be found in DF.")
+                    
                             return redirect("/admin?user_sso_id="+"&message="+context['message']+"&status="+context['status'])        
                        except Users.DoesNotExist,e:
                            context['message']="Sorry, that user doesn't exist."
@@ -540,10 +568,11 @@ def edituser(request):
                     user.save()
                     # Update any active  user session with the admin changes made so that the changes start to reflect straight away
                     try:
-                        dfusersession = DFSessions.objects.get(sso_id=request.POST.get("user_sso_id"))      
-                        session=SessionStore(session_key=dfusersession.session_id)                
-                        session['DF_USER_ROLE']=request.POST.get("user_role")
-                        session.save()
+                        dfusersessions = DFSessions.objects.filter(sso_id=request.POST.get("user_sso_id"))
+                        for dfusersession in dfusersessions:      
+                            session=SessionStore(session_key=dfusersession.session_id)                
+                            session['DF_USER_ROLE']=request.POST.get("user_role")
+                            session.save()
                         #session.modified = True 
                     except DFSessions.DoesNotExist,e :
                         logger.error("No active DF user sessions.")

@@ -98,7 +98,31 @@
 	       .appendTo('#publication_year');
     } 
   $("#publication_year").trigger("change");
-   $("#geo_location").geocomplete({ map: ".map_canvas" });  
+  $("#geo_location").geocomplete({
+  	 map: ".map_canvas", 
+  	 markerOptions: { draggable: true }, 	 
+  	 details: "div",
+     detailsAttribute: "data-geo",
+   });
+    
+  //$("#geo_location").geocomplete({
+  //	 map: ".map_canvas",
+  //	 markerOptions: { draggable: true } 	
+  // });
+   
+  $("#geo_location").bind("geocode:dragged", function(event, latLng){
+          $("input[name=lat]").val(latLng.lat());
+          $("input[name=lng]").val(latLng.lng());
+          $("#reset").show();
+  });
+        
+        
+  $("#reset").click(function(){
+          $("#geo_location").geocomplete("resetMarker");
+          $("#reset").hide();
+          return false;
+   });
+
   
   // $("#publication_year").css("display", "block");
   // Refresh the select to match the new state of the select to show the dynamically added options

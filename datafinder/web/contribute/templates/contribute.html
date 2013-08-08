@@ -43,7 +43,7 @@
 	   <p>Do you wish to deposit the Data you are describing in DataBank now, or are you just creating a DataFinder record for the data?</p>
 	    <div class="label-field-pair radio inline-stacked wide" >
 		  		<input type ="radio" name="deposit_data" value="yes" id="deposit_data_yes" />
-		  		<label for="data_format_yes">Deposit data in DataBank</label>
+		  		<label for="data_format_yes">Deposit data in DataBank (In development)</label>
 	    </div>
 		<div class="label-field-pair radio inline-stacked wide" >
 		        <input type ="radio" name="deposit_data" value="no" id="deposit_data_no" checked />
@@ -99,7 +99,7 @@
     	<legend>Describe your data</legend>
         <fieldset>	       
 	    	<div class="label-field-pair" >
-			  	<label for="dataset_title" >The title of this dataset (to use in citation)
+			  	<label for="dataset_title" >(*) The title of this dataset as it should appear in a citation (?)
 			  	</label>
 			  	<input type="text" name="record_title" id="record_title"/>		  	 
 		    </div>
@@ -109,29 +109,33 @@
 		
 
 	        <div class="label-field-pair" id="alt_title" style="display:none;" >
-	         	<label for="alt_title">If there is an alternative title, please enter it here: (optional)</label>    
+	         	<label for="alt_title">Alternative title or sub-title of your dataset</label>    
 	   		 	<input type="text" name="alt_title" id="alt_title"/>
 	        </div>   
     	</fieldset>
     	
     	<fieldset>
 			    <div class="label-field-pair" >
-			          <label for="data_description">Please write a short description of your data </label>   
+			          <label for="data_description">Abstract or short description of your dataset </label>   
 			          <input type="text" name="data_description" id="data_description"/>
 			    </div>	
 		    	<span for="alt_title">Add more info</span>    
 				<img id="project_more_info"  class="round-icon"  class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Project Info" />   
 			    <div id="proj_info" style="display:none;">  
-		        	<div class="label-field-pair" >
+		        	<!-- <div class="label-field-pair" >
 		          		  <label for="data_process">By what process was the data assembled/generated?  (optional) </label>
 		           		 <input type="text" name="data_process" id="data_process"/>
-		        	</div>       
+		        	</div>   -->   
+		        	<div class="label-field-pair" >
+		          		  <label for="project_name">Name of your project/research activity </label>
+		          		  <input name="project_name" id="project_name"/>
+		        	</div>  
 		         	<div class="label-field-pair" >
-		          		  <label for="project_desc">Please write a short description of the research project that the data forms part of:  (optional) </label>
+		          		  <label for="project_desc">Description of your project/research activity </label>
 		          		  <input name="project_desc" id="project_desc"/>
 		        	</div>       
 		            <div class="label-field-pair" >
-		            	<label for="project_website">If you have a website for this research project, please enter the URL:  (optional) </label>
+		            	<label for="project_website">URL of your project/research activity website </label>
 		            	<input type="text" name="project_website" id="project_website"/>
 		        	</div>
 				</div> 
@@ -149,12 +153,12 @@
 			</div>
 			<div id="subj_info" style="display:none;">    
 		        <div class="label-field-pair inline-stacked keywords_repeatable" >
-		        	<label for="record_keywords_1">Keyword(s)  (optional)</label>
+		        	<label for="record_keywords_1">Keyword(s)</label>
 		        	<input type="text" name="record_keyword" id="record_keywords_1"/>
 		        	<img id="keyword_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Keywords" />
 		        </div>	        
 		        <div class="label-field-pair inline-stacked" >
-		            <label for="main_language">Main Language  (optional)</label>
+		            <label for="main_language">What is the predominant language of the dataset ?</label>
 		        	<input type="text" name="main_language" id="main_language" value="English"/>
 		        </div>
 		    </div>
@@ -170,15 +174,15 @@
 				  <img id="person_add_more_1" src="${ STATIC_URL }/gplus.png" alt="Add Author" class="right">
 		    </div>
 		    <div class="label-field-pair stacked-inline" >
-			    <label for="author_lastname_1">Last Name</label>           
+			    <label for="author_lastname_1">Family Name</label>           
 			    <input type="text" size="40" name="author_lastname_1" id="author_lastname_1"/>            
 		    </div>
 			<div class="label-field-pair stacked-inline" >
-	    	    <label for="author_firstname_1">First Name</label>
+	    	    <label for="author_firstname_1">Given Name</label>
 		        <input type="text" size="40" name="author_firstname_1" id="author_firstname_1"/>
 		    </div>
 		    <div class="label-field-pair stacked-inline" >
-			    <label for="author_middlename_1">Middle Name</label>           
+			    <label for="author_middlename_1">Middle Name/Initial(s)</label>           
 			    <input type="text" size="30" name="author_middlename_1" id="author_middlename_1"/>            
 		    </div>
 		    <div class="clear-fix"></div> 	
@@ -229,19 +233,19 @@
 
     
     <fieldset class="contacts" >
-    	<legend>Contact details</legend>
+    	<legend>Data Steward</legend>
     	<p class="instruction">Who should we contact in future with information and updates about the data you are depositing? 
 	    	             (this will normally be your department or research group)</p>		 
 		    <div class="label-field-pair stacked-inline" >
-			    <label for="contact_lastname">Last Name</label>           
+			    <label for="contact_lastname">Family Name</label>           
 			    <input type="text" size="40" name="contact_lastname" id="contact_lastname"/>            
 		    </div>
 			<div class="label-field-pair stacked-inline" >
-	    	    <label for="contact_firstname">First Name</label>
+	    	    <label for="contact_firstname">Given Name</label>
 		        <input type="text" size="40" name="contact_firstname" id="contact_firstname"/>
 		    </div>
 		    <div class="label-field-pair stacked-inline" >
-			    <label for="contact_middlename">Middle Name</label>           
+			    <label for="contact_middlename">Middle Name/Initial(s)</label>           
 			    <input type="text" size="30" name="contact_middlename" id="contact_middlename"/>            
 		    </div>
 		    <div class="clear-fix"></div> 	
@@ -297,16 +301,34 @@
 		      		<input type ="radio" name="data-format" value="no" id="data_format_no" />
 		      		<label for="data_format_no">no</label>
 		      </div>
-		      <div class="label-field-pair" >
+		     <!-- <div class="label-field-pair" >
 	            	<label id="digital_location_label" for="data_location">Location of data</label>
 	            	<label id="non_digital_location_label" for="whereis_non_digital" style="display:none;">Where is your data held? Provide the address of the location 
 	       			of your data or the contact details of the person to contact to enquire about the data. </label>
 		        	<input type="text" name="data_location" id="data_location"/>
-		      </div>
+		      </div> -->
 		      <div class="label-field-pair" >
 			        <div class="radio-set" >
 			        	<div class="eight columns label-field-pair radio inline-stacked" >
-			        			Description about dataset and processes: when and why the data were gathered (optional)
+			        			<span id="digital_location_label">Location of data</span>
+			        		    <span id="non_digital_location_label"  style="display:none;">Where are your data held? Provide the address of the location 
+	       			of your data or the contact details of the person to contact to enquire about the data. </span>
+			         	</div>
+				        <div class="two columns label-field-pair radio short_desc inline-stacked" >
+					  		  <input type ="radio" name="loc-format" value="text" id="loc_format_text" checked />
+					  		  <label for="Text">Text</label>
+			  		 	</div>	  		 		      
+			  		 	<div class="two colummns label-field-pair radio short_desc inline-stacked" >
+					      	<input type ="radio" name="loc-format" value="URL" id="loc_format_url" />
+					      	<label for="url">URL</label>
+				      	</div>
+				    </div>
+		        	<input type="text" name="data_location" id="data_location"/>
+		      </div>		 
+		      <div class="label-field-pair" >
+			        <div class="radio-set" >
+			        	<div class="eight columns label-field-pair radio inline-stacked" >
+			        			Description about dataset and processes: when and why the data were gathered 
 			         	</div>
 				        <div class="two columns label-field-pair radio short_desc inline-stacked" >
 					  		  <input type ="radio" name="doc-format" value="text" id="doc_format_text" checked />
@@ -339,7 +361,7 @@
    
 	<div name="more_about_data" id="more_about_data" style="display:none;" >		        	       
 				    <div class="label-field-pair" >
-				           <label for="digital_object_identifier">Unique identifier assigned to your dataset - DOI (Optional)</label>
+				           <label for="digital_object_identifier">Unique identifier assigned to your dataset (Eg: DOI)</label>
 				           <input type="text" name="digital_object_identifier" id="digital_object_identifier"/>
 				    </div>
 				        
@@ -374,34 +396,46 @@
 			        </div>			        
 			        
 			        <div class="label-field-pair" >
-			        	<label for="exact_date">Date when the data was collected (Optional)</label>
+			        	<label for="exact_date">Date when the data were collected</label>
 			        	<input type="text" name="exact_date" id="exact_date"/>
-			        </div>	   
+			        </div>	
+			           
 			        <div class="label-field-pair  inline-stacked" >
 			        	<label for="geo_location">Geographical location/coverage of the data(Optional)</label>
 			        	<input type="text" name="geo_location" id="geo_location"/>
 			        </div>			        	
 			        	<img id="google_img"  src="${ STATIC_URL }/powered-by-google-on-white.png" alt="Powered by Google" />
-
-			        <div class="map_canvas" style="position: relative; background-color: rgb(229, 227, 223); ">cfghjghj</div>
 			        
 			        <div class="label-field-pair inline-stacked" >
-			        	<label for="digital_resource_type">Resource type  (Optional)</label>
+			        	<label for="lat">Latitude</label>
+			        	<input type="text" name="lat" id="lat" data-geo="lat"/>
+			        </div>
+			        <div class="label-field-pair inline-stacked" >
+			        	<label for="lng">Longitude</label>
+			        	<input type="text" name="lng" id="lng"  data-geo="lng"/>
+			        </div>
+			        
+			        <div class="map_canvas" style="position: relative; background-color:rgb(229, 227, 223); overflow:hidden; "></div>
+			        <a id="reset" style="display: none;" href="#">
+					      Reset Marker
+					</a>
+			        <div class="label-field-pair inline-stacked" >
+			        	<label for="digital_resource_type">What is the predominant type of your dataset?</label>
 			        	<input type="text" name="digital_resource_type" id="digital_resource_type"/>
 			        </div>
 			        
 			        <div class="label-field-pair inline-stacked" >
-			        	<label for="digital_filesize">Filesize  (Optional)</label>
+			        	<label for="digital_filesize"> What is the approximate filesize of your dataset?</label>
 			        	<input type="text" name="digital_filesize" id="digital_filesize"/>
 			        </div>
 			            
 			        <div class="label-field-pair inline-stacked" >
-			        	<label for="digital_format">Format(s)  (Optional)</label>
+			        	<label for="digital_format">File format</label>
 			        	<input type="text" name="digital_format" id="digital_format"/>
 			        </div>
 			        
 			        <div class="label-field-pair inline-stacked" >
-			        	<label for="digital_version">Version (if versioned, optional)</label>
+			        	<label for="digital_version">What is the version number of this dataset?</label>
 			        	<input type="text" name="digital_version" id="digital_version"/>
 			        </div		       		       
 	</div> 
@@ -410,7 +444,7 @@
 	<fieldset id="funding-information" >
 		   <legend>Funding information</legend>	 
 	       <div class="radio-set" >
-	           <div class="label-field-pair radio inline-stacked" >Is your data an output of a funded research?</div>
+	           <div class="label-field-pair radio inline-stacked" >Are your data an output of funded research?</div>
 	    	   <div class="label-field-pair radio short_desc inline-stacked" >
 	    	        <input type ="radio" name="funded_research" value="yes" id="funded_research_yes"  />
 	    	        <label for="funded_research_yes" >yes</label>
@@ -430,7 +464,7 @@
 					            <input type="text" size="50" name="funding_agency_1" id="funding_agency_1"/>
 				       </div>
 				       <div class="label-field-pair stacked-inline" >
-					            <label for="grant_number_1">Grant number:</label>
+					            <label for="grant_number_1">Grant/Award number:</label>
 					            <input type="text" name="grant_number_1" id="grant_number_1"/>
 				       </div>		
 				       
@@ -495,7 +529,7 @@
 			   		<input type="submit" name="add_publication" id="add_publication" value="add publication"/>
 			   </div> -->
 			   <div class="clear-fix"></div>
-		       <p class="instructions">If this data was based on any previous datasets, or is in some way related to other datasets, please add references to them here:</p>
+		       <p class="instructions">If these data were based on any other datasets, or are in some way related to other datasets, please add references to them here:</p>
 	  		   <div  class="dataset_repeatable panel" >
 		  		   <div class="label-field-pair stacked-inline" >
 		  		   		<label for="dataset_relationship_of_data_1">Relationship of Data</label>
@@ -560,7 +594,7 @@
 				</select>	       		      		
 	       	</div>
 	       <div class="radio-set" >
-	       		<p class="instruction">If the data you are describing is currently under the embargo, please indicate its public release date below:</p>	       		
+	       		<p class="instruction">What is the earliest date your data can be accessed?</p>	       		
 	       		<!-- <div class="label-field-pair radio inline-stacked wide" >
 	       			<input name="embargo-options" type ="radio" value="embargo_not_under" id="embargo_not_under" />
 	       			<label for="embargo_not_under" >Data not under embargo</label>
@@ -586,9 +620,8 @@
 	       
 	<fieldset>
 			<legend>Subject-Specific metadata</legend>
-			<p class="instruction" >If you have any subject-specific metadata describing your data, 
-	       		we would like to include it in our record. You will need to have the metadata in a .xml file.
-	       		For more information about this, please get in touch with staff at the Bodleian Library.
+			<p class="instruction" >If you have any disciplinary-specialist metadata describing your data (eg: DDI), 
+	       		you may include it in this data finder record. The metadata should be in XML format.
 	       		<a href=""> ADD EMAIL ADDRESS</a>
 	       	</p>
 		    <div class="label-field-pair" >
