@@ -33,6 +33,7 @@ HTML = Namespace('http://www.w3.org/1999/xhtml')
 XHTML = Namespace('http://www.w3.org/1999/xhtml#')
 FUND = Namespace('http://vocab.ox.ac.uk/projectfunding#')
 DOI =  Namespace("http://purl.org/ontology/bibo/doi")
+GEO =  Namespace('http://www.w3.org/2003/01/geo/wgs84_pos#')
 namespaces = {}
 
 for name, value in locals().items():

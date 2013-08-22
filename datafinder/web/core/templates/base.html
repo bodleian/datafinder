@@ -84,20 +84,35 @@
    var myDate = new Date();
    var prettyDate = myDate.getDate() + '/' + (myDate.getMonth()+1) + '/' + myDate.getFullYear();
    $("#embargo_end_date").val(prettyDate);
+     
    
  /*  $("select#publication_year option").each(function(){
     for(i=1971; i<=2020; i++){
     	$("select#publication_year").append(i);}
 });*/
 //isssue the trigger to reflect the dynamically added change to the select
-
+  var myDate = new Date(); 
+  currentYear = myDate.getFullYear(); 
   for(i=1970; i<=2020; i++)
-	{	$("<option/>")
+	{	if (currentYear == i)
+	   {
+	       $("<option/>")
+	       .attr("value", i)
+	       .attr("selected",true)
+	       .text(i)
+	       .appendTo('#publication_year');
+	   }
+	   else
+	   {    
+	     $("<option/>")
 	       .attr("value", i)
 	       .text(i)
 	       .appendTo('#publication_year');
+	   }
     } 
   $("#publication_year").trigger("change");
+ 
+   
   $("#geo_location").geocomplete({
   	 map: ".map_canvas", 
   	 markerOptions: { draggable: true }, 	 
@@ -139,12 +154,12 @@
 	});
 
 	var availableTags = ['proj 1','proj 2'];
-	$( "#pproject_desc" ).autocomplete({
+	$( "#pproject_name" ).autocomplete({
 	source: availableTags
 	});
 
     
-   $("#project_desc").autocomplete({
+   $("#project_name").autocomplete({
    
      //if ($(this).val().length >= 2 ) {
 		  
@@ -173,9 +188,9 @@
 		    },
 		    select: function(event,ui) 
 		    {   var key = ui.item.value;
-		        var value = projects[key];
-		    	
-		     	$("#project_website").val(value);
+		        var proj_data = projects[key];
+		    	$("#project_desc").val(proj_data['desc']);
+		     	$("#project_website").val(proj_data['website']);
 		     	return true;
 		    }   
 			    
@@ -227,7 +242,7 @@
 	 
 	 function author_email_change(data)
  	 {
- 	 	  $("#author_affiliation_"+currentCount).empty();
+ 	 	  $("#author_institution_"+currentCount).empty();
       	  if (data.affiliation.length > 1)
       	  {
       	       for(i=0; i<=data.affiliation.length; i++)
@@ -235,15 +250,15 @@
 	      	 	 $("<option/>")
 				       .attr("value", data.affiliation[i])
 				       .text( data.affiliation[i])
-				       .appendTo("#author_affiliation_"+currentCount); 
+				       .appendTo("#author_institution_"+currentCount); 
 			   }
-			  $("#author_affiliation_"+currentCount).trigger("change");
+			  $("#author_institution_"+currentCount).trigger("change");
 		   }
 	}
 	
 	function contact_email_change(data)
  	 {
- 	 	  $("#contact_affiliation").empty();
+ 	 	  $("#contact_institution").empty();
       	  if (data.affiliation.length > 1)
       	  {
       	       for(i=0; i<=data.affiliation.length; i++)
@@ -251,9 +266,9 @@
 	      	 	 $("<option/>")
 				       .attr("value", data.affiliation[i])
 				       .text( data.affiliation[i])
-				       .appendTo("#contact_affiliation"); 
+				       .appendTo("#contact_institution"); 
 			   }
-			  $("#contact_affiliation").trigger("change");
+			  $("#contact_institution").trigger("change");
 		   }
 	}
 	
@@ -263,43 +278,47 @@
 	        var thisEl = jQuery(this);
 	        thisEl.autocomplete({ 
 				source: function( request, response ) 
-						{	 var data_dict = {}
+						{ 
+						     var data_dict = {}
 						     var lastname = request.term 
 						     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
 						     currentId = thisEl.attr("id");
 						     currentCount = currentId.substr(currentId.length - 1);
-						     var firstname = $("#author_firstname_"+currentCount).val() 
-						     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
-						     var middlename = $("#author_middlename_"+currentCount).val() 
-						     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
-			                 data_dict['email'] = $("#author_email_"+currentCount).val() 
-						     if(request.term.length >= 1)
-						  	 {
-							  	  $.ajax({
-								      url: "/contribute/people/",
-								      type: "POST",
-								      data:  data_dict ,
-								      contentType: "application/json",
-					                  dataType: "json",
-								      success: function(data)
-									      {  if (data.firstname.length == 1 && $("#author_firstname_"+currentCount).val() == "")
-									      		$("#author_firstname_"+currentCount).val(data.firstname[0])
-	 										 if (data.lastname.length == 1 && data.middlename.length == 1 && $("#author_middlename_"+currentCount).val() == "")
-									      		$("#author_middlename_"+currentCount).val(data.middlename[0])
-									      	 if (data.lastname.length == 1 && data.email.length == 1 && $("#author_email_"+currentCount).val() == "")
-									      		{ $("#author_email_"+currentCount).val(data.email[0]);
-									      		  author_email_change(data);
-									      		}
-									      	 if (lastname.toLowerCase()!= (data.lastname[0]).toLowerCase())
-									         	response(data.lastname);
-									      },
-								      error: function(jqXHR, textStatus, errorThrown)
-								          {
-				  							alert(textStatus + errorThrown);
-									   	  }  
-								  });
-							 }
-					    },
+						     if($("#author_mof_" + currentCount).is(':checked'))
+	                        {
+							     var firstname = $("#author_firstname_"+currentCount).val() 
+							     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+							     var middlename = $("#author_middlename_"+currentCount).val() 
+							     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
+				                 data_dict['email'] = $("#author_email_"+currentCount).val() 
+							     if(request.term.length >= 1)
+							  	 {
+								  	  $.ajax({
+									      url: "/contribute/people/",
+									      type: "POST",
+									      data:  data_dict ,
+									      contentType: "application/json",
+						                  dataType: "json",
+									      success: function(data)
+										      {  if (data.firstname.length == 1 && $("#author_firstname_"+currentCount).val() == "")
+										      		$("#author_firstname_"+currentCount).val(data.firstname[0])
+		 										 if (data.lastname.length == 1 && data.middlename.length == 1 && $("#author_middlename_"+currentCount).val() == "")
+										      		$("#author_middlename_"+currentCount).val(data.middlename[0])
+										      	 if (data.lastname.length == 1 && data.email.length == 1 && $("#author_email_"+currentCount).val() == "")
+										      		{ $("#author_email_"+currentCount).val(data.email[0]);
+										      		  author_email_change(data);
+										      		}
+										      	 if (lastname.toLowerCase()!= (data.lastname[0]).toLowerCase())
+										         	response(data.lastname);
+										      },
+									      error: function(jqXHR, textStatus, errorThrown)
+									          {
+					  							alert(textStatus + errorThrown);
+										   	  }  
+									  });
+								 }
+						    }
+					   },
 				select: function(event,ui) 
 					{  		
 						 	 emailString = ui.item.value;
@@ -340,11 +359,15 @@
 							 }
 					    }
 	 	}); 
+	   
 	 }); 
 	 
 	 $("#contact_lastname").autocomplete({	    
 				source: function( request, response ) 
-						{	 var data_dict = {};
+						{	
+						   if($("#contact_mof").is(':checked'))
+	                       {
+	                         var data_dict = {};
 						     var lastname =  request.term ;
 						     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
 						     var firstname = $("#contact_firstname").val() 
@@ -378,6 +401,7 @@
 									   	  }  
 								  });
 							 }
+					  	  }
 					    },
 				select: function(event,ui) 
 					{  		 var data_dict = {};
@@ -419,46 +443,49 @@
 	  
 	 //$("#author_firstname_1").autocomplete({
 	 jQuery("div :input[id^='author_firstname']").live("focus.autocomplete", null, function () {
-	 	    var thisEl = jQuery(this);
+	        var thisEl = jQuery(this);
 	        thisEl.autocomplete({ 
 			source: function( request, response ) 
 					{	 var data_dict = {}
                          currentId = thisEl.attr("id");
                          currentCount = currentId.substr(currentId.length - 1);
-					     var lastname = $("#author_lastname_"+currentCount).val()
-					     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
-					     var firstname =  request.term 
-					     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
-					     var middlename = $("#author_middlename_"+currentCount).val() 
-					     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
-		                 data_dict['email'] = $("#author_email_"+currentCount).val() 
-					     if(request.term.length >= 2)
-					  	 {
-						  	  $.ajax({
-						      url: "/contribute/people/",
-						      type: "POST",
-						      data:  data_dict ,
-						      contentType: "application/json",
-			                  dataType: "json",
-						      success: function(data)
-							      { 
-							      	 if (data.lastname.length == 1 && data.middlename.length == 1 && $("#author_middlename_"+currentCount).val() == "")
-							      		$("#author_middlename_"+currentCount).val(data.middlename[0])
-							      	 if (data.email.length == 1 && $("#author_email_"+currentCount).val() == "")
-							      		 { $("#author_email_"+currentCount).val(data.email[0])							      		
-									       author_email_change(data);
-									     }
-							      	 if (data.lastname.length == 1 && $("#author_lastname_"+currentCount).val() == "")
-							      		$("#author_lastname_"+currentCount).val(data.lastname[0])
-							      	 if (firstname.toLowerCase()!= (data.firstname[0]).toLowerCase())
-							         	response( data.firstname);
-							      },
-						      error: function(jqXHR, textStatus, errorThrown)
-						          {
-							alert(textStatus + errorThrown);
-							   	  }  
-							  });
-						 }
+                         if($("#author_mof_" + currentCount).is(':checked'))
+	                     {
+						     var lastname = $("#author_lastname_"+currentCount).val()
+						     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+						     var firstname =  request.term 
+						     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+						     var middlename = $("#author_middlename_"+currentCount).val() 
+						     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
+			                 data_dict['email'] = $("#author_email_"+currentCount).val() 
+						     if(request.term.length >= 2)
+						  	 {
+							  	  $.ajax({
+							      url: "/contribute/people/",
+							      type: "POST",
+							      data:  data_dict ,
+							      contentType: "application/json",
+				                  dataType: "json",
+							      success: function(data)
+								      { 
+								      	 if (data.lastname.length == 1 && data.middlename.length == 1 && $("#author_middlename_"+currentCount).val() == "")
+								      		$("#author_middlename_"+currentCount).val(data.middlename[0])
+								      	 if (data.email.length == 1 && $("#author_email_"+currentCount).val() == "")
+								      		 { $("#author_email_"+currentCount).val(data.email[0])							      		
+										       author_email_change(data);
+										     }
+								      	 if (data.lastname.length == 1 && $("#author_lastname_"+currentCount).val() == "")
+								      		$("#author_lastname_"+currentCount).val(data.lastname[0])
+								      	 if (firstname.toLowerCase()!= (data.firstname[0]).toLowerCase())
+								         	response( data.firstname);
+								      },
+							      error: function(jqXHR, textStatus, errorThrown)
+							          {
+								alert(textStatus + errorThrown);
+								   	  }  
+								  });
+							 }
+					    }
 				    },
 				    select: function(event,ui) 
 					{  	
@@ -501,19 +528,23 @@
 						 }	
 						 
 				    }		 
-	 	}); 
+	 		}); 
 	 }); 
+	 
 	 
 	 $("#contact_firstname").autocomplete({
 			source: function( request, response ) 
-					{	 var data_dict = {}
-					     var lastname = $("#contact_lastname").val()
-					     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
-					     var firstname =  request.term 
+					{	
+					  var data_dict = {};	
+					  var lastname = $("#contact_lastname").val();			
+					  if($("#contact_mof").is(':checked'))
+	                  {
+    				     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+					     var firstname =  request.term ;
 					     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
-					     var middlename = $("#contact_middlename").val() 
+					     var middlename = $("#contact_middlename").val();
 					     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
-		                 data_dict['email'] = $("#contact_email").val() 
+		                 data_dict['email'] = $("#contact_email").val();
 					     if(request.term.length >= 2)
 					  	 {
 						  	  $.ajax({
@@ -525,24 +556,25 @@
 						      success: function(data)
 							      { 
 		 							 if (data.lastname.length == 1 && data.middlename.length == 1 && $("#contact_middlename").val() == "")
-							      		$("#contact_middlename").val(data.middlename[0])
+							      		$("#contact_middlename").val(data.middlename[0]);
 							      	 if (data.email.length == 1 && $("#contact_email").val() == "")
-							      		{ $("#contact_email").val(data.email[0])
+							      		{ $("#contact_email").val(data.email[0]);
 							      		  contact_email_change(data);
 									     }
 							      	 if (data.lastname.length == 1 && $("#contact_lastname").val() == "")
-							      		$("#contact_lastname").val(data.lastname[0])
+							      		$("#contact_lastname").val(data.lastname[0]);
 							      	 if (firstname.toLowerCase()!= (data.firstname[0]).toLowerCase())
 							         	response( data.firstname);
 							      },
 						      error: function(jqXHR, textStatus, errorThrown)
 						          {
-							alert(textStatus + errorThrown);
+									alert(textStatus + errorThrown);
 							   	  }  
 							  });
-						 }
-				    },
-				    select: function(event,ui) 
+						  }
+				       }
+                    },
+		    select: function(event,ui) 
 					{   	
 						 emailString = ui.item.value;
 						 var data_dict = {}
@@ -584,45 +616,48 @@
 	 
 	  //$("#author_middlename_1").autocomplete({
 	  jQuery("div :input[id^='author_middlename']").live("focus.autocomplete", null, function () {
-	 	    var thisEl = jQuery(this);
+	        var thisEl = jQuery(this);
 	        thisEl.autocomplete({ 
 								source: function( request, response ) 
 								{	 var data_dict = {}
 					                 currentId = thisEl.attr("id");
-					                 currentCount = currentId.substr(currentId.length - 1);			
-								     lastname = $("#author_lastname_"+currentCount).val()
-								     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
-								     firstname = $("#author_firstname_"+currentCount).val() 
-								     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
-								     middlename=request.term 
-								     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
-					                 data_dict['email'] = $("#author_email_"+currentCount).val() 
-								     if(request.term.length >= 2)
-								  	 {
-									  	  $.ajax({
-									      url: "/contribute/people/",
-									      type: "POST",
-									      data:  data_dict ,
-									      contentType: "application/json",
-						                  dataType: "json",
-									      success: function(data)
-										      {  if (data.firstname.length == 1 && $("#author_firstname_"+currentCount).val() == "")
-										      		$("#author_firstname_"+currentCount).val(data.firstname[0])
-										      	 if (data.email.length == 1 && $("#author_email_"+currentCount).val() == "")
-										      		{ $("#author_email_"+currentCount).val(data.email[0])
-										      		  author_email_change(data);
-									                }
-										      	 if (data.lastname.length == 1 && $("#author_lastname_"+currentCount).val() == "")
-										      		$("#author_lastname_"+currentCount).val(data.lastname[0])
-										      	 if (middlename.toLowerCase()!= (data.middlename[0]).toLowerCase())
-										         	response( data.middlename);
-										      },
-									      error: function(jqXHR, textStatus, errorThrown)
-									          {
-					  							alert(textStatus + errorThrown);
-										   	  }  
-										  });
-									 }
+					                 currentCount = currentId.substr(currentId.length - 1);	
+					                 if($("#author_mof_" + currentCount).is(':checked'))
+	                                 {		
+									     lastname = $("#author_lastname_"+currentCount).val()
+									     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+									     firstname = $("#author_firstname_"+currentCount).val() 
+									     data_dict['firstname'] = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+									     middlename=request.term 
+									     data_dict['middlename'] = middlename.charAt(0).toUpperCase() + middlename.slice(1);
+						                 data_dict['email'] = $("#author_email_"+currentCount).val() 
+									     if(request.term.length >= 2)
+									  	 {
+										  	  $.ajax({
+										      url: "/contribute/people/",
+										      type: "POST",
+										      data:  data_dict ,
+										      contentType: "application/json",
+							                  dataType: "json",
+										      success: function(data)
+											      {  if (data.firstname.length == 1 && $("#author_firstname_"+currentCount).val() == "")
+											      		$("#author_firstname_"+currentCount).val(data.firstname[0])
+											      	 if (data.email.length == 1 && $("#author_email_"+currentCount).val() == "")
+											      		{ $("#author_email_"+currentCount).val(data.email[0])
+											      		  author_email_change(data);
+										                }
+											      	 if (data.lastname.length == 1 && $("#author_lastname_"+currentCount).val() == "")
+											      		$("#author_lastname_"+currentCount).val(data.lastname[0])
+											      	 if (middlename.toLowerCase()!= (data.middlename[0]).toLowerCase())
+											         	response( data.middlename);
+											      },
+										      error: function(jqXHR, textStatus, errorThrown)
+										          {
+						  							alert(textStatus + errorThrown);
+											   	  }  
+											  });
+										 }
+			    					}
 		    					},
 		    					select: function(event,ui) 
 								{   	
@@ -670,7 +705,10 @@
 		 
 	 $("#contact_middlename").autocomplete({
 								source: function( request, response ) 
-								{	 var data_dict = {}
+								{																	
+								   if($("#contact_mof").is(':checked'))
+			                       {
+								     var data_dict = {}
 								     lastname = $("#contact_lastname").val()
 								     data_dict['lastname'] = lastname.charAt(0).toUpperCase() + lastname.slice(1);
 								     firstname = $("#contact_firstname").val() 
@@ -704,6 +742,7 @@
 										   	  }  
 										  });
 									}
+								  }
 		    					},
 		    					select: function(event,ui) 
 								{   	
@@ -754,35 +793,38 @@
 		    data_dict['middlename'] = $("#author_middlename_"+currentCount).val() ;
 	        thisEl.autocomplete({         							
 								source: function( request, response ) 
-								{						                 																			    
-					                 data_dict['email'] = request.term 
-								     if(request.term.length >= 2)
-								  	 {
-									  	  $.ajax({
-									      url: "/contribute/people/",
-									      type: "POST",
-									      data:  data_dict ,
-									      contentType: "application/json",
-						                  dataType: "json",
-									      success: function(data)
-										      { 
-										         if (data.firstname.length == 1 && $("#author_firstname_"+currentCount).val() == "")
-										      		$("#author_firstname_"+currentCount).val(data.firstname[0])
-										      	 if (data.lastname.length == 1 && data.middlename.length == 1 && $("#author_middlename_"+currentCount).val() == "")
-										      		$("#author_middlename_"+currentCount).val(data.middlename[0])
-										      	 if (data.lastname.length == 1  && $("#author_lastname_"+currentCount).val() == "")
-										      		$("#author_lastname_"+currentCount).val(data.lastname[0])
-												 if ((request.term).toLowerCase()!= (data.email[0]).toLowerCase())
-												    { author_email_change(data);										      		
-													  response( data.email);
-													}
-										      },
-									      error: function(jqXHR, textStatus, errorThrown)
-									          {
-					  							alert(textStatus + errorThrown);
-										   	  }  
-										  });
-									 }
+								{	
+								     if($("#author_mof_" + currentCount).is(':checked'))
+	                                 {					                 																			    
+						                 data_dict['email'] = request.term 
+									     if(request.term.length >= 2)
+									  	 {
+										  	  $.ajax({
+										      url: "/contribute/people/",
+										      type: "POST",
+										      data:  data_dict ,
+										      contentType: "application/json",
+							                  dataType: "json",
+										      success: function(data)
+											      { 
+											         if (data.firstname.length == 1 && $("#author_firstname_"+currentCount).val() == "")
+											      		$("#author_firstname_"+currentCount).val(data.firstname[0])
+											      	 if (data.lastname.length == 1 && data.middlename.length == 1 && $("#author_middlename_"+currentCount).val() == "")
+											      		$("#author_middlename_"+currentCount).val(data.middlename[0])
+											      	 if (data.lastname.length == 1  && $("#author_lastname_"+currentCount).val() == "")
+											      		$("#author_lastname_"+currentCount).val(data.lastname[0])
+													 if ((request.term).toLowerCase()!= (data.email[0]).toLowerCase())
+													    { author_email_change(data);										      		
+														  response( data.email);
+														}
+											      },
+										      error: function(jqXHR, textStatus, errorThrown)
+										          {
+						  							alert(textStatus + errorThrown);
+											   	  }  
+											  });
+										 }
+								    }
 							    },
 							    select: function(event,ui) 
 		    					{  	
@@ -818,14 +860,18 @@
 
 	 }
  
-	  jQuery("div :input[id^='author_email']").live("focus.autocomplete", null, function(){
-	    var thisEl = jQuery(this);
-	    email_function(thisEl);
+	 jQuery("div :input[id^='author_email']").live("focus.autocomplete", null, function(){
+	      var thisEl = jQuery(this);
+	   	  email_function(thisEl);
+
      });
 
  	 $("#contact_email").autocomplete({	  
 								source: function( request, response ) 
-								{	 var data_dict = {}								
+								{	 														
+							     if($("#contact_mof").is(':checked'))
+		                         {
+								     var data_dict = {}								
 								     data_dict['lastname'] = $("#contact_lastname").val()
 								     data_dict['firstname'] = $("#contact_firstname").val() 
 								     data_dict['middlename'] = $("#contact_middlename").val() 
@@ -857,6 +903,7 @@
 										   	  }  
 										  });
 									 }
+								  }
 							    }, 	
 							    select: function(event,ui) 
 		    					{  	
@@ -894,6 +941,66 @@
 								},								
 	 });
 	 
+	  
+     $('#is_role').change(function() 
+     {
+	    if($(this).is(':checked') == true) 
+	    {   
+	       $('#name_details').css("display", "none");
+	       $('#contact').css("display", "none");
+	    } 
+     });
+     
+     $('#contact_mof').change(function() 
+     {
+	    if($(this).is(':checked') == true) 
+		  {								      
+	       $('#contact_institution_text_div').css("display", "none");
+	       $('#contact_institution_select_div').css("display", "block");	
+	       $('#oxford_college').css("display", "block");	       
+	      }
+	    else
+	      {
+	       $('#contact_institution_text_div').css("display", "block");
+	       $('#contact_institution_select_div').css("display", "none");
+	       $('#oxford_college').css("display", "none");	
+	      }
+	      
+     });
+     
+   
+        
+    // jQuery("div :input[id^='author_mof']").live("change", null, function (){
+    $("div :input[id^='author_mof']").live("change", null, function ()
+    // $('div').on('change','input[id^="author_mof"]', function() 
+    {   var thisEl = jQuery(this);
+        currentId = thisEl.attr("id");
+        currentCount = currentId.substr(currentId.length - 1);
+        
+	    if($(this).is(':checked') == true) 
+		  {								      
+	       $('#author_institution_text_div_' + currentCount).css("display", "none");
+	       $('#author_institution_select_div_' + currentCount).css("display", "block");	
+	       $('#author_oxford_college_' + currentCount).css("display", "block");	       
+	      }
+	    else
+	      {
+	       $('#author_institution_text_div_' + currentCount).css("display", "block");
+	       $('#author_institution_select_div_' + currentCount).css("display", "none");
+	       $('#author_oxford_college_' + currentCount).css("display", "none");	
+	      }	   
+
+     })
+     
+     
+     $('#is_person').change(function() 
+     {
+	    if($(this).is(':checked') == true) 
+	    {   
+	       $('#name_details').css("display", "block");
+	       $('#contact').css("display", "block");
+	    } 
+     });
 	 
 	 
 	 
@@ -912,6 +1019,24 @@
 	    {   
 	       $('#single_temporal_date_block').css("display", "none");
 	       $('#date_range_temporal_block').css("display", "block");
+	    } 
+     });
+     
+     $('#data_collected_single_date').change(function() 
+     {
+	    if($(this).val()=='data_collected_single_date')
+	     {   
+	       $('#data_collected_single_temporal_date_block').css("display", "block");
+	       $('#data_collected_date_range_temporal_block').css("display", "none");
+	    } 
+     });
+  
+     $('#data_collected_date_range').change(function() 
+     {
+	    if($(this).val()=='data_collected_date_range') 
+	    {   
+	       $('#data_collected_single_temporal_date_block').css("display", "none");
+	       $('#data_collected_date_range_temporal_block').css("display", "block");
 	    } 
      });
   
@@ -1263,9 +1388,13 @@
 			        img.id = img.id.replace("_" + currentCount, "_" + newCount);
 			        img.src = img.src.replace("gplus", "gminus");
 			    });
+			    newSection.find("div").each(function (index, div) {
+			        div.id = div.id.replace("_" + currentCount, "_" + newCount);
+			       // div.name = div.name.replace("_" + currentCount, "_" + newCount);
+			    });
 			    newSection.find("label").each(function (index, label) {			    
 			         var l = $(label);
-			         l.attr('for', l.attr('for').replace("_" + currentCount, "_" + newCount));
+			        // l.attr('for', l.attr('for').replace("_" + currentCount, "_" + newCount));
 			    }); 
 	    	
 	     }
@@ -1356,8 +1485,51 @@
 	     }
 	    return false;
 	});
+
+	$('#prepared_licence').on('change', function(){
+	    if( $('#prepared_licence').is(':checked')) 
+	    {
+	      $('#data_standard_licence_URL_block').css("display", "block");
+	      $('#data_standard_licence_select_block').css("display", "none");
+	      $('#data_standard_licence_text_block').css("display", "none");
+	      $('#data_standard_licence_URI').val("");  	
+	    }
+    });
+    
+    $('#bespoke_licence').on('change', function(){
+	    if( $('#bespoke_licence').is(':checked')) 
+	    {
+	      $('#data_standard_licence_select_block').css("display", "none");
+	      $('#data_standard_licence_URL_block').css("display", "none");
+	      $('#data_standard_licence_text_block').css("display", "block");	
+	    }
+    });
+    
+    $('#other_licence').on('change', function(){
+	    if( $('#other_licence').is(':checked')) 
+	    {
+	      $('#data_standard_licence_select_block').css("display", "none");
+	      $('#data_standard_licence_URL_block').css("display", "none");
+	      $('#data_standard_licence_text_block').css("display", "block"); 	
+	    }
+	});
 	
-		
+    $('#data_standard_licence_URI').val( $('#data_standard_licence').val() ); 
+    
+    $('#select_a_licence').on('change', function(){
+	    if( $('#select_a_licence').is(':checked')) 
+	    {
+	      $('#data_standard_licence_select_block').css("display", "block");
+	      $('#data_standard_licence_URL_block').css("display", "block");
+	      $('#data_standard_licence_text_block').css("display", "none");
+	      $('#data_standard_licence_URI').val( $('#data_standard_licence').val() );  	
+	    }
+    });
+    
+	$('#data_standard_licence').change(function()  {
+	   $('#data_standard_licence_URI').val( this.value );  		  
+	});
+		  
 		$('div').on('click','img[id^="dataset_add_more"]', function() 
     {   
          plus = '${ STATIC_URL }/gplus.png'

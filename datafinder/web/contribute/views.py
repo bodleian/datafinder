@@ -6,7 +6,7 @@ import logging,os, sys
 import rdflib
 from rdflib import Literal, URIRef
 import datafinder.util.serializers
-from datafinder.namespaces import OXDS, DCTERMS, RDF, FOAF, FUND, bind_namespaces, FUND, DOI
+from datafinder.namespaces import OXDS, DCTERMS, RDF, FOAF, FUND, bind_namespaces, FUND, DOI, GEO
 from pwd import  getpwnam 
 sys.path.append("../..")
 from django.http import HttpResponse
@@ -56,16 +56,10 @@ def contribute(request):
                 subject = URIRef(BASE+identifier)     
                 literals[DCTERMS['title']]=request.POST['record_title']
                 literals[DCTERMS['alternative']]=request.POST['alt_title']
-                #context["deposit_data_file_upload"]=request.POST['deposit_data_file_upload']
-                #context["deposit_data_embargo_options"]=request.POST['deposit_data_embargo_options']
-                #context["deposit_data_embrago_release_date"]=request.POST['deposit_data_embrago_release_date']
-                #context["deposit_data_embargo_options_type"]=request.POST['deposit_data_embargo_options_type']
-                #context["deposit_data_embargo_reason"]=request.POST['deposit_data_embargo_reason']
-                
                 literals[DCTERMS['description']]=request.POST['data_description']
-                literals[OXDS['methodology']]=request.POST['data_process']
                 
-                project[DCTERMS['title']]=request.POST['project_desc']
+                project[DCTERMS['title']]=request.POST['project_name']
+                project[DCTERMS['description']]=request.POST['project_desc']
                 project[DCTERMS['URI']]=request.POST['project_website']
                 
                 subjects = request.POST.getlist('subject_area')
@@ -76,8 +70,7 @@ def contribute(request):
                 for keyword in keywords:
                     literals[DCTERMS['keywords']]=keyword
                     
-                literals[DCTERMS['language']]=request.POST['main_language']
-                
+                literals[DCTERMS['language']]=request.POST['main_language']               
                 literals[DCTERMS['status']]='Seeking Approval'
                 literals[OXDS['depositor']] = request.session['DF_USER_SSO_ID']
                 
@@ -88,11 +81,18 @@ def contribute(request):
                                               
                             person[FOAF["givenName"]]=request.POST['author_firstname_' + str(i)]
                             person[FOAF["middleName"]]=request.POST['author_middlename_' + str(i)]   
+                            person[OXDS["DisplayEmail"]]=request.POST['author_middlename_check_' +  str(i)]
                             person[FOAF["familyName"]]=request.POST['author_lastname_' + str(i)]    
                             person[FOAF["mbox"]]=request.POST['author_email_' + str(i)]     
                             person[OXDS['role']]=request.POST['author_role_' + str(i)]             
-                            person[FOAF["Organization"]]=request.POST['author_affiliation_' + str(i)]
+
+                            author_member_of_oxford = request.POST['author_mof_' + str(i)]    
                             
+                            if author_member_of_oxford == True:                              
+                                    person[FOAF["Organization"]]=request.POST['author_institution_' + str(i)]  
+                                    person[OXDS["OxfordCollege"]]=request.POST['author_oxfordcollege_'+ str(i)]           
+                            else:
+                                person[FOAF["Organization"]]=request.POST['author_institution_text_' + str(i)]
                             
                             people_path = settings.get("main:granary.people_path")        
                             people_manifest_filename = os.path.join(people_path, 'people.rdf')
@@ -120,15 +120,29 @@ def contribute(request):
                 
                 #literals[OXDS['contact']] = request.POST['record_contact']
                 #Save the contact details       
-                person_title = request.POST['contact_firstname'] + '-' +request.POST['contact_middlename'] + '-' +request.POST['contact_lastname'] 
-                person[FOAF["givenName"]]=request.POST['contact_firstname']
-                person[FOAF["middleName"]]=request.POST['contact_middlename']   
-                person[FOAF["familyName"]]=request.POST['contact_lastname']    
+                person_or_role = request.POST['person_or_role'] 
+                person_title=""
+                if person_or_role == "is_role":
+                    person_title = request.POST['record_title']
+                else: 
+                    person_title = request.POST['contact_firstname'] + '-' +request.POST['contact_middlename'] + '-' +request.POST['contact_lastname'] 
+                    person[FOAF["givenName"]]=request.POST['contact_firstname']
+                    person[FOAF["middleName"]]=request.POST['contact_middlename']   
+                    person[OXDS["DisplayEmail"]]=request.POST['contact_middlename_check']
+                    person[FOAF["familyName"]]=request.POST['contact_lastname'] 
+                       
                 person[FOAF["mbox"]]=request.POST['contact_email']     
-                person[OXDS['role']]=request.POST['contact_role']             
-                person[FOAF["Organization"]]=request.POST['contact_affiliation']
+                person[OXDS['role']]=request.POST['contact_role']   
+                
+                member_of_oxford = request.POST['contact_mof'] 
+                if member_of_oxford == True:                            
+                        person[FOAF["Organization"]]=request.POST['contact_institution']
+                        person[FOAF["OxfordCollege"]]=request.POST['contact_oxfordcollege']
+                else:
+                    person[FOAF["Organization"]]=request.POST['contact_institution_text']
                             
-                            
+                person[OXDS["Faculty"]]=request.POST['contact_faculty']          
+                   
                 people_path = settings.get("main:granary.people_path")        
                 people_manifest_filename = os.path.join(people_path, 'people.rdf')
                 people_manifest = bind_namespaces(rdflib.ConjunctiveGraph())
@@ -156,25 +170,38 @@ def contribute(request):
                 if request.POST.has_key('data-format'):
                     literals[OXDS['isDigital']]=request.POST['data-format']
                 
-                #literals[OXDS['DataLocation']]=request.POST['data_location']
+                literals[OXDS['DataLocation']]=request.POST['data_location']
                 
                 if request.POST['loc-format'] =="URL":
-                    resources[OXDS['DataLocation']]=request.POST['data_location']
+                    resources[DCTERMS['Location']]=request.POST['geo_location']
                 else:
-                    literals[OXDS['DataLocation']]=request.POST['data_location']
+                    literals[DCTERMS['Location']]=request.POST['geo_location']
+                    
+                if request.POST['temporal_choice'] == 'single_date':
+                    literals[OXDS['dataTemporalCoverage']]=request.POST['single_temporal_date']
+                if request.POST['temporal_choice'] == 'date_range':
+                    literals[OXDS['dataCoverageStart']]=request.POST['start_date_range']
+                    literals[OXDS['dataCoverageEnd']]=request.POST['end_date_range']
+                    
+                if request.POST['data_collected_temporal_choice'] == 'single_date':
+                    literals[OXDS['dataCollectedCoverage']]=request.POST['data_collected_single_temporal_date']
+                if request.POST['data_collected_temporal_choice'] == 'date_range':
+                    literals[OXDS['dataCollectedStart']]=request.POST['data_collected_start_date_range']
+                    literals[OXDS['dataCollectedEnd']]=request.POST['data_collected_end_date_range']
+                
+                literals[GEO['lat']]=request.POST['lat']
+                literals[GEO['lng']]=request.POST['lng']
+                
                 
                 if request.POST['doc-format'] =="URL":
-                    resources[OXDS['dataset-process']]=request.POST['digital_publisher_doc']
+                    resources[OXDS['methodology']]=request.POST['digital_publisher_doc']
                 else:
-                    literals[OXDS['dataset-process']]=request.POST['digital_publisher_doc']
+                    literals[OXDS['methodology']]=request.POST['digital_publisher_doc']
                     
                 literals[DCTERMS['publisher']]=request.POST['publisher']
                 literals[DCTERMS['issued']]=request.POST['publication_year']
-                literals[OXDS['spatialcoverage']]=""
-                literals[OXDS['temporal coverage']]=""
-                
-                
-                    
+
+               
                 if literals[OXDS['isDigital']] == "yes":
                     literals[DOI['doi']]=request.POST['digital_object_identifier']  
                     literals[DCTERMS['type']]=request.POST['digital_resource_type']      
@@ -182,22 +209,55 @@ def contribute(request):
                     literals[DCTERMS['format']]=request.POST['digital_format']
                     literals[OXDS['currentversion']]=request.POST['digital_version']
                                        
-                
+
                 funded_research = request.POST['funded_research']
                 if funded_research == "yes":
-                    literals[FUND['FundingBody']]=request.POST['funding_agency']
-                    literals[FUND['grantNumber']]=request.POST['grant_number']
-                    
-                     
+                    funding_agencies = request.POST.getlist('funding_agency')                
+                    for funding_agency in funding_agencies:
+                        literals[FUND['FundingBody']]=funding_agency
+                        
+                    grant_numbers = request.POST.getlist('grant_number')                
+                    for grant_number in grant_numbers:
+                        literals[FUND['grantNumber']]=grant_number
 
-                #context["data_management_plan_location"]=request.GET['data_management_plan_location']
+                #    
+                #if request.POST['dmp_loc'] =="URL":
+                #    resources[OXDS['data_management_plan_location']]=request.POST['data_management_plan_location']
+                #else:
+                #    literals[OXDS['data_management_plan_location']]=request.POST['data_management_plan_location']     
+ 
+                
                 #context["publication_relationship_of_data_1"]=request.GET['publication_relationship_of_data_1']
                 #context["related_publication_url_1"]=request.GET['related_publication_url_1']
                 #context["dataset_relationship_of_data_1"]=request.GET['dataset_relationship_of_data_1']
                 #context["dataset_related_url_1"]=request.GET['dataset_related_url_1']
+                #context["deposit_data_file_upload"]=request.POST['deposit_data_file_upload']
+                #context["deposit_data_embargo_options"]=request.POST['deposit_data_embargo_options']
+                #context["deposit_data_embrago_release_date"]=request.POST['deposit_data_embrago_release_date']
+                #context["deposit_data_embargo_options_type"]=request.POST['deposit_data_embargo_options_type']
+                #context["deposit_data_embargo_reason"]=request.POST['deposit_data_embargo_reason']
                 
                 literals[DCTERMS['rights']]=request.POST['terms_and_conditions']
-                literals[DCTERMS['license']]=request.POST['data_standard_licence']
+                #resources[OXDS['DataLocation']]=request.POST['data_location']
+                
+                            #prepared_licence - urls to licenses stored elsewhere
+                            #select_a_licence - urls of licens selted fromt he select dropdown
+                            #bespoke_licence - license pasted in as free text
+                            #other_licence - eg: none ie. when not associated with any license               
+                license = request.POST['license_radio']
+                if license =="prepared_licence" or license == 'select_a_licence':
+                    resources[DCTERMS['license']]=request.POST['data_standard_licence_URI']
+                else :
+                    literals[DCTERMS['license']]=request.POST['data_standard_licence_text']
+                    
+                
+                embargo_options = request.POST['embargo_options']
+                # embargo_options_list = ['embargo_status_unknown','embargoed_indefinitely']
+                
+                
+                literals[OXDS['lastaccessdate']]=request.POST['embargo_end_date']
+                
+                
                 #context["embargo-options"]=request.GET['embargo-options']
                 #context["subject_specific_metadata_file"]=request.GET['subject_specific_metadata_file']
                 #context["xml_schema_type"]=request.GET['xml_schema_type']
@@ -327,11 +387,16 @@ def projects(request):
         
         if http_method == "POST" or http_method == "GET":     
    #projects[o1] =projects_manifest.value(s1,DCTERMS['URI'],None)
-
+            projects = {}
             for s1,p1,o1 in projects_manifest.triples((None,DCTERMS['title'],None)):
-                     for s2,p2,o2 in projects_manifest.triples((s1,DCTERMS['URI'],None)):
+                     projects[o1] = {}
+                     for s2,p2,o2 in projects_manifest.triples((s1,DCTERMS['description'],None)):
+                                       projects[o1]['desc'] = o2
                                        #projects.append(o1)
-                                       projects[o1]=o2
+                     for s2,p2,o3 in projects_manifest.triples((s1,DCTERMS['URI'],None)):
+                                       projects[o1]['website'] = o3
+                                       #projects.append(o1)
+                                       
 
                                        
 

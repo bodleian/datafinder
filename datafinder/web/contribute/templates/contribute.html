@@ -105,8 +105,7 @@
 		    </div>
            
 	        <span for="alt_title">Add more info</span>    
-			<img id="title_more_info"  class="round-icon" class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Info" />
-		
+			<img id="title_more_info"  class="round-icon" class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Info" />		
 
 	        <div class="label-field-pair" id="alt_title" style="display:none;" >
 	         	<label for="alt_title">Alternative title or sub-title of your dataset</label>    
@@ -123,16 +122,16 @@
 				<img id="project_more_info"  class="round-icon"  class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Project Info" />   
 			    <div id="proj_info" style="display:none;">  
 		        	<!-- <div class="label-field-pair" >
-		          		  <label for="data_process">By what process was the data assembled/generated?  (optional) </label>
+		          		  <label for="data_process">By what process was the data assembled/generated? </label>
 		           		 <input type="text" name="data_process" id="data_process"/>
 		        	</div>   -->   
 		        	<div class="label-field-pair" >
 		          		  <label for="project_name">Name of your project/research activity </label>
-		          		  <input name="project_name" id="project_name"/>
+		          		  <input type="text" name="project_name" id="project_name"/>
 		        	</div>  
 		         	<div class="label-field-pair" >
 		          		  <label for="project_desc">Description of your project/research activity </label>
-		          		  <input name="project_desc" id="project_desc"/>
+		          		  <input type="text" name="project_desc" id="project_desc"/>
 		        	</div>       
 		            <div class="label-field-pair" >
 		            	<label for="project_website">URL of your project/research activity website </label>
@@ -173,6 +172,10 @@
 			<div class="form-button">
 				  <img id="person_add_more_1" src="${ STATIC_URL }/gplus.png" alt="Add Author" class="right">
 		    </div>
+		    <div class="label-field-pair inline-stacked" >
+			    <label for="author_mof_1">Member of oxford ?</label>           
+			    <input type="checkbox"  name="author_mof_1" id="author_mof_1" checked="checked"/>            
+		    </div>
 		    <div class="label-field-pair stacked-inline" >
 			    <label for="author_lastname_1">Family Name</label>           
 			    <input type="text" size="40" name="author_lastname_1" id="author_lastname_1"/>            
@@ -184,6 +187,11 @@
 		    <div class="label-field-pair stacked-inline" >
 			    <label for="author_middlename_1">Middle Name/Initial(s)</label>           
 			    <input type="text" size="30" name="author_middlename_1" id="author_middlename_1"/>            
+		    </div>
+		    <div class="clear-fix"></div> 	
+		    <div class="label-field-pair  inline-stacked" >
+			    <label for="author_middlename_check_1">The middle name will not be displayed unless this box is checked </label>           
+			    <input type="checkbox"  name="author_middlename_check_1" id="author_middlename_check_1" value="yes" />            
 		    </div>
 		    <div class="clear-fix"></div> 	
 		    <div class="label-field-pair stacked-inline" >
@@ -216,18 +224,55 @@
 						<option value="Supervisor">Supervisor</option>
 						<option value="Sponsor">Sponsor</option>
 				</select>	
-			</div>	      
+			</div>	
+
+			<div class="label-field-pair inline-stacked" >
+		        <label for="author_affiliation_1">Affiliation :</label>
+		    </div>      
+		    <div class="clear-fix"></div> 	
+		    <div class="label-field-pair stacked-inline"  id="author_institution_text_div_1" style="display:none;">
+		        <label for="author_institution_text_1">Instititution</label>
+		        <input type="text" size="30" name="author_institution_text_1" id="author_institution_text_1" />
+		    </div>
+		    <div class="label-field-pair stacked-inline"  id="author_institution_select_div_1">
+		        <label for="author_institution_1">Instititution</label> 
+		        <select name="author_institution_1" id="author_institution_1"><option></option> </select>
+		    </div>
 		    <div class="label-field-pair stacked-inline" >
-		        <label for="author_affiliation_1">Affiliation</label>
-		        <!-- <input type="text" size="30" name="author_affiliation_1" id="author_affiliation_1"/> -->
-		        <select name="author_affiliation_1" id="author_affiliation_1"><option></option> </select>
+		        <label for="author_faculty_1">Faculty</label>
+		        <input type="text" size="30" name="author_faculty_1" id="author_faculty_1"/> 
+		    </div>
+		    <div id="author_oxford_college_1" class="label-field-pair stacked-inline" >
+		        <label for="author_oxfordcollege_1">Oxford College</label>
+		        <input type="text" size="30" name="author_oxfordcollege_1" id="author_oxfordcollege_1"/> 
 		    </div>
 			<!-- <div class="form-button">
 		        <input type="submit" name="add_author" id="add_author" value="add author"/>
 		    </div> -->
-		    <!--<img id="person_add_more_1"  class="round-icon" src="${ STATIC_URL }/gminus.png" alt="Add More People"  style="display:none;/> -->
-		    <div class="clear-fix"></div> 	
-		    
+		        
+		    <div class="label-field-pair inline-stacked" >
+		        <label>Author ID</label>
+		     </div>
+		     <div class="clear-fix"></div> 
+		    <div class="label-field-pair stacked-inline" >
+		        <label for="author_id_1"></label>
+		       	<select name="author_scheme_1" id="author_scheme_1">		        
+					<option> HESA ID </option>
+					<option> ISNI    </option>
+					<option> OpenID  </option>
+					<option> ORCID   </option>
+					<option> Researcher ID </option>
+					<option> VIAF          </option>
+					<option> Institutional person identifier scheme </option>
+					<option> Funder person identifier scheme        </option>
+					<option> Other (please specify)                 </option>		        
+				</select>		
+		    </div>
+		    <div class="label-field-pair stacked-inline" >
+		        <label for="author_scheme_1"></label>
+		        <input type="text" size="30" name="author_id_1" id="author_id_1"/> 
+		
+		    </div>
 		</div>
     </fieldset>
 
@@ -235,20 +280,43 @@
     <fieldset class="contacts" >
     	<legend>Data Steward</legend>
     	<p class="instruction">Who should we contact in future with information and updates about the data you are depositing? 
-	    	             (this will normally be your department or research group)</p>		 
-		    <div class="label-field-pair stacked-inline" >
-			    <label for="contact_lastname">Family Name</label>           
-			    <input type="text" size="40" name="contact_lastname" id="contact_lastname"/>            
+	    	             (this will normally be your department or research group)</p>	
+	    	<div class="radio-set" >
+	       		<div class="label-field-pair radio inline-stacked wide" >
+	       			<input name="person_or_role" type ="radio" value="is_person" id="is_person"  checked="checked"/>
+	       			<label for="person">Named Person</label>
+	       		</div> 
+	       		<div class="label-field-pair radio inline-stacked wide" >
+	       			<input  name="person_or_role" type ="radio" value="is_role" id="is_role" />
+	       			<label for="role">Role</label>
+	       		</div>
+	       	</div>  
+	       	<div class="clear-fix"></div> 
+		    <div class="label-field-pair inline-stacked" >
+			    <label for="contact_mof">Member of oxford ?</label>           
+			    <input type="checkbox"  name="contact_mof" id="contact_mof" checked="checked"/>            
 		    </div>
-			<div class="label-field-pair stacked-inline" >
-	    	    <label for="contact_firstname">Given Name</label>
-		        <input type="text" size="40" name="contact_firstname" id="contact_firstname"/>
-		    </div>
-		    <div class="label-field-pair stacked-inline" >
-			    <label for="contact_middlename">Middle Name/Initial(s)</label>           
-			    <input type="text" size="30" name="contact_middlename" id="contact_middlename"/>            
-		    </div>
-		    <div class="clear-fix"></div> 	
+	       	    <div class="clear-fix"></div> 
+	        <div name="name_details" id="name_details">  
+			    <div class="label-field-pair stacked-inline" >
+				    <label for="contact_lastname">Family Name</label>           
+				    <input type="text" size="40" name="contact_lastname" id="contact_lastname"/>            
+			    </div>
+				<div class="label-field-pair stacked-inline" >
+		    	    <label for="contact_firstname">Given Name</label>
+			        <input type="text" size="40" name="contact_firstname" id="contact_firstname"/>
+			    </div>
+			    <div class="label-field-pair stacked-inline" >
+				    <label for="contact_middlename">Middle Name/Initial(s)</label>           
+				    <input type="text" size="30" name="contact_middlename" id="contact_middlename"/>            
+			    </div>
+	            <div class="clear-fix"></div> 	
+			    <div class="label-field-pair  inline-stacked" >
+				    <label for="contact_middlename_check">The middle name will not be displayed unless this box is checked </label>           
+				    <input type="checkbox"  name="contact_middlename_check" id="contact_middlename_check" value="yes" />            
+			    </div>
+			</div>
+		    <div class="clear-fix"></div> 	 	
 		    <div class="label-field-pair stacked-inline" >
 		        <label for="contact_email">Email</label>
 		        <input type="text" size="40" name="contact_email" id="contact_email"/>
@@ -274,17 +342,60 @@
 						<option value="Adapter">Adapter</option>
 						<option value="Editor">Editor</option>
 						<option value="Reviewer">Reviewer</option>
-						<option value="Funder">Funder</option>
+						<option value="Funder"></option>
 						<option value="Copyright holder">Copyright holder</option>
 						<option value="Supervisor">Supervisor</option>
 						<option value="Sponsor">Sponsor</option>
 				</select>	
 			</div>	      
-		    <div class="label-field-pair stacked-inline" >
-		        <label for="contact_affiliation">Affiliation</label>
-		        <!-- <input type="text" size="50" name="contact_affiliation" id="contact_affiliation"/> -->
-		        <select name="contact_affiliation" id="contact_affiliation"><option></option> </select>
+		    <div class="label-field-pair inline-stacked" >
+		        <label for="contact_affiliation">Affiliation :</label>
+		    </div>      
+		    <div class="clear-fix"></div> 	
+		    <div class="label-field-pair stacked-inline" name="contact_institution_text_div" id="contact_institution_text_div" style="display:none;">
+		        <label for="contact_institution">Instititution</label>
+		        <input type="text" size="30" name="contact_institution_text" id="contact_institution_text" />
 		    </div>
+		    <div class="label-field-pair stacked-inline" name="contact_institution_select_div" id="contact_institution_select_div">
+		        <label for="contact_institution">Instititution</label>
+		        <select name="contact_institution" id="contact_institution"><option></option> </select>
+		    </div>
+		    <div class="label-field-pair stacked-inline" >
+		        <label for="contact_faculty">Faculty</label>
+		        <input type="text" size="30" name="contact_faculty" id="contact_faculty"/> 
+		    </div>
+		    <div name="oxford_college" id="oxford_college" class="label-field-pair stacked-inline" >
+		        <label for="contact_oxfordcollege">Oxford College</label>
+		        <input type="text" size="30" name="contact_oxfordcollege" id="contact_oxfordcollege"/> 
+		    </div>
+			<!-- <div class="form-button">
+		        <input type="submit" name="add_contact" id="add_contact" value="add contact"/>
+		    </div> -->
+		    
+		    <div name="contact" id="contact">    
+			    <div class="label-field-pair inline-stacked" >
+			        <label>Contact ID</label>
+			     </div>
+			     <div class="clear-fix"></div> 
+			    <div class="label-field-pair stacked-inline" >
+			        <label for="contact_id"></label>
+			       	<select name="contact_scheme" id="contact_scheme">		        
+						<option> HESA ID </option>
+						<option> ISNI    </option>
+						<option> OpenID  </option>
+						<option> ORCID   </option>
+						<option> Researcher ID </option>
+						<option> VIAF          </option>
+						<option> Institutional person identifier scheme </option>
+						<option> Funder person identifier scheme        </option>
+						<option> Other (please specify)                 </option>		        
+					</select>		
+			    </div>
+			    <div class="label-field-pair stacked-inline" >
+			        <label for="contact_scheme"></label>
+			        <input type="text" size="30" name="contact_id" id="contact_id"/> 	
+			    </div>
+			</div>
 		    <div class="clear-fix"></div> 	          
     </fieldset>
     
@@ -366,7 +477,7 @@
 				    </div>
 				        
 					<div class="radio-set" >
-				           <div class="six columns label-field-pair radio inline-stacked" >Temporal coverage of your data (Optional)</div>
+				           <div class="six columns label-field-pair radio inline-stacked" >Temporal coverage of your data</div>
 				    	   <div class="three columns label-field-pair radio short_desc inline-stacked wide" >
 				    	        <input type ="radio" name="temporal_choice" value="single_date" id="single_date"  checked/>
 				    	        <label for="temporal_choice" >Single Date</label>
@@ -395,13 +506,39 @@
 						       </div>
 			        </div>			        
 			        
-			        <div class="label-field-pair" >
-			        	<label for="exact_date">Date when the data were collected</label>
-			        	<input type="text" name="exact_date" id="exact_date"/>
+			        <div class="radio-set" >
+			              <div class="six columns label-field-pair radio inline-stacked">Date when the data were collected</div>
+				    	  <div class="three columns label-field-pair radio short_desc inline-stacked wide" >
+				    	        <input type ="radio" name="data_collected_temporal_choice" value="data_collected_single_date" id="data_collected_single_date"  checked/>
+				    	        <label for="data_collected_" >Single Date</label>
+				    	  </div>
+				    	  <div class="three columns label-field-pair radio short_desc inline-stacked wide" >  
+				    	   		<input type ="radio" name="data_collected_temporal_choice" value="data_collected_date_range" id="data_collected_date_range"  />
+				    	   		<label for="data_collected_" >Date Range</label>
+				    	  </div>
 			        </div>	
+			        
+			        <div id="data_collected_single_temporal_date_block" >
+					    	   <div class="clear-fix"></div>
+							   <div class="label-field-pair inline-stacked" >
+							            <label for="data_collected_temporal_date">Date:</label>
+							            <input type="text" name="data_collected_single_temporal_date" id="data_collected_single_temporal_date"/>
+						       </div>
+			        </div>
+			        <div id="data_collected_date_range_temporal_block" style="display:none;" >
+					    	   <div class="clear-fix"></div>
+							   <div class="label-field-pair inline-stacked" >
+							            <label for="data_collected_temporal_date">Start Date:</label>
+							            <input type="text" name="data_collected_start_date_range" id="data_collected_start_date_range"/>
+						       </div>
+						       <div class="label-field-pair inline-stacked" >
+							            <label for="data_collected_temporal_date">End Date:</label>
+							            <input type="text" name="data_collected_end_date_range" id="data_collected_end_date_range"/>
+						       </div>
+			        </div>			  
 			           
 			        <div class="label-field-pair  inline-stacked" >
-			        	<label for="geo_location">Geographical location/coverage of the data(Optional)</label>
+			        	<label for="geo_location">Geographical location/coverage of the data</label>
 			        	<input type="text" name="geo_location" id="geo_location"/>
 			        </div>			        	
 			        	<img id="google_img"  src="${ STATIC_URL }/powered-by-google-on-white.png" alt="Powered by Google" />
@@ -461,11 +598,11 @@
 			    	   <div class="clear-fix"></div>
 					   <div class="label-field-pair stacked-inline" >
 					            <label for="funding_agency_1">Funding agency:</label>
-					            <input type="text" size="50" name="funding_agency_1" id="funding_agency_1"/>
+					            <input type="text" size="50" name="funding_agency" id="funding_agency_1"/>
 				       </div>
 				       <div class="label-field-pair stacked-inline" >
 					            <label for="grant_number_1">Grant/Award number:</label>
-					            <input type="text" name="grant_number_1" id="grant_number_1"/>
+					            <input type="text" name="grant_number" id="grant_number_1"/>
 				       </div>		
 				       
 					   <img id="funding_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Funding" />				      
@@ -481,15 +618,35 @@
 			       	<span for="alt_title">Add more info</span>    
 				    <img id="related_more_info"  class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Related Info" />
 		   </div>			
-		   <div id="related_info" style="display:none;"> 	 	       
-		       <div class="label-field-pair full-width" >
+		   <div id="related_info" style="display:none;">
+		   
+		    <div class="label-field-pair" >
+			        <div class="radio-set" >
+			        	<div class="eight columns label-field-pair radio inline-stacked" >
+			        			<span>If you have a Data management Plan for the project for which this data was created, 
+		        	      please enter the location where it can be accessed here:</span>
+			         	</div>
+				        <div class="two columns label-field-pair radio short_desc inline-stacked" >
+					  		  <input type ="radio" name="dmp_loc" value="text" id="dmp_loc_text" checked />
+					  		  <label for="Text">Text</label>
+			  		 	</div>	  		 		      
+			  		 	<div class="two colummns label-field-pair radio short_desc inline-stacked" >
+					      	<input type ="radio" name="dmp_loc" value="URL" id="dmp_loc_url" />
+					      	<label for="url">URL</label>
+				      	</div>
+				    </div>
+		        	<input type="text" name="data_management_plan_location" id="data_management_plan_location"/>
+		      </div>		 
+		       	 	       
+		      <!-- <div class="label-field-pair full-width" >
 		       		<label for="data_management_plan_location">If you have a Data management Plan for the project for which this data was created, 
 		        	      please enter the location where it can be accessed here:</label>
 		            <input type="text" name="data_management_plan_location" id="data_management_plan_location"/>
-		       </div>	       
+		       </div>  --> 
+		       
 			   <p class="instructions">If you are aware of any publications based  on this data, please add references to them here:</p>
 			   <div  class="publication_repeatable panel" >
-					    <div class="label-field-pair stacked-inline" >
+					    <!-- <div class="label-field-pair stacked-inline" >
 					   						<label for="publication_relationship_of_data_1">Relationship of Data</label>
 				            	            <select  name="publication_relationship_of_data_1" id="publication_relationship_of_data_1">                         
 												     <option value="HasPart">HasPart</option>
@@ -506,7 +663,7 @@
 												     <option value="Requires">Requires</option>
 												     <option value="IsRequiredBy">IsRequiredBy</option>
 				            	            </select>		
-				        </div>
+				            </div> -->
 				        <div class="radio-set" >
 						    	   <div class="label-field-pair radio short_desc stacked-inline" >
 						    	        <input type ="radio" name="publication_format" value="URL" id="pub_url_1"  />
@@ -577,22 +734,50 @@
 			<legend>Access terms &amp; conditions</legend>
 	       <div class="label-field-pair" >
 	       <label for="terms_and_conditions">Please enter any terms and conditions regarding access to your data here:</label>	       
-	       <input type="text" name="terms_and_conditions" id="terms_and_conditions"/></div>	       		
-	       <div class="label-field-pair" >
-	       		<label for="data_standard_licence">If your data is available under a standard license, please name the license here:</label>
+	       <input type="text" name="terms_and_conditions" id="terms_and_conditions"/></div>	     
+	       <div class="radio-set" >
+	       		<p class="instruction">If your data is available under a standard license, please name the license here:</p>	       		
+	       		<div class="label-field-pair radio inline-stacked wide" >
+	       			<input name="license_radio" type ="radio" value="prepared_licence" id="prepared_licence" />
+	       			<label for="prepared_licence" >URL</label>
+	       		</div> 
+	       		<div class="label-field-pair radio inline-stacked wide" >
+	       			<input  name="license_radio" type ="radio" value="select_a_licence" id="select_a_licence" checked="checked" />
+	       			<label for="select_a_licence" >Select from dropdown</label>
+	       		</div>
+	       		<div class="label-field-pair radio inline-stacked wide" >
+	       			<input  name="license_radio" type ="radio" value="bespoke_licence" id="bespoke_licence" />
+	       			<label for="bespoke_licence" >Insert text</label>
+	       		</div>
+	       		<div class="label-field-pair radio inline-stacked wide" >
+	       			<input  name="license_radio" type ="radio" value="other_licence" id="other_licence" />
+	       			<label for="other_licence" >Other</label>
+	       		</div>
+	       	</div>  
+		
+	       <div class="label-field-pair" id="data_standard_licence_select_block" ">
+	       		<label for="data_standard_licence"></label>
+			    <select  type="text"  name="data_standard_licence" id="data_standard_licence" style="display:none;">                         
 	       		<!-- <input type="text" name="data_standard_licence" id="data_standard_licence"/> -->
-			    <select  type="text"  name="data_standard_licence" id="data_standard_licence">                         
-					   <option value="Creative Commons Attribution (CC BY)">Creative Commons Attribution (CC BY)</option>
-					   <option value="Creative Commons Attribution Share Alike (CC BY-SA)">Creative Commons Attribution (CC BY)</option>
-					   <option value="Creative Commons Attribution No Derivatives (CC BY-ND)">Creative Commons Attribution No Derivatives (CC BY-ND)</option>
-					   <option value="Creative Commons Attribution Non-Commercial (CC BY-NC)">Creative Commons Attribution Non-Commercial (CC BY-NC)</option>
-					   <option value="Creative Commons Attribution Non-Commercial Share Alike (CC BY-NC-SA)">Creative Commons Attribution Non-Commercial Share Alike (CC BY-NC-SA)</option>
-					   <option value="Creative Commons Attribution Non-Commercial No Derivatives (CC BY-NC-ND)">Creative Commons Attribution Non-Commercial No Derivatives (CC BY-NC-ND)</option>
-					   <option value="Open Data Commons Attribution Licence (ODC-By)">Open Data Commons Attribution Licence (ODC-By)</option>
-					   <option value="Open Data Commons Open Database Licence (ODC-ODbL)">Open Data Commons Open Database Licence (ODC-ODbL)</option>
-					   <option value="Open Data Commons Database Contents Licence (ODC-DbCL)">Open Data Commons Database Contents Licence (ODC-DbCL)</option>
+					   <option value="http://creativecommons.org/choose/zero/" >CC0 (CC Zero)</option>				       
+					   <option value="http://opendatacommons.org/licenses/by/">Open Data Commons Attribution Licence (ODC-By)</option>
+					   <option value="http://opendatacommons.org/licenses/odbl/" >Open Data Commons Open Database Licence (ODC-ODbL)</option>
+					   <option value="http://opendatacommons.org/licenses/pddl/ " >Open Data Commons Public Domain Dedication and License (PDDL)</option>
+					   <option value="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/" >Open Government Licence (OGL)</option>
+					   <option value="http://www.nationalarchives.gov.uk/doc/non-commercial-government-licence/ " >OGL non commercial</option>  		
 				</select>	       		      		
 	       	</div>
+
+	       <div class="label-field-pair"  id="data_standard_licence_URL_block"   >
+		       <label for="data_standard_licence_URI">URL</label>	       
+		       <input type="text" name="data_standard_licence_URI" id="data_standard_licence_URI"/>
+	       </div>	
+  
+	       <div id="data_standard_licence_text_block" class="label-field-pair" style="display:none;" >
+		       <label for="data_standard_licence_text"></label>	       
+		       <input type="text" name="data_standard_licence_text" id="data_standard_licence_text"/>
+	       </div>	
+	       
 	       <div class="radio-set" >
 	       		<p class="instruction">What is the earliest date your data can be accessed?</p>	       		
 	       		<!-- <div class="label-field-pair radio inline-stacked wide" >
@@ -607,11 +792,12 @@
 	       			<input  name="embargo-options" type ="radio" value="embargoed_indefinitely" id="embargoed_indefinitely" />
 	       			<label for="embargoed_indefinitely" >Embargoed indefinitely</label>
 	       		</div>
+	       		
 	       		<!-- <div class="label-field-pair radio inline-stacked wide" ><input  name="embargo-options" type ="radio" value="embargoed_until" id="embargoed_until" />
 	       			<label for="embargoed_until" >Embargoed until</label>	
 	       		</div>  -->
 	       		
-	       		 <!-- <div class="clear-fix"></div>   --> 		
+	       		 <!--  <div class="clear-fix"></div>   --> 		
                 <label for="embargo_end_date" id="embargo_end_date_label">Earliest Access date:</label>
 				<input type="text" name="embargo_end_date" id="embargo_end_date" />	       
 	       	</div>

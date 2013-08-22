@@ -181,7 +181,7 @@ form.custom span.custom { display: inline-block; width: 16px; height: 16px; posi
 form.custom span.custom.radio { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
 form.custom span.custom.checkbox:before { content: ""; display: block; line-height: 0.8; height: 14px; width: 14px; text-align: center; position: absolute; top: 0; left: 0; font-size: 14px; color: #fff; }
 form.custom span.custom.radio.checked:before { content: ""; display: block; width: 8px; height: 8px; -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; background: #222222; position: relative; top: 3px; left: 3px; }
-form.custom span.custom.checkbox.checked:before { content: "\00d7"; color: #222222; }
+form.custom span.custom.checkbox.checked:before { content: "\2714"; color: #222222; }
 form.custom div.custom.dropdown { display: block; position: relative; width: auto; height: 28px; margin-bottom: 9px; margin-top: 2px; }
 form.custom div.custom.dropdown ul { overflow-y: auto; max-height: 200px; }
 form.custom div.custom.dropdown a.current { display: block; width: auto; line-height: 26px; min-height: 28px; padding: 0; padding-left: 6px; padding-right: 38px; border: solid 1px #dddddd; color: #141414; background-color: white; white-space: nowrap; }
