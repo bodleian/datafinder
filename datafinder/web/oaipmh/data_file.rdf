@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?><OAI-PMH xmlns:ads="http://archaeologydataservice.ac.uk/advice/archiveSchema" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd"><responseDate>2013-08-27T11:18:03Z</responseDate><request verb="GetRecord" identifier="oai:archaeologydataservice.ac.uk:COLL_ID_1000323" metadataPrefix="ads_archive">http://archaeologydataservice.ac.uk/oai/archives/OAIHandler</request><GetRecord><record><header><identifier>oai:archaeologydataservice.ac.uk:COLL_ID_1000323</identifier><datestamp>2003-08-01</datestamp><setSpec>ALL</setSpec></header><metadata><archive xmlns="http://archaeologydataservice.ac.uk/advice/archiveSchema">
+    <id>323</id>
+    <title>The Sydney Cyprus Survey Project</title>
+    <description>The Sydney Cyprus Survey Project archive is the result of an intensive survey carried out in the foothills of the Troodos mountains in Cyprus. The archive contains data files, GIS files and explanatory texts.</description>
+    <version>1</version>
+    <doi>10.5284/1000208</doi>
+    <types>
+        <type>Dataset Collection</type>
+        <type>Image Collection</type>
+        <type>Text Collection</type>
+    </types>
+    <language>eng</language>
+    <created>
+        <from>1998-01-01</from>
+        <to>2000-12-31</to>
+    </created>
+    <published>   
+        <firstReleased>2003</firstReleased>
+    </published>
+    <Actors>
+        <actor type="funder">
+            <organisation>Arts and Humanities Research Board (AHRB)</organisation>
+        </actor>
+        <actor type="creator">
+            <name>Michael Given</name>
+            <organisation>University of Glasgow</organisation>
+            <email>m.given@archaeology.arts.gla.ac.uk</email>
+        </actor>
+        <actor type="creator">
+            <name>A Bernard Knapp</name>
+            <organisation>University of Glasgow</organisation>
+        </actor>
+    </Actors>
+    <Coverage>
+        <subjects>
+            <subject type="NMR Monument Types (class)">AGRICULTURE AND SUBSISTENCE</subject>
+            <subject type="None">Archaeological investigation</subject>
+            <subject type="LCSH">Archaeology</subject>
+            <subject type="General Subject">General</subject>
+            <subject type="LCSH">Landscape archaeology -- Cyprus -- Troodos Mountains -- Research</subject>
+        </subjects>
+        <coordinates>
+            <world type="WGS84">
+                <latitude>32.69208</latitude>
+                <longitude>35.042015</longitude>
+            </world>
+        </coordinates>
+        <locations>
+            <location type="Non British Isles country">Cyprus</location>
+            <location type="Website top level">Continental Europe</location>
+            <location type="None">Limassol</location>
+            <location type="TGN">World, Asia, Cyprus, Limassol, Tro??dos</location>
+        </locations>
+    </Coverage>
+    <Relationships>
+        <other>
+            <relation type="Associated Publication">
+                <title>Given, M. &amp;amp; Knapp, A. B. (2003). 'The Sydney Cyprus Survey Project: Social Approaches to Regional Archaeological Survey' Monumenta Archaeologica volume 21</title>
+            </relation>
+        </other>
+    </Relationships>
+    <repository>Archaeology Data Service</repository>
+    <licence type="other">Terms and conditions apply to reuse.</licence>
+    <fileIdentifier>29c2a74a-64a3-34c5-b2e6-dd473b02a817</fileIdentifier>
+</archive>
+</metadata><about>http://archaeologydataservice.ac.uk</about></record></GetRecord></OAI-PMH>

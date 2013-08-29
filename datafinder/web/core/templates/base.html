@@ -8,7 +8,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> 
 <html lang="en"> 
 <!--<![endif]-->
-<head> 
+<head>  
 
 <meta charset="utf-8" /> 
 
@@ -242,7 +242,7 @@
 	 
 	 function author_email_change(data)
  	 {
- 	 	  $("#author_institution_"+currentCount).empty();
+ 	 	  $("#author_faculty_"+currentCount).empty();
       	  if (data.affiliation.length > 1)
       	  {
       	       for(i=0; i<=data.affiliation.length; i++)
@@ -250,15 +250,15 @@
 	      	 	 $("<option/>")
 				       .attr("value", data.affiliation[i])
 				       .text( data.affiliation[i])
-				       .appendTo("#author_institution_"+currentCount); 
+				       .appendTo("#author_faculty_"+currentCount); 
 			   }
-			  $("#author_institution_"+currentCount).trigger("change");
+			  $("#author_faculty_"+currentCount).trigger("change");
 		   }
 	}
 	
 	function contact_email_change(data)
  	 {
- 	 	  $("#contact_institution").empty();
+ 	 	  $("#contact_faculty").empty();
       	  if (data.affiliation.length > 1)
       	  {
       	       for(i=0; i<=data.affiliation.length; i++)
@@ -266,9 +266,9 @@
 	      	 	 $("<option/>")
 				       .attr("value", data.affiliation[i])
 				       .text( data.affiliation[i])
-				       .appendTo("#contact_institution"); 
+				       .appendTo("#contact_faculty"); 
 			   }
-			  $("#contact_institution").trigger("change");
+			  $("#contact_faculty").trigger("change");
 		   }
 	}
 	
@@ -955,14 +955,14 @@
      {
 	    if($(this).is(':checked') == true) 
 		  {								      
-	       $('#contact_institution_text_div').css("display", "none");
-	       $('#contact_institution_select_div').css("display", "block");	
+	       $('#contact_faculty_text_div').css("display", "none");
+	       $('#contact_faculty_select_div').css("display", "block");	
 	       $('#oxford_college').css("display", "block");	       
 	      }
 	    else
 	      {
-	       $('#contact_institution_text_div').css("display", "block");
-	       $('#contact_institution_select_div').css("display", "none");
+	       $('#contact_faculty_text_div').css("display", "block");
+	       $('#contact_faculty_select_div').css("display", "none");
 	       $('#oxford_college').css("display", "none");	
 	      }
 	      
@@ -979,14 +979,14 @@
         
 	    if($(this).is(':checked') == true) 
 		  {								      
-	       $('#author_institution_text_div_' + currentCount).css("display", "none");
-	       $('#author_institution_select_div_' + currentCount).css("display", "block");	
+	       $('#author_faculty_text_div_' + currentCount).css("display", "none");
+	       $('#author_faculty_select_div_' + currentCount).css("display", "block");	
 	       $('#author_oxford_college_' + currentCount).css("display", "block");	       
 	      }
 	    else
 	      {
-	       $('#author_institution_text_div_' + currentCount).css("display", "block");
-	       $('#author_institution_select_div_' + currentCount).css("display", "none");
+	       $('#author_faculty_text_div_' + currentCount).css("display", "block");
+	       $('#author_faculty_select_div_' + currentCount).css("display", "none");
 	       $('#author_oxford_college_' + currentCount).css("display", "none");	
 	      }	   
 

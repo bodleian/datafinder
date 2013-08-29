@@ -6,7 +6,7 @@ import logging,os, sys
 import rdflib
 from rdflib import Literal, URIRef
 import datafinder.util.serializers
-from datafinder.namespaces import OXDS, DCTERMS, RDF, FOAF, FUND, bind_namespaces, FUND, DOI, GEO
+from datafinder.namespaces import OXDS, DCTERMS, RDF, FOAF, FUND, bind_namespaces, FUND, BIBO, GEO
 from pwd import  getpwnam 
 sys.path.append("../..")
 from django.http import HttpResponse
@@ -26,7 +26,7 @@ try:
     import simplejson as json
 except ImportError: 
     import json
-    
+     
 def contribute(request):
    try:
         # A user needs to be authenticated  to be able to contribute a record  the DataFinder                          
@@ -87,12 +87,14 @@ def contribute(request):
                             person[OXDS['role']]=request.POST['author_role_' + str(i)]             
 
                             author_member_of_oxford = request.POST['author_mof_' + str(i)]    
-                            
-                            if author_member_of_oxford == True:                              
-                                    person[FOAF["Organization"]]=request.POST['author_institution_' + str(i)]  
-                                    person[OXDS["OxfordCollege"]]=request.POST['author_oxfordcollege_'+ str(i)]           
+                            person[FOAF["Organization"]]=request.POST['author_institution_' + str(i)] 
+                            if author_member_of_oxford == True:             
+                                    person[OXDS["Faculty"]]=request.POST['author_faculty_' + str(i)]                     
+                                    person[OXDS["OxfordCollege"]]=request.POST['author_oxfordcollege_'+ str(i)]  
+                                    person[OXDS["scheme"]]=request.POST['author_scheme_' + str(i)]  
+                                    person[OXDS["AUTHOR_ID"]]=request.POST['author_id_' + str(i)]                                              
                             else:
-                                person[FOAF["Organization"]]=request.POST['author_institution_text_' + str(i)]
+                                person[OXDS["Faculty"]]=request.POST['author_faculty_text_' + str(i)]
                             
                             people_path = settings.get("main:granary.people_path")        
                             people_manifest_filename = os.path.join(people_path, 'people.rdf')
@@ -128,21 +130,24 @@ def contribute(request):
                     person_title = request.POST['contact_firstname'] + '-' +request.POST['contact_middlename'] + '-' +request.POST['contact_lastname'] 
                     person[FOAF["givenName"]]=request.POST['contact_firstname']
                     person[FOAF["middleName"]]=request.POST['contact_middlename']   
-                    person[OXDS["DisplayEmail"]]=request.POST['contact_middlename_check']
+                    if request.GET.has_key('contact_middlename_check'):
+                     person[OXDS["DisplayEmail"]]=request.POST['contact_middlename_check']
                     person[FOAF["familyName"]]=request.POST['contact_lastname'] 
                        
                 person[FOAF["mbox"]]=request.POST['contact_email']     
                 person[OXDS['role']]=request.POST['contact_role']   
                 
                 member_of_oxford = request.POST['contact_mof'] 
+                person[FOAF["Organization"]]=request.POST['contact_institution']
                 if member_of_oxford == True:                            
-                        person[FOAF["Organization"]]=request.POST['contact_institution']
-                        person[FOAF["OxfordCollege"]]=request.POST['contact_oxfordcollege']
+                        person[OXDS["Faculty"]]=request.POST['contact_faculty']
+                        person[OXDS["OxfordCollege"]]=request.POST['contact_oxfordcollege']
+                        person[OXDS["scheme"]]=request.POST['contact_scheme']  
+                        person[OXDS["AUTHOR_ID"]]=request.POST['contact_id']  
                 else:
-                    person[FOAF["Organization"]]=request.POST['contact_institution_text']
-                            
-                person[OXDS["Faculty"]]=request.POST['contact_faculty']          
-                   
+                    person[OXDS["Faculty"]]=request.POST['contact_faculty_text']
+                                   
+                             
                 people_path = settings.get("main:granary.people_path")        
                 people_manifest_filename = os.path.join(people_path, 'people.rdf')
                 people_manifest = bind_namespaces(rdflib.ConjunctiveGraph())
@@ -168,14 +173,20 @@ def contribute(request):
                           
                 #literals[OXDS['isEmbargoed']] = 'False'
                 if request.POST.has_key('data-format'):
-                    literals[OXDS['isDigital']]=request.POST['data-format']
-                
-                literals[OXDS['DataLocation']]=request.POST['data_location']
+                    literals[OXDS['isDigital']]=request.POST['data-format']               
                 
                 if request.POST['loc-format'] =="URL":
-                    resources[DCTERMS['Location']]=request.POST['geo_location']
+                    resources[OXDS['DataLocation']]=request.POST['data_location']
                 else:
-                    literals[DCTERMS['Location']]=request.POST['geo_location']
+                    literals[OXDS['DataLocation']]=request.POST['data_location']
+                    
+                if request.POST['doc-format'] =="URL":
+                    resources[OXDS['methodology']]=request.POST['digital_publisher_doc']
+                else:
+                    literals[OXDS['methodology']]=request.POST['digital_publisher_doc']          
+
+                literals[DCTERMS['publisher']]=request.POST['publisher']
+                literals[DCTERMS['issued']]=request.POST['publication_year']          
                     
                 if request.POST['temporal_choice'] == 'single_date':
                     literals[OXDS['dataTemporalCoverage']]=request.POST['single_temporal_date']
@@ -189,21 +200,13 @@ def contribute(request):
                     literals[OXDS['dataCollectedStart']]=request.POST['data_collected_start_date_range']
                     literals[OXDS['dataCollectedEnd']]=request.POST['data_collected_end_date_range']
                 
+                literals[DCTERMS['Location']]=request.POST['geo_location']
                 literals[GEO['lat']]=request.POST['lat']
                 literals[GEO['lng']]=request.POST['lng']
-                
-                
-                if request.POST['doc-format'] =="URL":
-                    resources[OXDS['methodology']]=request.POST['digital_publisher_doc']
-                else:
-                    literals[OXDS['methodology']]=request.POST['digital_publisher_doc']
-                    
-                literals[DCTERMS['publisher']]=request.POST['publisher']
-                literals[DCTERMS['issued']]=request.POST['publication_year']
-
+ 
                
                 if literals[OXDS['isDigital']] == "yes":
-                    literals[DOI['doi']]=request.POST['digital_object_identifier']  
+                    literals[BIBO['doi']]=request.POST['digital_object_identifier']  
                     literals[DCTERMS['type']]=request.POST['digital_resource_type']      
                     literals[OXDS['Filesize']]=request.POST['digital_filesize']
                     literals[DCTERMS['format']]=request.POST['digital_format']
@@ -250,8 +253,8 @@ def contribute(request):
                 else :
                     literals[DCTERMS['license']]=request.POST['data_standard_licence_text']
                     
-                
-                embargo_options = request.POST['embargo_options']
+                if request.POST.has_key('embargo_options'): 
+                    embargo_options = request.POST['embargo_options']
                 # embargo_options_list = ['embargo_status_unknown','embargoed_indefinitely']
                 
                 
@@ -332,8 +335,8 @@ def contribute(request):
 
                 #Submit the df_manefest as a file
                 fields=[]
-                df_namifest = open(manifest_filename).read()               
-                files =  [("file", df_manifest_name, df_namifest, "application/rdf+xml")]            
+                df_manifest = open(manifest_filename).read()               
+                files =  [("file", df_manifest_name, df_manifest, "application/rdf+xml")]            
                 (reqtype, reqdata) = SparqlQueryTestCase.encode_multipart_formdata(fields, files)                
                 (resp,respdata) = datastore.doHTTP_POST(reqdata, reqtype, resource="/DataFinder/datasets/" + identifier +"/")
                 

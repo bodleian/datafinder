@@ -230,17 +230,17 @@
 		        <label for="author_affiliation_1">Affiliation :</label>
 		    </div>      
 		    <div class="clear-fix"></div> 	
-		    <div class="label-field-pair stacked-inline"  id="author_institution_text_div_1" style="display:none;">
-		        <label for="author_institution_text_1">Instititution</label>
-		        <input type="text" size="30" name="author_institution_text_1" id="author_institution_text_1" />
-		    </div>
-		    <div class="label-field-pair stacked-inline"  id="author_institution_select_div_1">
-		        <label for="author_institution_1">Instititution</label> 
-		        <select name="author_institution_1" id="author_institution_1"><option></option> </select>
-		    </div>
 		    <div class="label-field-pair stacked-inline" >
-		        <label for="author_faculty_1">Faculty</label>
-		        <input type="text" size="30" name="author_faculty_1" id="author_faculty_1"/> 
+		        <label for="author_institution_1">Institution</label>
+		        <input type="text" size="30" name="author_institution_1" id="author_institution_1" value="University of Oxford" /> 
+		    </div>
+		    <div class="label-field-pair stacked-inline"  id="author_faculty_text_div_1" style="display:none;">
+		        <label for="author_faculty_text_1">Faculty</label>
+		        <input type="text" size="30" name="author_faculty_text_1" id="author_faculty_text_1" />
+		    </div>
+		    <div class="label-field-pair stacked-inline"  id="author_faculty_select_div_1">
+		        <label for="author_faculty_1">Faculty</label> 
+		        <select name="author_faculty_1" id="author_faculty_1"><option></option> </select>
 		    </div>
 		    <div id="author_oxford_college_1" class="label-field-pair stacked-inline" >
 		        <label for="author_oxfordcollege_1">Oxford College</label>
@@ -255,7 +255,7 @@
 		     </div>
 		     <div class="clear-fix"></div> 
 		    <div class="label-field-pair stacked-inline" >
-		        <label for="author_id_1"></label>
+		        <label for="author_scheme_1"></label>
 		       	<select name="author_scheme_1" id="author_scheme_1">		        
 					<option> HESA ID </option>
 					<option> ISNI    </option>
@@ -269,7 +269,7 @@
 				</select>		
 		    </div>
 		    <div class="label-field-pair stacked-inline" >
-		        <label for="author_scheme_1"></label>
+		        <label for="author_id_1"></label>
 		        <input type="text" size="30" name="author_id_1" id="author_id_1"/> 
 		
 		    </div>
@@ -313,7 +313,7 @@
 	            <div class="clear-fix"></div> 	
 			    <div class="label-field-pair  inline-stacked" >
 				    <label for="contact_middlename_check">The middle name will not be displayed unless this box is checked </label>           
-				    <input type="checkbox"  name="contact_middlename_check" id="contact_middlename_check" value="yes" />            
+				    <input type="checkbox"  name="contact_middlename_check" id="contact_middlename_check" value="yes" cheked='checked'  />            
 			    </div>
 			</div>
 		    <div class="clear-fix"></div> 	 	
@@ -352,17 +352,17 @@
 		        <label for="contact_affiliation">Affiliation :</label>
 		    </div>      
 		    <div class="clear-fix"></div> 	
-		    <div class="label-field-pair stacked-inline" name="contact_institution_text_div" id="contact_institution_text_div" style="display:none;">
-		        <label for="contact_institution">Instititution</label>
-		        <input type="text" size="30" name="contact_institution_text" id="contact_institution_text" />
-		    </div>
-		    <div class="label-field-pair stacked-inline" name="contact_institution_select_div" id="contact_institution_select_div">
-		        <label for="contact_institution">Instititution</label>
-		        <select name="contact_institution" id="contact_institution"><option></option> </select>
-		    </div>
 		    <div class="label-field-pair stacked-inline" >
+		        <label for="contact_institution">Institution</label>
+		        <input type="text" size="30" name="contact_institution" id="contact_institution" value="University of Oxford"/> 
+		    </div>
+		    <div class="label-field-pair stacked-inline" name="contact_faculty_text_div" id="contact_faculty_text_div" style="display:none;">
 		        <label for="contact_faculty">Faculty</label>
-		        <input type="text" size="30" name="contact_faculty" id="contact_faculty"/> 
+		        <input type="text" size="30" name="contact_faculty_text" id="contact_faculty_text" />
+		    </div>
+		    <div class="label-field-pair stacked-inline" name="contact_faculty_select_div" id="contact_faculty_select_div">
+		        <label for="contact_faculty">Faculty</label>
+		        <select name="contact_faculty" id="contact_faculty"><option></option> </select>
 		    </div>
 		    <div name="oxford_college" id="oxford_college" class="label-field-pair stacked-inline" >
 		        <label for="contact_oxfordcollege">Oxford College</label>
@@ -378,7 +378,7 @@
 			     </div>
 			     <div class="clear-fix"></div> 
 			    <div class="label-field-pair stacked-inline" >
-			        <label for="contact_id"></label>
+			        <label for="contact_scheme"></label>
 			       	<select name="contact_scheme" id="contact_scheme">		        
 						<option> HESA ID </option>
 						<option> ISNI    </option>
@@ -392,7 +392,7 @@
 					</select>		
 			    </div>
 			    <div class="label-field-pair stacked-inline" >
-			        <label for="contact_scheme"></label>
+			        <label for="contact_id"></label>
 			        <input type="text" size="30" name="contact_id" id="contact_id"/> 	
 			    </div>
 			</div>
@@ -536,7 +536,7 @@
 							            <input type="text" name="data_collected_end_date_range" id="data_collected_end_date_range"/>
 						       </div>
 			        </div>			  
-			           
+			            
 			        <div class="label-field-pair  inline-stacked" >
 			        	<label for="geo_location">Geographical location/coverage of the data</label>
 			        	<input type="text" name="geo_location" id="geo_location"/>
