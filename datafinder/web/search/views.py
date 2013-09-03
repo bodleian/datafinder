@@ -39,15 +39,33 @@ def recordview(request):
         #id =  list(set([id.text for id in sid if id.text.startswith("ww")]))[0]
         context['doi'] =""
         if len(context['docs']) >0 and ('identifier' in context['docs'][0]) and (len(context['docs'][0]['identifier']) > 1):
-                context['doi'] =  context['docs'][0]['identifier'][1]
+                context['doi'] =  context['docs'][0]['identifier'][1]      
         if len(context['docs']) >0 and 'creator' in context['docs'][0]:
-            context['creator'] = context['docs'][0]['creator'][0]
-            if context['creator'].endswith("rdf"):
-                    context['creator'] = context['creator'].replace('https://databank.ora.ox.ac.uk/ww1archives/datasets/person/','')
-                    context['creator'] = context['creator'].replace('.rdf','')
-    #                context['creator'] = context['creator'].replace('-',' ')
-                    creator_list = context['creator'].split('-',1)
-                    context['creator'] = creator_list[1] + '  ' + creator_list[0]
+            creators = context['docs'][0]['creator']
+            context['creators_list'] = ""
+            for creator in creators:
+                context['creators_list'] = context['creators_list'] + creator + ', ' 
+            context['creators_list'] = context['creators_list'][:-2]
+            
+            context['subjects_list'] = ""
+            if 'subject' in  context['docs'][0]:
+                subjects = context['docs'][0]['subject']
+                for subject in subjects:
+                    context['subjects_list'] = context['subjects_list'] + subject + ', ' 
+                context['subjects_list'] = context['subjects_list'][:-2]
+
+            context['keywords_list'] = ""            
+            if 'keyword' in  context['docs'][0]:
+                keywords = context['docs'][0]['keyword']
+                for keyword in keywords:
+                    context['keywords_list'] = context['keywords_list'] + keyword + ', ' 
+                context['keywords_list'] = context['keywords_list'][:-2]
+            
+            #if context['creator'].endswith("rdf"):
+            #        context['creator'] = context['creator'].replace('https://databank.ora.ox.ac.uk/ww1archives/datasets/person/','')
+            #        context['creator'] = context['creator'].replace('.rdf','')
+            #        creator_list = context['creator'].split('-',1)
+            #        context['creator'] = creator_list[1] + '  ' + creator_list[0]
             #list(set([id for id in context['docs']['identifier'] if id.startswith("doi:")]))[0]
             
         context['doi'] = context['doi'].replace("doi:",'')
@@ -94,7 +112,7 @@ def searchresults(request,query=None, additional_fields=[]):
 
         context['typ'] = 'all'
 
-        context['typ'] = request.REQUEST.get("type",None)
+        context['typ'] = request.REQUEST.get("type",'dataset')
 
         if not context['q'] or context['q'] == '*' or context['q'] == "":
             context['q'] = "*:*"
@@ -583,7 +601,7 @@ def detailed(request,query=None, additional_fields=[]):
         if not context['q'] or context['q'] == '*' or context['q'] == "":
             context['q'] = "*:*"
  
-        a=b+1
+
         # Search controls
         truncate = request.GET('truncate', None)
         start = request.GET('start', None)

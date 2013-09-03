@@ -80,6 +80,7 @@
 
 
 <% cnt = 0 %>
+% if docs:
 %   for doc_index in xrange(len(docs)):
 	<% 
 	cnt += 1 
@@ -107,11 +108,11 @@
 
 			<div class="record-publish-info"><span class="author">
 				% if 'creator' in docs[doc_index]:
-					% if docs[doc_index]['creator'][0].endswith("rdf"):
-						${creator}
-					% else:
-						${docs[doc_index]['creator'][0]}
-					% endif
+				    % for creator_i in docs[doc_index]['creator']:					  
+						${creator_i}
+					% endfor
+					
+
 				% endif
 			</span>, 
 			<span class="publish-date">
@@ -129,7 +130,7 @@
 		</div>
 	% endif
 %   endfor
-
+% endif
 
 <div class="results-footer" >
 	<div class="panel  pagination">

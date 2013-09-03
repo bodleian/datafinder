@@ -155,7 +155,7 @@ class TestOaiClient(unittest.TestCase):
         #shutil.rmtree(self.tmpdir)
 
         # Create empty test submission dataset
-    def oai_createDataset(self, src, silo, identifier, embargoed=None, embargoed_until=None):
+    def oai_createDataset(self, src, silo, identifier, embargoed=False, embargoed_until=False):
         # Create a new dataset, check response
         
         id = self.oai_getDCMetadata(src, identifier, silo)
