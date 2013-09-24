@@ -52,7 +52,7 @@ filter the listing by status or search within your records.
 			% for df_record in solr_response['docs']:
 			<tr>
 			    <td><input type="checkbox" name="select" value="select"/></td>
-			    <td>${df_record['title'][0]}</td>
+			    <td><a href='/search/recordview?id=${df_record['title'][0]}'>${df_record['title'][0]}</a></td>
 			    <td>36KB</td>
 			    <td>${df_record['created'][0]}</td>
 			    <td>${df_record['timestamp']}</td>
@@ -61,7 +61,7 @@ filter the listing by status or search within your records.
 			    	% else:
 			    	<td> </td>
 			    % endif
-			    <th><a href='/search/recordview?id=${df_record['title'][0]}'>edit</a></th>                           
+			    <th><a href="https://datafinder-d2v.bodleian.ox.ac.uk/contribute?id=${df_record['title'][0]}">edit</a></th>                           
 			</tr>
 			<!-- <tr>
 			    <td>  <input type="checkbox" name="select" value="select"/></td>

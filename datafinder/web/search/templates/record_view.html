@@ -17,7 +17,7 @@
     <div class="record-intro">
      <p class="citation">
      <span class="record-author">
-		% if creators_list:
+		% if creators_list :
 			Author(s): ${creators_list}
 		% else:
 			Author(s): Unknown
@@ -49,9 +49,9 @@
 			Publisher: Unknown
 	 % endif
      </span>
-
+     
      <span class="record-doi">   
-     % if 'doi' in df_record : 
+     % if 'doi' in df_record :             
 			DOI: <a href="http://dx.doi.org/${df_record['doi'][0]}">${df_record['doi'][0]}</a>
 	 % else:
 			DOI: Unknown
@@ -59,7 +59,16 @@
      </span>
 
     
-    <p class="citation-url"><label>Use this url to cite this item:</label> <span class="record-url"><a href="http://dx.doi.org/${df_record['doi'][0]}" >http://dx.doi.org/${df_record['doi'][0]}</a></span></p>
+    <p class="citation-url">
+    <label>Use this url to cite this item:</label> 
+    <span class="record-url">
+    % if 'doi' in df_record :          
+    <a href="http://dx.doi.org/${df_record['doi'][0]}" >http://dx.doi.org/${df_record['doi'][0]}</a>
+     % else:
+	 <a href=""> url </a>
+	 % endif
+    </span>
+    </p>
 
 <div class="record-abstract" >
 <h2>Abstract</h2>
@@ -354,10 +363,12 @@
     <h2>Links and Downloads</h2>
     
     <ul>    
-      % if 'doi':
+      % if 'doi' in df_record:
      	 <li><a href="http://dx.doi.org/${df_record['doi'][0]}">dataset</a></li>
       % else:	
-      	 <li><a href="${relation}">dataset</a></li>
+         % if 'relation' in df_record:
+      	 	<li><a href="${df_record['relation']}">dataset</a></li>
+      	 % endif 
       % endif 
       	 
       <li><a href="#">project website</a></li>

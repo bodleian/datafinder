@@ -8,7 +8,11 @@
 	<p><span style="color:red;">${message}</span></p>
 % endif
 
-<h1>Contribute a record</h1>
+% if solr_response :
+	<h1> Edit Record - ${id} </h1>
+% else:
+	<h1>Contribute a record</h1>
+% endif
 
 <!--
 
@@ -101,7 +105,13 @@
 	    	<div class="label-field-pair" >
 			  	<label for="dataset_title" >(*) The title of this dataset as it should appear in a citation (?)
 			  	</label>
-			  	<input type="text" name="record_title" id="record_title"/>		  	 
+			  	<input type="text" name="record_title" id="record_title" 
+			  	 % if solr_response :
+			  		% for df_record in solr_response['docs']:
+			  			value = "${df_record['title'][0]}"
+			  		% endfor
+			  	 % endif
+			  	/>		  	 
 		    </div>
            
 	        <span for="alt_title">Add more info</span>    
@@ -109,7 +119,15 @@
 
 	        <div class="label-field-pair" id="alt_title" style="display:none;" >
 	         	<label for="alt_title">Alternative title or sub-title of your dataset</label>    
-	   		 	<input type="text" name="alt_title" id="alt_title"/>
+	   		 	<input type="text" name="alt_title" id="alt_title"
+	   		 	 % if solr_response :
+			  		% for df_record in solr_response['docs']:
+			  			% if alternative in df_record:
+			  				value = "${df_record['alternative'][0]}"
+			  			% endif	
+			  		% endfor
+			  	 % endif
+	   		 	/>
 	        </div>   
     	</fieldset>
     	
@@ -141,21 +159,82 @@
 		</fieldset>
 		
 		<fieldset>
-	        <div class="label-field-pair ui-widget inline-stacked subject_area_repeatable" >
-	            <label for="subject_area_1">Subject Area(s)</label>
-	            <input type="text" class="subject_area" name="subject_area" id="subject_area_1"/>
-	            <img id="subject_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Subjects" />
-	        </div>
+		
+		    <!--  Subjects -->
+		    <% count = 1 %>
+		     % if solr_response :
+			  		% for df_record in solr_response['docs']:
+				  		% if 'subject' in df_record:				  		  
+				  		   % for subject in df_record['subject']:
+						        <div class="label-field-pair ui-widget inline-stacked subject_area_repeatable" >
+						            <label for="subject_area_${count}">Subject Area(s)</label>
+						            <input type="text" class="subject_area" name="subject_area" id="subject_area_${count}"
+						                   value = "${subject}" />
+						            % if count == 1:
+						            	<img id="subject_add_more_${count}"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Subjects" />
+						            % else :
+						               <img id="subject_add_more_${count}"  class="round-icon" src="${ STATIC_URL }/gminus.png" alt="Remove Subject" />
+						            % endif
+						        </div>
+						        <% count = count + 1 %>
+					       % endfor
+					     % else:
+						       <div class="label-field-pair ui-widget inline-stacked subject_area_repeatable" >
+								            <label for="subject_area_1">Subject Area(s)</label>
+								            <input type="text" class="subject_area" name="subject_area" id="subject_area_1"/>
+								            <img id="subject_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Subjects" />
+							   </div>
+				         % endif					    
+			 		% endfor
+			 % else:
+			       <div class="label-field-pair ui-widget inline-stacked subject_area_repeatable" >
+					            <label for="subject_area_1">Subject Area(s)</label>
+					            <input type="text" class="subject_area" name="subject_area" id="subject_area_1"/>
+					            <img id="subject_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Subjects" />
+				   </div>
+	         % endif
+	         
 	        <div class="label-field-pair inline-stacked" >
 		        <span for="alt_title">Add more info</span>    
 				<img id="subject_more_info"  class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Subject Info" />
 			</div>
-			<div id="subj_info" style="display:none;">    
-		        <div class="label-field-pair inline-stacked keywords_repeatable" >
-		        	<label for="record_keywords_1">Keyword(s)</label>
-		        	<input type="text" name="record_keyword" id="record_keywords_1"/>
-		        	<img id="keyword_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Keywords" />
-		        </div>	        
+			
+			<!--  Keywords -->
+			
+			<div id="subj_info" style="display:none;">  
+			   <% count = 1 %>
+			    % if solr_response :
+				  		% for df_record in solr_response['docs']:
+					  		% if 'keyword' in df_record:				  		  
+					  		   % for keyword in df_record['keyword']:			  
+							        <div class="label-field-pair inline-stacked keywords_repeatable" >
+							        	<label for="record_keywords_${count}">Keyword(s)</label>
+							        	<input type="text" name="record_keyword" id="record_keywords_${count}" value = "${keyword}" />
+							        	% if count == 1:
+							        		<img id="keyword_add_more_${count}"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Keywords" />
+							        	% else :
+						               		<img id="keyword_add_more_${count}"  class="round-icon" src="${ STATIC_URL }/gminus.png" alt="Remove Keywords" />
+						                % endif	
+							        </div>
+							         <% count = count + 1 %>
+					           % endfor
+					        % else:
+						       <div class="label-field-pair inline-stacked keywords_repeatable" >
+							        	<label for="record_keywords_1">Keyword(s)</label>
+							        	<input type="text" name="record_keyword" id="record_keywords_1" />
+							        	<img id="keyword_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Keywords" />
+							   </div>  	
+				            % endif					    
+			 		   % endfor
+				 % else:
+				       	      <div class="label-field-pair inline-stacked keywords_repeatable" >
+							        	<label for="record_keywords_1">Keyword(s)</label>
+							        	<input type="text" name="record_keyword" id="record_keywords_1" />
+							        	<img id="keyword_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Keywords" />
+						      </div>
+		         % endif	 
+		        
+		               
 		        <div class="label-field-pair inline-stacked" >
 		            <label for="main_language">What is the predominant language of the dataset ?</label>
 		        	<input type="text" name="main_language" id="main_language" value="English"/>
@@ -827,3 +906,4 @@
   </div><!-- .section-container.accordion  closes--> 
 
 </form>
+

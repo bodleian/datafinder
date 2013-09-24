@@ -22,6 +22,8 @@ from datafinder.config import settings
 from datafinder.lib.broadcast import BroadcastToRedis
 from datafinder.lib.SolrQuery import SolrQuery
 from django.http import HttpResponseRedirect
+from datafinder.lib.SolrQuery import SolrQuery
+
 try: 
     import simplejson as json
 except ImportError: 
@@ -33,7 +35,7 @@ def contribute(request):
         # Test if the user is now a university authenticated user
         if 'DF_USER_SSO_ID' not in request.session:                          
             return redirect("/login?redirectPath=contribute")    
-        
+                
         context = {}
         literals = {}
         resources = {}
@@ -47,8 +49,16 @@ def contribute(request):
 
         http_method = request.environ['REQUEST_METHOD'] 
         
-        if http_method == "GET":      
+        if http_method == "GET":     
+            if request.GET.has_key('id'):     
+                context['id'] = request.GET['id']
+                query = 'id:"' + request.GET['id'] + '"'
+                solr_query = SolrQuery(q=query)    
+                context['solr_response'] = solr_query.get_solrresponse()      
+                #context['docs'] = context['solr_response'].get('docs',None)
+        
             return render_to_response('contribute.html', context, context_instance=RequestContext(request))  
+        
         elif http_method == "POST":             
             if request.POST.has_key('record_title'):
                 BASE = settings.get("main:manifest.about")
