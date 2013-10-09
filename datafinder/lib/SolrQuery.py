@@ -4,7 +4,7 @@ import json
 class SolrQuery():
     def __init__(self, query_filter = "" , q = "*:*" , req_format="json",type="dataset"):         
             solr_params = {}
-            solr_params['q'] = q.encode('utf-8')+query_filter+ " AND type:" + type
+            solr_params['q'] = q.encode('utf-8') #+query_filter+ " AND type:" + type
             solr_params['wt'] = req_format
             self.solr_reponse={}
             try:

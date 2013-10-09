@@ -65,7 +65,7 @@ if __name__ == "__main__":
             json_data = json.loads(respdata)
             uuid = json_data['state']['metadata']['uuid']
                         
-            (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo +"/datasets/" + item_id +"/manifest.rdf")
+            (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo +"/datasets/" + item_id +"/df_manifest.rdf")
             #print respdata
             text_file = open("sample_redis_manifest.rdf", "w")
             text_file.write(respdata)

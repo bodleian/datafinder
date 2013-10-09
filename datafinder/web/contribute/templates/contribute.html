@@ -122,7 +122,7 @@
 	   		 	<input type="text" name="alt_title" id="alt_title"
 	   		 	 % if solr_response :
 			  		% for df_record in solr_response['docs']:
-			  			% if alternative in df_record:
+			  			% if 'alternative' in df_record:
 			  				value = "${df_record['alternative'][0]}"
 			  			% endif	
 			  		% endfor
@@ -134,7 +134,15 @@
     	<fieldset>
 			    <div class="label-field-pair" >
 			          <label for="data_description">Abstract or short description of your dataset </label>   
-			          <input type="text" name="data_description" id="data_description"/>
+			          <input type="text" name="data_description" id="data_description"
+			           % if solr_response :
+					  		% for df_record in solr_response['docs']:
+					  			% if 'description' in df_record:
+					  				value = "${df_record['description'][0]}"
+					  			% endif	
+					  		% endfor
+					  % endif
+			          />
 			    </div>	
 		    	<span for="alt_title">Add more info</span>    
 				<img id="project_more_info"  class="round-icon"  class="round-icon" src="${ STATIC_URL }/right_circled_arrow.png" alt="More Project Info" />   
@@ -205,8 +213,8 @@
 			   <% count = 1 %>
 			    % if solr_response :
 				  		% for df_record in solr_response['docs']:
-					  		% if 'keyword' in df_record:				  		  
-					  		   % for keyword in df_record['keyword']:			  
+					  		% if 'keywords' in df_record:				  		  
+					  		   % for keyword in df_record['keywords']:			  
 							        <div class="label-field-pair inline-stacked keywords_repeatable" >
 							        	<label for="record_keywords_${count}">Keyword(s)</label>
 							        	<input type="text" name="record_keyword" id="record_keywords_${count}" value = "${keyword}" />
@@ -237,7 +245,19 @@
 		               
 		        <div class="label-field-pair inline-stacked" >
 		            <label for="main_language">What is the predominant language of the dataset ?</label>
-		        	<input type="text" name="main_language" id="main_language" value="English"/>
+		        	<input type="text" name="main_language" id="main_language" 
+			        	% if solr_response :
+					  		% for df_record in solr_response['docs']:
+					  			% if 'language' in df_record:
+					  				value = "${df_record['language'][0]}"
+					  			% else:
+					  			    value="English"	
+					  			% endif	
+					  		% endfor
+					  	% else:
+					  			value="English"	
+				  	 	% endif
+		        	/>
 		        </div>
 		    </div>
         </fieldset>               
@@ -482,13 +502,35 @@
     <fieldset class="contacts" >
     	<legend>About your data</legend>
           <div class="radio-set" >
-	    	  <div    class="label-field-pair radio inline-stacked">Is your data in digital format?</div>
+	    	  <div class="label-field-pair radio inline-stacked">Is your data in digital format?</div>
 	    	  <div class="label-field-pair radio short_desc inline-stacked" >
-		  		  	<input type ="radio" name="data-format" value="yes" id="data_format_yes" checked />
+		  		  	<input type ="radio" name="data-format" value="yes" id="data_format_yes" 
+			  		  	% if solr_response:
+					  		% for df_record in solr_response['docs']:
+					  			% if 'isDigital' in df_record:
+					  				% if df_record['isDigital'] == 'yes':					  				 
+					  				  checked="checked"
+					  				% endif	
+					  			% endif	
+					  		% endfor
+					  	% else:
+					  	     checked="checked"
+				  	    % endif					  	    		  	 
+		  		  	 />
 		  		  	<label for="data_format_yes">yes</label>
 	  		  </div>
 		      <div class="label-field-pair radio short_desc inline-stacked" >
-		      		<input type ="radio" name="data-format" value="no" id="data_format_no" />
+		      		<input type ="radio" name="data-format" value="no" id="data_format_no" 
+		      		   % if solr_response:
+					  		% for df_record in solr_response['docs']:
+					  			% if 'isDigital' in df_record:
+					  				% if df_record['isDigital'] == 'no': 
+					  				  checked="checked"
+					  				% endif	
+					  			% endif	
+					  		% endfor
+				  	    % endif			  	 
+		      		/>
 		      		<label for="data_format_no">no</label>
 		      </div>
 		     <!-- <div class="label-field-pair" >
@@ -505,15 +547,47 @@
 	       			of your data or the contact details of the person to contact to enquire about the data. </span>
 			         	</div>
 				        <div class="two columns label-field-pair radio short_desc inline-stacked" >
-					  		  <input type ="radio" name="loc-format" value="text" id="loc_format_text" checked />
+					  		  <input type ="radio" name="loc-format" value="text" id="loc_format_text" 
+	                              % if solr_response:
+								  		% for df_record in solr_response['docs']:
+								  			% if 'loc-format' in df_record:
+								  				% if df_record['loc-format'] == 'text': 
+								  				  checked="checked"
+								  				% endif	
+								  			% else:
+								  				checked="checked"
+								  			% endif	
+								  		% endfor
+								  % else:
+						  	     			checked="checked"
+						  	      % endif							  	      		
+                               />
 					  		  <label for="Text">Text</label>
 			  		 	</div>	  		 		      
 			  		 	<div class="two colummns label-field-pair radio short_desc inline-stacked" >
-					      	<input type ="radio" name="loc-format" value="URL" id="loc_format_url" />
+					      	<input type ="radio" name="loc-format" value="URL" id="loc_format_url"
+					      	% if solr_response:
+								  		% for df_record in solr_response['docs']:
+								  			% if 'loc-format' in df_record:
+								  				% if df_record['loc-format'] == 'URL': 
+								  				  checked="checked"
+								  				% endif	
+								  			% endif	
+								  		% endfor
+						    % endif	
+					      	 />
 					      	<label for="url">URL</label>
 				      	</div>
 				    </div>
-		        	<input type="text" name="data_location" id="data_location"/>
+		        	<input type="text" name="data_location" id="data_location"
+		        	 	% if solr_response:
+					  		% for df_record in solr_response['docs']:
+					  			% if 'DataLocation' in df_record:
+					  				value = "${df_record['DataLocation']}"
+					  			% endif	
+					  		% endfor
+					   % endif	
+		        	/>
 		      </div>		 
 		      <div class="label-field-pair" >
 			        <div class="radio-set" >
@@ -521,20 +595,64 @@
 			        			Description about dataset and processes: when and why the data were gathered 
 			         	</div>
 				        <div class="two columns label-field-pair radio short_desc inline-stacked" >
-					  		  <input type ="radio" name="doc-format" value="text" id="doc_format_text" checked />
+					  		  <input type ="radio" name="doc-format" value="text" id="doc_format_text" 
+					  		     % if solr_response:
+								  		% for df_record in solr_response['docs']:
+								  			% if 'doc-format' in df_record:
+								  				% if df_record['doc-format'] == 'text': 
+								  				  checked="checked"
+								  				% endif	
+								  			% else:
+								  				  checked="checked"
+								  			% endif	
+								  		% endfor
+								  % else:
+						  	     			checked="checked"
+						  	      % endif		 
+					  		   />
 					  		  <label for="Text">Text</label>
 			  		 	</div>	  		 		      
 			  		 	<div class="two colummns label-field-pair radio short_desc inline-stacked" >
-					      	<input type ="radio" name="doc-format" value="URL" id="doc_format_url" />
+					      	<input type ="radio" name="doc-format" value="URL" id="doc_format_url"
+					      	 % if solr_response:
+								  		% for df_record in solr_response['docs']:
+								  			% if 'doc-format' in df_record:
+								  				% if df_record['doc-format'] == 'URL': 
+								  				  checked="checked"
+								  				% endif	
+								  			% endif	
+								  		% endfor
+						  	 % endif		 
+					      	 />
 					      	<label for="url">URL</label>
 				      	</div>
 				    </div>
-		        	<input type="text" name="digital_publisher_doc" id="digital_publisher_doc"/>
+		        	<input type="text" name="digital_publisher_doc" id="digital_publisher_doc"
+		        		% if solr_response:
+					  		% for df_record in solr_response['docs']:
+					  			% if 'methodology' in df_record:
+					  				value = "${df_record['methodology']}"
+					  			% endif	
+					  		% endfor
+					   % endif	
+		        	/>
 		      </div>		 
 		      		      
 		      <div class=" label-field-pair inline-stacked" >
 		        	<label for="publisher">Publisher</label>
-		        	<input type="text" name="publisher" value="University of Oxford" id="publisher"/>
+		        	<input type="text" name="publisher" id="publisher"
+		        	 % if solr_response:
+					  		% for df_record in solr_response['docs']:
+					  			% if 'publisher' in df_record:
+					  				value = "${df_record['publisher'][0]}"
+					  				% else:
+					  					value="University of Oxford" 
+					  			% endif	
+					  		% endfor
+					 % else:
+					  					value="University of Oxford" 
+					 % endif	
+		        	/>
 		      </div>		
 		      <p>&nbsp;</p>		      		      	        
 		      <div class="row label-field-pair inline-stacked " style="position:absolute; background: #f7fafd; ">
@@ -552,17 +670,49 @@
 	<div name="more_about_data" id="more_about_data" style="display:none;" >		        	       
 				    <div class="label-field-pair" >
 				           <label for="digital_object_identifier">Unique identifier assigned to your dataset (Eg: DOI)</label>
-				           <input type="text" name="digital_object_identifier" id="digital_object_identifier"/>
+				           <input type="text" name="digital_object_identifier" id="digital_object_identifier"
+ 							% if solr_response:
+						  		% for df_record in solr_response['docs']:
+						  			% if 'doi' in df_record:
+						  				value = "${df_record['doi'][0]}"
+						  			% endif	
+						  		% endfor
+						 	% endif	
+				           />
 				    </div>
 				        
 					<div class="radio-set" >
 				           <div class="six columns label-field-pair radio inline-stacked" >Temporal coverage of your data</div>
 				    	   <div class="three columns label-field-pair radio short_desc inline-stacked wide" >
-				    	        <input type ="radio" name="temporal_choice" value="single_date" id="single_date"  checked/>
+				    	        <input type ="radio" name="temporal_choice" value="single_date" id="single_date"  
+									% if solr_response:
+									  		% for df_record in solr_response['docs']:
+									  			% if 'temporal_choice' in df_record:
+									  				% if df_record['temporal_choice'] == 'single_date': 
+									  				  checked="checked"
+									  				% endif	
+									  			% else:
+									  				  checked="checked"
+									  			% endif	
+									  		% endfor
+									  % else:
+							  	     			checked="checked"
+							  	      % endif	
+								/>
 				    	        <label for="temporal_choice" >Single Date</label>
 				    	   </div>
 				    	   <div class="three columns label-field-pair radio short_desc inline-stacked wide" >  
-				    	   		<input type ="radio" name="temporal_choice" value="date_range" id="date_range"  />
+				    	   		<input type ="radio" name="temporal_choice" value="date_range" id="date_range"  
+				    	   			% if solr_response:
+									  		% for df_record in solr_response['docs']:
+									  			% if 'temporal_choice' in df_record:
+									  				% if df_record['temporal_choice'] == 'date_range': 
+									  				  checked="checked"
+									  				% endif	
+									  			% endif	
+									  		% endfor
+							  	    % endif	
+				    	   		/>
 				    	   		<label for="temporal_choice" >Date Range</label>
 				    	   </div>
 				    </div>		  
@@ -570,18 +720,42 @@
 					    	   <div class="clear-fix"></div>
 							   <div class="label-field-pair inline-stacked" >
 							            <label for="temporal_date">Date:</label>
-							            <input type="text" name="single_temporal_date" id="single_temporal_date"/>
+							            <input type="text" name="single_temporal_date" id="single_temporal_date"
+								            % if solr_response:
+										  		% for df_record in solr_response['docs']:
+										  			% if 'dataTemporalCoverage' in df_record:
+										  				value = "${df_record['dataTemporalCoverage']}"
+										  			% endif	
+										  		% endfor
+								  	    	% endif	
+							            />
 						       </div>
 			        </div>
 			        <div id="date_range_temporal_block" style="display:none;" >
 					    	   <div class="clear-fix"></div>
 							   <div class="label-field-pair inline-stacked" >
 							            <label for="temporal_date">Start Date:</label>
-							            <input type="text" name="start_date_range" id="start_date_range"/>
+							            <input type="text" name="start_date_range" id="start_date_range"
+							             % if solr_response:
+										  		% for df_record in solr_response['docs']:
+										  			% if 'dataCoverageStart' in df_record:
+										  				value = "${df_record['dataCoverageStart']}"
+										  			% endif	
+										  		% endfor
+								  	    	% endif								            
+							            />
 						       </div>
 						       <div class="label-field-pair inline-stacked" >
 							            <label for="temporal_date">End Date:</label>
-							            <input type="text" name="end_date_range" id="end_date_range"/>
+							            <input type="text" name="end_date_range" id="end_date_range"
+							               % if solr_response:
+										  		% for df_record in solr_response['docs']:
+										  			% if 'dataCoverageEnd' in df_record:
+										  				value = "${df_record['dataCoverageEnd']}"
+										  			% endif	
+										  		% endfor
+								  	    	% endif								            
+							            />
 						       </div>
 			        </div>			        
 			        
@@ -601,34 +775,82 @@
 					    	   <div class="clear-fix"></div>
 							   <div class="label-field-pair inline-stacked" >
 							            <label for="data_collected_temporal_date">Date:</label>
-							            <input type="text" name="data_collected_single_temporal_date" id="data_collected_single_temporal_date"/>
+							            <input type="text" name="data_collected_single_temporal_date" id="data_collected_single_temporal_date"
+							               % if solr_response:
+										  		% for df_record in solr_response['docs']:
+										  			% if 'dataCollectedCoverage' in df_record:
+										  				value = "${df_record['dataCollectedCoverage']}"
+										  			% endif	
+										  		% endfor
+								  	    	% endif								            
+							            />
 						       </div>
 			        </div>
 			        <div id="data_collected_date_range_temporal_block" style="display:none;" >
 					    	   <div class="clear-fix"></div>
 							   <div class="label-field-pair inline-stacked" >
 							            <label for="data_collected_temporal_date">Start Date:</label>
-							            <input type="text" name="data_collected_start_date_range" id="data_collected_start_date_range"/>
+							            <input type="text" name="data_collected_start_date_range" id="data_collected_start_date_range"
+							               % if solr_response:
+										  		% for df_record in solr_response['docs']:
+										  			% if 'dataCollectedStart' in df_record:
+										  				value = "${df_record['dataCollectedStart']}"
+										  			% endif	
+										  		% endfor
+								  	    	% endif		
+							            />
 						       </div>
 						       <div class="label-field-pair inline-stacked" >
 							            <label for="data_collected_temporal_date">End Date:</label>
-							            <input type="text" name="data_collected_end_date_range" id="data_collected_end_date_range"/>
+							            <input type="text" name="data_collected_end_date_range" id="data_collected_end_date_range"
+							            	% if solr_response:
+										  		% for df_record in solr_response['docs']:
+										  			% if 'dataCollectedEnd' in df_record:
+										  				value = "${df_record['dataCollectedEnd']}"
+										  			% endif	
+										  		% endfor
+								  	    	% endif		
+							            />
 						       </div>
 			        </div>			  
 			            
 			        <div class="label-field-pair  inline-stacked" >
 			        	<label for="geo_location">Geographical location/coverage of the data</label>
-			        	<input type="text" name="geo_location" id="geo_location"/>
+			        	<input type="text" name="geo_location" id="geo_location"
+				        	% if solr_response:
+						  		% for df_record in solr_response['docs']:
+						  			% if 'location' in df_record:
+						  				value = "${df_record['location']}"
+						  			% endif	
+						  		% endfor
+							% endif		
+			        	/>
 			        </div>			        	
 			        	<img id="google_img"  src="${ STATIC_URL }/powered-by-google-on-white.png" alt="Powered by Google" />
 			        
 			        <div class="label-field-pair inline-stacked" >
 			        	<label for="lat">Latitude</label>
-			        	<input type="text" name="lat" id="lat" data-geo="lat"/>
+			        	<input type="text" name="lat" id="lat" data-geo="lat"
+			        	 	% if solr_response:
+						  		% for df_record in solr_response['docs']:
+						  			% if 'latitude' in df_record:
+						  				value = "${df_record['latitude']}"
+						  			% endif	
+						  		% endfor
+							% endif		
+			        	/>
 			        </div>
 			        <div class="label-field-pair inline-stacked" >
 			        	<label for="lng">Longitude</label>
-			        	<input type="text" name="lng" id="lng"  data-geo="lng"/>
+			        	<input type="text" name="lng" id="lng"  data-geo="lng"
+			        		% if solr_response:
+						  		% for df_record in solr_response['docs']:
+						  			% if 'longitude' in df_record:
+						  				value = "${df_record['longitude']}"
+						  			% endif	
+						  		% endfor
+							% endif		
+			        	/>
 			        </div>
 			        
 			        <div class="map_canvas" style="position: relative; background-color:rgb(229, 227, 223); overflow:hidden; "></div>
@@ -637,57 +859,168 @@
 					</a>
 			        <div class="label-field-pair inline-stacked" >
 			        	<label for="digital_resource_type">What is the predominant type of your dataset?</label>
-			        	<input type="text" name="digital_resource_type" id="digital_resource_type"/>
+			        	<input type="text" name="digital_resource_type" id="digital_resource_type"
+			        	    % if solr_response:
+						  		% for df_record in solr_response['docs']:
+						  			% if 'type' in df_record:
+						  				value = "${df_record['type'][0]}"
+						  			% endif	
+						  		% endfor
+							% endif		
+			        	/>
 			        </div>
 			        
 			        <div class="label-field-pair inline-stacked" >
 			        	<label for="digital_filesize"> What is the approximate filesize of your dataset?</label>
-			        	<input type="text" name="digital_filesize" id="digital_filesize"/>
+			        	<input type="text" name="digital_filesize" id="digital_filesize"
+			        	   % if solr_response:
+						  		% for df_record in solr_response['docs']:
+						  			% if 'Filesize' in df_record:
+						  				value = "${df_record['Filesize']}"
+						  			% endif	
+						  		% endfor
+							% endif		
+			        	/>
 			        </div>
 			            
 			        <div class="label-field-pair inline-stacked" >
 			        	<label for="digital_format">File format</label>
-			        	<input type="text" name="digital_format" id="digital_format"/>
+			        	<input type="text" name="digital_format" id="digital_format"
+			        	 % if solr_response:
+						  		% for df_record in solr_response['docs']:
+						  			% if 'format' in df_record:
+						  				value = "${df_record['format'][0]}"
+						  			% endif	
+						  		% endfor
+						 % endif	
+			        	/>
 			        </div>
 			        
 			        <div class="label-field-pair inline-stacked" >
 			        	<label for="digital_version">What is the version number of this dataset?</label>
-			        	<input type="text" name="digital_version" id="digital_version"/>
-			        </div		       		       
+			        	<input type="text" name="digital_version" id="digital_version"
+			        	% if solr_response:
+						  		% for df_record in solr_response['docs']:
+						  			% if 'currentVersion' in df_record:
+						  				value = "${df_record['currentVersion']}" 
+						  			% endif	
+						  		% endfor
+						 % endif	
+			        	/>
+			        </div>		       		       
 	</div> 
 </fieldset>	           	 
+	               
 	                 	       
 	<fieldset id="funding-information" >
 		   <legend>Funding information</legend>	 
 	       <div class="radio-set" >
 	           <div class="label-field-pair radio inline-stacked" >Are your data an output of funded research?</div>
 	    	   <div class="label-field-pair radio short_desc inline-stacked" >
-	    	        <input type ="radio" name="funded_research" value="yes" id="funded_research_yes"  />
+	    	        <input type ="radio" name="funded_research" value="yes" id="funded_research_yes" 
+	    	        % if solr_response:
+				  		% for df_record in solr_response['docs']:
+				  			% if 'funded_research' in df_record:
+				  				% if df_record['funded_research'] == 'yes': 
+				  				  checked="checked"
+				  				% endif	
+				  			% endif	
+				  		% endfor									 
+					% endif	 />
 	    	        <label for="funded_research_yes" >yes</label>
 	    	   </div>
 	    	   <div class="label-field-pair radio short_desc inline-stacked" >  
-	    	   		<input type ="radio" name="funded_research" value="no" id="funded_research_no" checked />
+	    	   		<input type ="radio" name="funded_research" value="no" id="funded_research_no" 
+	    	   		% if solr_response:
+									  		% for df_record in solr_response['docs']:
+									  			% if 'funded_research' in df_record:
+									  				% if df_record['funded_research'] == 'no': 
+									  				  checked="checked"
+									  				% endif	
+									  			% else:
+									  				  checked="checked"
+									  			% endif	
+									  		% endfor
+									  % else:
+							  	     			checked="checked"
+					% endif	
 	    	   		<label for="funded_research_no" >no</label>
 	    	   </div>
 	    	    <!-- <div class="clear-fix"></div> -->
 		   </div>
+	         
 		  
+		 <!--  Funding Body --> 
 		 <div id="fund_and_grant"  style="display:none; " >
-			    <div class="funding_repeatable">
-			    	   <div class="clear-fix"></div>
-					   <div class="label-field-pair stacked-inline" >
-					            <label for="funding_agency_1">Funding agency:</label>
-					            <input type="text" size="50" name="funding_agency" id="funding_agency_1"/>
-				       </div>
-				       <div class="label-field-pair stacked-inline" >
-					            <label for="grant_number_1">Grant/Award number:</label>
-					            <input type="text" name="grant_number" id="grant_number_1"/>
-				       </div>		
-				       
-					   <img id="funding_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Funding" />				      
-			    </div>
-
-	      </div>
+		 <% count = 1 %>
+		     % if solr_response :
+			  		% for df_record in solr_response['docs']:			  			
+								    	   	% if 'grantNumber' in df_record:
+								    	   		<% grantNumberList = df_record['grantNumber'] %>
+								    	   	% endif		
+								    	   	% if 'FundingBody' in df_record:	
+								    	   		<% fundingBodyList = df_record['FundingBody']%>		    	   			  		  
+					  		   			        % for i in range(len(fundingBodyList)):
+					  		   			          <div class="funding_repeatable">
+							    	   				   <div class="clear-fix"></div>
+													   <div class="label-field-pair stacked-inline" >
+													            <label for="funding_agency_${count}">Funding agency:</label>
+													            <input type="text" size="50" name="funding_agency" id="funding_agency_${count}"
+													            	                   value = "${fundingBodyList[i-1]}" />
+												       </div>									
+													    % if 'grantNumber' in df_record: 
+													      % if i<= len(grantNumberList):
+													       <div class="label-field-pair stacked-inline" >
+														            <label for="grant_number_${count}">Grant/Award number:</label>
+														            <input type="text" name="grant_number" id="grant_number_${count}"
+														             value = "${grantNumberList[i-1]}" />
+													       </div>	
+													      % endif
+													    % else:
+													    	 <div class="label-field-pair stacked-inline" >
+														            <label for="grant_number_${count}">Grant/Award number:</label>
+														            <input type="text" name="grant_number" id="grant_number_${count}" />
+													         </div>	
+									    	        	% endif										       	   
+													    % if count == 1:
+											            	 <img id="funding_add_more_${count}"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Funding" />		
+											            % else :
+											                 <img id="funding_add_more_${count}"  class="round-icon" src="${ STATIC_URL }/gminus.png" alt="Remove Funding" />		
+											            % endif										           
+											           <% count = count + 1 %> 
+											      </div>	
+										   	    % endfor	
+										   	% else:		
+										   		<div class="funding_repeatable">
+							    	   				   <div class="clear-fix"></div>								   	 
+													   <div class="label-field-pair stacked-inline" >
+													            <label for="funding_agency_1">Funding agency:</label>
+													            <input type="text" size="50" name="funding_agency" id="funding_agency_1"/>
+												       </div>
+												       <div class="label-field-pair stacked-inline" >
+													            <label for="grant_number_1">Grant/Award number:</label>
+													            <input type="text" name="grant_number" id="grant_number_1"/>
+												       </div>														       
+													   <img id="funding_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Funding" />
+											    </div>				      								   	  	
+										   	% endif	
+														   
+					% endfor
+		     % else:			
+		     	<div class="funding_repeatable">
+				   <div class="clear-fix"></div>								   	 				   	 
+				   <div class="label-field-pair stacked-inline" >
+				            <label for="funding_agency_1">Funding agency:</label>
+				            <input type="text" size="50" name="funding_agency" id="funding_agency_1"/>
+			       </div>
+			       <div class="label-field-pair stacked-inline" >
+				            <label for="grant_number_1">Grant/Award number:</label>
+				            <input type="text" name="grant_number" id="grant_number_1"/>
+			       </div>					       
+				   <img id="funding_add_more_1"  class="round-icon" src="${ STATIC_URL }/gplus.png" alt="Add More Funding" />		
+				</div>		      								   	  				
+			 % endif				    
+	      </div>   
 	</fieldset>
        
 	           
@@ -812,8 +1145,17 @@
 	<fieldset>
 			<legend>Access terms &amp; conditions</legend>
 	       <div class="label-field-pair" >
-	       <label for="terms_and_conditions">Please enter any terms and conditions regarding access to your data here:</label>	       
-	       <input type="text" name="terms_and_conditions" id="terms_and_conditions"/></div>	     
+		       <label for="terms_and_conditions">Please enter any terms and conditions regarding access to your data here:</label>	       
+		       <input type="text" name="terms_and_conditions" id="terms_and_conditions"
+		       	 % if solr_response :
+				  		% for df_record in solr_response['docs']:
+				  			% if 'rights' in df_record:
+				  				value = "${df_record['rights'][0]}"
+				  			% endif	
+				  		% endfor
+				 % endif 
+				/>
+		   </div>	     
 	       <div class="radio-set" >
 	       		<p class="instruction">If your data is available under a standard license, please name the license here:</p>	       		
 	       		<div class="label-field-pair radio inline-stacked wide" >
@@ -834,27 +1176,47 @@
 	       		</div>
 	       	</div>  
 		
-	       <div class="label-field-pair" id="data_standard_licence_select_block" ">
+	       <div class="label-field-pair" id="data_standard_licence_select_block" >
 	       		<label for="data_standard_licence"></label>
 			    <select  type="text"  name="data_standard_licence" id="data_standard_licence" style="display:none;">                         
 	       		<!-- <input type="text" name="data_standard_licence" id="data_standard_licence"/> -->
 					   <option value="http://creativecommons.org/choose/zero/" >CC0 (CC Zero)</option>				       
 					   <option value="http://opendatacommons.org/licenses/by/">Open Data Commons Attribution Licence (ODC-By)</option>
 					   <option value="http://opendatacommons.org/licenses/odbl/" >Open Data Commons Open Database Licence (ODC-ODbL)</option>
-					   <option value="http://opendatacommons.org/licenses/pddl/ " >Open Data Commons Public Domain Dedication and License (PDDL)</option>
+					   <option value="http://opendatacommons.org/licenses/pddl/" >Open Data Commons Public Domain Dedication and License (PDDL)</option>
 					   <option value="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/" >Open Government Licence (OGL)</option>
-					   <option value="http://www.nationalarchives.gov.uk/doc/non-commercial-government-licence/ " >OGL non commercial</option>  		
+					   <option value="http://www.nationalarchives.gov.uk/doc/non-commercial-government-licence/" >OGL non commercial</option>  		
 				</select>	       		      		
 	       	</div>
 
 	       <div class="label-field-pair"  id="data_standard_licence_URL_block"   >
 		       <label for="data_standard_licence_URI">URL</label>	       
-		       <input type="text" name="data_standard_licence_URI" id="data_standard_licence_URI"/>
+		       <input type="text" name="data_standard_licence_URI" id="data_standard_licence_URI"
+		        % if solr_response :
+				  		% for df_record in solr_response['docs']:
+				  			% if 'license_radio' in df_record:
+				  				% if df_record['license_radio'] == "prepared_licence" or df_record['license_radio'] == 'select_a_licence':
+				  					value = "${df_record['license'][0]}"
+				  				% endif
+				  			% endif	
+				  		% endfor
+				 % endif 
+				/>
 	       </div>	
   
 	       <div id="data_standard_licence_text_block" class="label-field-pair" style="display:none;" >
 		       <label for="data_standard_licence_text"></label>	       
-		       <input type="text" name="data_standard_licence_text" id="data_standard_licence_text"/>
+		       <input type="text" name="data_standard_licence_text" id="data_standard_licence_text"
+		         % if solr_response :
+				  		% for df_record in solr_response['docs']:
+				  			% if 'license_radio' in df_record:
+				  				% if df_record['license_radio'] == "bespoke_licence" or df_record['license_radio'] == 'other_licence':
+				  					value = "${df_record['license'][0]}"
+				  				% endif
+				  			% endif	
+				  		% endfor
+				 % endif 
+		       />
 	       </div>	
 	       
 	       <div class="radio-set" >
@@ -878,7 +1240,15 @@
 	       		
 	       		 <!--  <div class="clear-fix"></div>   --> 		
                 <label for="embargo_end_date" id="embargo_end_date_label">Earliest Access date:</label>
-				<input type="text" name="embargo_end_date" id="embargo_end_date" />	       
+				<input type="text" name="embargo_end_date" id="embargo_end_date" 
+					 % if solr_response :
+					  		% for df_record in solr_response['docs']:
+					  			% if 'embargoedUntil' in df_record:
+					  				value = "${df_record['embargoedUntil']}"
+					  			% endif	
+					  		% endfor
+					 % endif 
+				/>	       
 	       	</div>
 	</fieldset>
 	       

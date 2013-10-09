@@ -54,9 +54,8 @@ def contribute(request):
                 context['id'] = request.GET['id']
                 query = 'id:"' + request.GET['id'] + '"'
                 solr_query = SolrQuery(q=query)    
-                context['solr_response'] = solr_query.get_solrresponse()      
+                context['solr_response'] = solr_query.get_solrresponse()  
                 #context['docs'] = context['solr_response'].get('docs',None)
-        
             return render_to_response('contribute.html', context, context_instance=RequestContext(request))  
         
         elif http_method == "POST":             
@@ -73,12 +72,12 @@ def contribute(request):
                 project[DCTERMS['URI']]=request.POST['project_website']
                 
                 subjects = request.POST.getlist('subject_area')
-                for subject in subjects:
-                    literals[DCTERMS['subject']]= subject
+                #for subj in subjects:
+                literals[DCTERMS['subject']]= subjects
                     
                 keywords = request.POST.getlist('record_keyword')                
-                for keyword in keywords:
-                    literals[DCTERMS['keywords']]=keyword
+                #for keyword in keywords:
+                literals[DCTERMS['keywords']]=keywords
                     
                 literals[DCTERMS['language']]=request.POST['main_language']               
                 literals[DCTERMS['status']]='Seeking Approval'
@@ -185,6 +184,8 @@ def contribute(request):
                 if request.POST.has_key('data-format'):
                     literals[OXDS['isDigital']]=request.POST['data-format']               
                 
+                literals[OXDS['loc-format']]=request.POST['loc-format']
+                
                 if request.POST['loc-format'] =="URL":
                     resources[OXDS['DataLocation']]=request.POST['data_location']
                 else:
@@ -197,16 +198,19 @@ def contribute(request):
 
                 literals[DCTERMS['publisher']]=request.POST['publisher']
                 literals[DCTERMS['issued']]=request.POST['publication_year']          
-                    
+                literals[OXDS['temporal_choice']]=request.POST['temporal_choice']    
+                 
                 if request.POST['temporal_choice'] == 'single_date':
                     literals[OXDS['dataTemporalCoverage']]=request.POST['single_temporal_date']
                 if request.POST['temporal_choice'] == 'date_range':
                     literals[OXDS['dataCoverageStart']]=request.POST['start_date_range']
                     literals[OXDS['dataCoverageEnd']]=request.POST['end_date_range']
-                    
-                if request.POST['data_collected_temporal_choice'] == 'single_date':
+                
+                literals[OXDS['data_collected_temporal_choice']]=request.POST['data_collected_temporal_choice']
+                
+                if request.POST['data_collected_temporal_choice'] == 'data_collected_single_date':
                     literals[OXDS['dataCollectedCoverage']]=request.POST['data_collected_single_temporal_date']
-                if request.POST['data_collected_temporal_choice'] == 'date_range':
+                if request.POST['data_collected_temporal_choice'] == 'data_collected_date_range':
                     literals[OXDS['dataCollectedStart']]=request.POST['data_collected_start_date_range']
                     literals[OXDS['dataCollectedEnd']]=request.POST['data_collected_end_date_range']
                 
@@ -220,19 +224,18 @@ def contribute(request):
                     literals[DCTERMS['type']]=request.POST['digital_resource_type']      
                     literals[OXDS['Filesize']]=request.POST['digital_filesize']
                     literals[DCTERMS['format']]=request.POST['digital_format']
-                    literals[OXDS['currentversion']]=request.POST['digital_version']
+                    literals[OXDS['currentVersion']]=request.POST['digital_version']
                                        
-
+                                       
                 funded_research = request.POST['funded_research']
+                literals[OXDS['funded_research']]=request.POST['funded_research']
                 if funded_research == "yes":
                     funding_agencies = request.POST.getlist('funding_agency')                
-                    for funding_agency in funding_agencies:
-                        literals[FUND['FundingBody']]=funding_agency
+                    literals[FUND['FundingBody']]=funding_agencies
                         
                     grant_numbers = request.POST.getlist('grant_number')                
-                    for grant_number in grant_numbers:
-                        literals[FUND['grantNumber']]=grant_number
-
+                    literals[FUND['grantNumber']]=grant_numbers
+                
                 #    
                 #if request.POST['dmp_loc'] =="URL":
                 #    resources[OXDS['data_management_plan_location']]=request.POST['data_management_plan_location']
@@ -258,6 +261,7 @@ def contribute(request):
                             #bespoke_licence - license pasted in as free text
                             #other_licence - eg: none ie. when not associated with any license               
                 license = request.POST['license_radio']
+                literals[OXDS['license_radio']]=license
                 if license =="prepared_licence" or license == 'select_a_licence':
                     resources[DCTERMS['license']]=request.POST['data_standard_licence_URI']
                 else :
@@ -268,7 +272,7 @@ def contribute(request):
                 # embargo_options_list = ['embargo_status_unknown','embargoed_indefinitely']
                 
                 
-                literals[OXDS['lastaccessdate']]=request.POST['embargo_end_date']
+                literals[OXDS['embargoedUntil']]=request.POST['embargo_end_date']
                 
                 
                 #context["embargo-options"]=request.GET['embargo-options']
@@ -277,8 +281,7 @@ def contribute(request):
                 
                 # Project RDF
                 #projects_package = rdflib.URIRef(projects_path)
-                
-                
+                                
                 projects_path = settings.get("main:granary.projects_path")        
                 projects_manifest_filename = os.path.join(projects_path, 'projects.rdf')
                 projects_manifest = bind_namespaces(rdflib.ConjunctiveGraph())
@@ -318,15 +321,20 @@ def contribute(request):
                 #    if literals[x] == "":
                 #        del literals[x]
                 
-                for key, value in literals.items():
-                    manifest.add((subject, key, Literal(value)))
-                
+                keys_with_valuelist = [ DCTERMS['subject'],DCTERMS['keywords'], FUND['FundingBody'],FUND['grantNumber'] ]
+                for key, values in literals.items():                    
+                    if key in keys_with_valuelist:
+                        for value in values:
+                            manifest.add((subject, key, Literal(value)))
+                    else:
+                        manifest.add((subject, key, Literal(values)))
+                        
                 for key, res_uri in resources.items():
                     manifest.add((subject, key, res_uri))
                     
                 with open(manifest_filename, 'w') as f:
                     manifest.serialize(f, 'better-pretty-xml', base=manifest_filename)
-                                
+                                 
 #                try:
 #                    with open(main_manifest_filename, 'w') as f:
 #                        manifest.parse(f, base=main_manifest_filename)

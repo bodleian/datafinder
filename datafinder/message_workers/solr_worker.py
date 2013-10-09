@@ -164,7 +164,7 @@ if __name__ == "__main__":
                 json_data = json.loads(respdata)
                 uuid = json_data['state']['metadata']['uuid']
                 
-                (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo_name +"/datasets/" + itemid +"/manifest.rdf")
+                (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo_name +"/datasets/" + itemid +"/df_manifest.rdf")
                 graph=rdflib.Graph()
                 try:
                     with open("temp_manifest.rdf", 'w') as f:

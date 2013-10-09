@@ -80,7 +80,14 @@
    $("#single_temporal_date").datepicker();
    $("#start_date_range").datepicker();
    $("#end_date_range").datepicker();
+   
+   $("#data_collected_single_temporal_date").datepicker();
+   $("#data_collected_start_date_range").datepicker();
+   $("#data_collected_end_date_range").datepicker();
+   
    $("#embargo_end_date").datepicker();
+   
+   
    var myDate = new Date();
    var prettyDate = myDate.getDate() + '/' + (myDate.getMonth()+1) + '/' + myDate.getFullYear();
    $("#embargo_end_date").val(prettyDate);
@@ -93,8 +100,17 @@
 //isssue the trigger to reflect the dynamically added change to the select
   var myDate = new Date(); 
   currentYear = myDate.getFullYear(); 
+  % if solr_response:
+  		% for df_record in solr_response['docs']:
+  			% if 'issued' in df_record:
+  				currentYear = "${df_record['issued'][0]}"	  			
+  			% endif	
+  		% endfor
+   % endif	
   for(i=1970; i<=2020; i++)
-	{	if (currentYear == i)
+	{	
+
+	  if (currentYear == i)
 	   {
 	       $("<option/>")
 	       .attr("value", i)
@@ -109,6 +125,7 @@
 	       .text(i)
 	       .appendTo('#publication_year');
 	   }
+	   	  
     } 
   $("#publication_year").trigger("change");
  
@@ -1492,7 +1509,16 @@
 	      $('#data_standard_licence_URL_block').css("display", "block");
 	      $('#data_standard_licence_select_block').css("display", "none");
 	      $('#data_standard_licence_text_block').css("display", "none");
-	      $('#data_standard_licence_URI').val("");  	
+	      $('#data_standard_licence_URI').val("");  
+	      
+		  % if solr_response:
+		  		% for df_record in solr_response['docs']:
+		  			% if 'license' in df_record:    			   
+								 $('#data_standard_licence_URI').val("${df_record['license'][0]}"); 
+						% endif			            			
+		  		% endfor
+		  % endif
+	      	
 	    }
     });
     
@@ -1502,7 +1528,15 @@
 	      $('#data_standard_licence_select_block').css("display", "none");
 	      $('#data_standard_licence_URL_block').css("display", "none");
 	      $('#data_standard_licence_text_block').css("display", "block");	
-	    }
+	    }   
+	    
+	     % if solr_response:
+		  		% for df_record in solr_response['docs']:
+		  			% if 'license' in df_record:    			   
+								 $('#data_standard_licence_text').val("${df_record['license'][0]}"); 
+						% endif			            			
+		  		% endfor
+		  % endif
     });
     
     $('#other_licence').on('change', function(){
@@ -1512,6 +1546,14 @@
 	      $('#data_standard_licence_URL_block').css("display", "none");
 	      $('#data_standard_licence_text_block').css("display", "block"); 	
 	    }
+	        
+	       % if solr_response:
+		  		% for df_record in solr_response['docs']:
+		  			% if 'license' in df_record:    			   
+								 $('#data_standard_licence_text').val("${df_record['license'][0]}"); 
+					% endif			            			
+		  		% endfor
+		  % endif
 	});
 	
     $('#data_standard_licence_URI').val( $('#data_standard_licence').val() ); 
@@ -1526,12 +1568,41 @@
 	    }
     });
     
+	
+   <% allowed_select_license_values = [ "http://creativecommons.org/choose/zero/",
+	  	"http://opendatacommons.org/licenses/by/",
+	  	"http://opendatacommons.org/licenses/odbl/",
+	 	"http://opendatacommons.org/licenses/pddl/",
+	  	"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/",
+	  	"http://www.nationalarchives.gov.uk/doc/non-commercial-government-licence/"]
+  	%>
+    
+    % if solr_response:
+  		% for df_record in solr_response['docs']:
+  			% if 'license' in df_record:
+  			    % if df_record['license'][0] in allowed_select_license_values:      			   
+	  				     $("#data_standard_licence").val("${df_record['license'][0]}");
+						 $('#data_standard_licence_URI').val("${df_record['license'][0]}"); 
+				% endif			            			
+  			% endif	
+  		% endfor
+    % endif
+   
+    % if solr_response:
+  		% for df_record in solr_response['docs']:
+  			% if 'license_radio' in df_record:
+   	 			$("#${df_record['license_radio']}").prop('checked', true);
+   	 			$("#${df_record['license_radio']}").trigger("change");
+			% endif			            			
+  		% endfor
+    % endif
+    
 	$('#data_standard_licence').change(function()  {
 	   $('#data_standard_licence_URI').val( this.value );  		  
 	});
 		  
 		$('div').on('click','img[id^="dataset_add_more"]', function() 
-    {   
+   		{   
          plus = '${ STATIC_URL }/gplus.png'
          minus = '${ STATIC_URL }/gminus.png'
          
