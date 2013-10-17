@@ -985,8 +985,33 @@
 	      
      });
      
-   
+    $("#RecordStatus").change(function()
+    {     	      
+       status = $(this).val();
+	   window.open("/myrecords/?status=" + status);
+    });
+    
+    $("#RecordAdminStatus").change(function()
+    {     	      
+       status = $(this).val();
+	   window.open("/admin/?status=" + status);
+    });
+    
+  
+    var params = {};
+    var ps = window.location.search.split(/\?|&/);
+    for (var i = 0; i < ps.length; i++) {
+          if (ps[i]) {
+                var p = ps[i].split(/=/);
+                params[p[0]] = p[1];
+          }
+    }
+
+	if( 'status' in params){ $("#RecordStatus").val(params.status);  }
+    
+    if( 'status' in params){ $("#RecordAdminStatus").val(params.status); }
         
+    //window.open(myrecords/status={df_record['status'][0]});
     // jQuery("div :input[id^='author_mof']").live("change", null, function (){
     $("div :input[id^='author_mof']").live("change", null, function ()
     // $('div').on('change','input[id^="author_mof"]', function() 

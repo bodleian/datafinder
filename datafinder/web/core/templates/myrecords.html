@@ -13,6 +13,7 @@ filter the listing by status or search within your records.
 </div>
 
 <div class="row">
+<!--  
   <div class="1 column">
    <input type="checkbox" name="select" value="select"/>
        select all
@@ -23,15 +24,19 @@ filter the listing by status or search within your records.
   <div class="2 columns">
     apply to selected
   </div>
+  
+ -->
   <div class="2 columns">
-	 <select>
-	 	<option> Draft </option>
-	 	<option> Awaiting Review </option>
-	 	<option> Rejected </option>
-	 	<option> Escalated </option>
-	 	<option> Locked for Review </option>
-	 	<option> Published </option>
-	 	<option> Referred to Contributer </option>
+	 <select id="RecordStatus" name="RecordStatus">
+	 	<option value="All" > All </option>
+	 	<option value="Draft" > Draft </option>
+	 	<option value="Awaiting Review" > Awaiting Review </option>
+	 	<option value="Rejected" > Rejected </option>
+	 	<option value="Escalated" > Escalated </option>
+	 	<option value="Locked for Review" > Locked for Review </option>
+	 	<option value="Published" > Published </option>
+	 	<option value="Referred to Contributer" > Referred to Contributer </option>
+	 	<option value="seeking_approval" > seeking_approval </option>
 	</select>
   </div>
   <div class="6 columns">
@@ -41,7 +46,7 @@ filter the listing by status or search within your records.
 	<table>
 		<thead>
 			<tr>
-			    <th>select</th>
+			    <!-- <th>select</th> -->
 			    <th>Title</th>
 			    <th>Filesize</th>
 			    <th>Date submitted</th>
@@ -51,10 +56,14 @@ filter the listing by status or search within your records.
 			</tr>
 			% for df_record in solr_response['docs']:
 			<tr>
-			    <td><input type="checkbox" name="select" value="select"/></td>
+			    <!-- <td><input type="checkbox" name="select" value="select"/></td> -->
 			    <td><a href='/search/recordview?id=${df_record['title'][0]}'>${df_record['title'][0]}</a></td>
-			    <td>36KB</td>
-			    <td>${df_record['created'][0]}</td>
+			    <td>36KB</td>		    
+			    %  if 'created' in df_record:
+			   		<td>${df_record['created'][0]}</td>
+			   	% else:
+			   	   <td></td>
+			   	% endif
 			    <td>${df_record['timestamp']}</td>
 			    % if 'status' in df_record:
 			    	<td>${df_record['status']}</td>

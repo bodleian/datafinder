@@ -9,7 +9,11 @@
 % endif
 
 % if solr_response :
-	<h1> Edit Record - ${id} </h1>
+	% if 'admin' in referrer:
+		<h1> Review Record - ${id} </h1>
+	% else:
+		<h1> Edit Record - ${id} </h1>
+	% endif		
 % else:
 	<h1>Contribute a record</h1>
 % endif
@@ -1251,8 +1255,7 @@
 				/>	       
 	       	</div>
 	</fieldset>
-	       
-	       
+	              
 	<fieldset>
 			<legend>Subject-Specific metadata</legend>
 			<p class="instruction" >If you have any disciplinary-specialist metadata describing your data (eg: DDI), 
@@ -1270,8 +1273,30 @@
 	</fieldset>
 	       
       <div class="form-button">         	            
-      		<input type="submit" name="submit_for_approval" id="submit_for_approval" value="submit for approval"/>	 
-      		<input type="submit" name="save_as_a_draft" id="save_as_a_draft" value="save as a draft"/>
+      		
+      		
+      		% if solr_response :
+				% if 'admin' in referrer:				
+					<select id="ChangeRecordStatus" name="ChangeRecordStatus">
+					 	<option value="Draft" > Draft </option>
+					 	<option value="Awaiting Review" > Awaiting Review </option>
+					 	<option value="Rejected" > Rejected </option>
+					 	<option value="Escalated" > Escalated </option>
+					 	<option value="Locked for Review" > Locked for Review </option>
+					 	<option value="Published" > Published </option>
+					 	<option value="Referred to Contributer" > Referred to Contributer </option>
+					 	<option value="seeking_approval" > seeking_approval </option>
+					</select>    
+					<input type="submit" name="submit_for_approval" id="submit_for_approval" value="submit"/>		
+				% else:
+					<input type="submit" name="submit_for_approval" id="submit_for_approval" value="submit for approval"/>	
+					<input type="submit" name="save_as_a_draft" id="save_as_a_draft" value="save as a draft"/>
+				% endif		
+			% else:
+				<input type="submit" name="submit_for_approval" id="submit_for_approval" value="submit for approval"/>	
+				<input type="submit" name="save_as_a_draft" id="save_as_a_draft" value="save as a draft"/>
+			% endif
+
       </div>	 
   </div><!-- .section-container.accordion  closes--> 
 

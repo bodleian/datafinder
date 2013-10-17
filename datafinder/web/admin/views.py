@@ -300,7 +300,19 @@ def administration(request):
         'unregistered_sources':[],
         }
          
-        query = 'silo:"DataFinder"'
+        status = ""
+        
+        if request.GET.has_key('status'):
+            status = request.GET['status']
+   
+        http_method = request.environ['REQUEST_METHOD'] 
+        
+              
+        if status == 'All' or status == "":
+             query = 'silo:"DataFinder"'                         
+        else:   
+             query = 'silo:"DataFinder" AND status:"' + status + '"'             
+                              
         solr_query = SolrQuery(q=query)
         context['solr_response'] = solr_query.get_solrresponse()
 

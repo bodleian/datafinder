@@ -48,10 +48,13 @@ def contribute(request):
             context["status"]=request.GET['status']
 
         http_method = request.environ['REQUEST_METHOD'] 
-        
+        referrer = request.environ['HTTP_REFERER']
+
+    
         if http_method == "GET":     
             if request.GET.has_key('id'):     
                 context['id'] = request.GET['id']
+                context['referrer'] = referrer
                 query = 'id:"' + request.GET['id'] + '"'
                 solr_query = SolrQuery(q=query)    
                 context['solr_response'] = solr_query.get_solrresponse()  
@@ -79,8 +82,13 @@ def contribute(request):
                 #for keyword in keywords:
                 literals[DCTERMS['keywords']]=keywords
                     
-                literals[DCTERMS['language']]=request.POST['main_language']               
-                literals[DCTERMS['status']]='Seeking Approval'
+                literals[DCTERMS['language']]=request.POST['main_language']  
+                
+                if request.POST.has_key('ChangeRecordStatus'):
+                        literals[DCTERMS['status']]=request.POST['ChangeRecordStatus'] 
+                else: 
+                    literals[DCTERMS['status']]='AwaitingReview'
+                    
                 literals[OXDS['depositor']] = request.session['DF_USER_SSO_ID']
                 
                 i = 1

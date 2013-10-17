@@ -299,7 +299,7 @@
    <field name="conformsTo" type="text" multiValued="true" indexed="true" stored="true" />
    <field name="contributor" type="text" multiValued="true" indexed="true" stored="true" />
    <field name="coverage" type="text" multiValued="true" indexed="true" stored="true" />
-   <field name="created" type="text" multiValued="true" indexed="true" stored="true" />
+   <field name="created" type="text" indexed="true" stored="true" />
    <field name="creator" type="text" multiValued="true" indexed="true" stored="true" />
    <field name="date" type="text" multiValued="true" indexed="true" stored="true" />
    <field name="dateAccepted" type="text" multiValued="true" indexed="true" stored="true" />

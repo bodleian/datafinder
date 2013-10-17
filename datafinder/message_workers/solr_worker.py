@@ -78,6 +78,7 @@ def gather_document(silo_name, uuid, item_id,  graph):
     document = dict(document)
     return document
 
+
 if __name__ == "__main__":
     c = Config()
     redis_section = "redis"
@@ -165,24 +166,48 @@ if __name__ == "__main__":
                 uuid = json_data['state']['metadata']['uuid']
                 
                 (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo_name +"/datasets/" + itemid +"/df_manifest.rdf")
-                graph=rdflib.Graph()
+                df_graph=rdflib.Graph()
                 try:
                     with open("temp_manifest.rdf", 'w') as f:
                         f.write(respdata)
                         f.close()
-                        os.chown("temp_manifest.rdf", getpwnam('www-data').pw_uid, getpwnam('www-data').pw_gid)
+                        os.chown("temp_df_manifest.rdf", getpwnam('www-data').pw_uid, getpwnam('www-data').pw_gid)
                     with open("temp_manifest.rdf", 'r') as f:
-                        graph.parse(f, base="temp_manifest.rdf")
+                        df_graph.parse(f, base="temp_df_manifest.rdf")
                         f.close()
                 except IOError, e:
                     logger.info( str(e))
                     logger.info("IOERROR")
                     pass
-                solr_doc = gather_document(silo_name, uuid, itemid, graph)
-                logger.info('Solr_document = ')
-                logger.info(solr_doc)
+                
+                # Get the df dictionary  items to be added into solr
+                df_solr_doc = gather_document(silo_name, uuid, itemid, df_graph)                
+               
+                # Get the main dictionary  items to be added into solr
+                (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo_name +"/datasets/" + itemid +"/manifest.rdf")
+                main_graph=rdflib.Graph()
                 try:
-                    solr.add(_commit=False, **solr_doc)
+                    with open("temp_manifest.rdf", 'w') as f:
+                        f.write(respdata)
+                        f.close()
+                        os.chown("temp_main_manifest.rdf", getpwnam('www-data').pw_uid, getpwnam('www-data').pw_gid)
+                    with open("temp_manifest.rdf", 'r') as f:
+                        main_graph.parse(f, base="temp_main_manifest.rdf")
+                        f.close()
+                except IOError, e:
+                    logger.info( str(e))
+                    logger.info("IOERROR")
+                    pass
+                
+                main_solr_doc = gather_document(silo_name, uuid, itemid, main_graph)
+                              
+                # Add the two dictionaries together              
+                main_solr_doc.update(df_solr_doc)
+                
+                logger.info('Solr_document = ')
+                logger.info(main_solr_doc)
+                try:
+                    solr.add(_commit=False, **main_solr_doc)
                 except Exception, e :
                     logger.error("Error adding document to solr id:%s in silo:%s\n" % (itemid, silo_name))
                     try:

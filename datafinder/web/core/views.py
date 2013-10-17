@@ -18,6 +18,7 @@ def home(request):
     #SolrQuery(self, query_filter = "" , q = "*:*" , req_format="json")
     q1 = "*:*"
     solr_query = SolrQuery(q=q1)
+
     context['numFound'] = solr_query.get_NumRecordsFound()
     
     q2 = "timestamp:["+ str(start) + "T00:00:00Z" + " TO "+ str(end) + "T00:00:00Z" + "]"
@@ -68,10 +69,19 @@ def myrecords(request):
         # Test if the user is now a university authenticated user
         if 'DF_USER_SSO_ID' not in request.session:                          
                 return redirect("/login?redirectPath=myrecords")    
-    
+            
+        status=""
+        
+        if request.GET.has_key('status'):
+            status = request.GET['status']
+   
         http_method = request.environ['REQUEST_METHOD'] 
-        if http_method == "GET": 
-            query = 'depositor:"' + request.session['DF_USER_SSO_ID'] + '"'
+        if http_method == "GET":                     
+            if status == 'All' or status == "":
+                 query = 'depositor:"' + request.session['DF_USER_SSO_ID'] + '"'                        
+            else:   
+                 query = 'depositor:"' + request.session['DF_USER_SSO_ID'] + '"' + ' AND ' 'status:"' + status + '"'             
+                              
             solr_query = SolrQuery(q=query)
             context['solr_response'] = solr_query.get_solrresponse()
     except Exception, e:

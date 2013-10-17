@@ -67,19 +67,19 @@ if __name__ == "__main__":
                         
             (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo +"/datasets/" + item_id +"/df_manifest.rdf")
             #print respdata
-            text_file = open("sample_redis_manifest.rdf", "w")
+            text_file = open("sample_redis_df_manifest.rdf", "w")
             text_file.write(respdata)
             text_file.close()
-            graph=rdflib.Graph()
+            df_graph=rdflib.Graph()
             try:
-                with open("sample_redis_manifest.rdf", 'r') as f:
-                     graph.parse(f, base="sample_redis_manifest.rdf")
+                with open("sample_redis_df_manifest.rdf", 'r') as f:
+                     df_graph.parse(f, base="sample_redis_manifest.rdf")
             except IOError, e:
                 pass
-        
+    
             solr = SolrConnection(solrurl)
-            solr_doc = gather_document(silo , uuid , item_id,  graph )
-            print solr_doc
+            #df_solr_doc = gather_document(silo , uuid , item_id,  df_graph )
+            #print df_solr_doc
             #solr_doc = ast.literal_eval(solr_doc_str)
 #            solr_doc = {'status': ['seeking_approval'],
 #                        'alternative': [''], 
@@ -105,7 +105,26 @@ if __name__ == "__main__":
 #                        'silo': ['DataFinder'], 
 #                        'type': ['', 'http://vocab.ox.ac.uk/dataset/schema#DataSet']
 #                         }
+            # Get the df dictionary  items to be added into solr
+            df_solr_doc = gather_document(silo , uuid , item_id,  df_graph )
+            
+            (resp,respdata) = datastore.doHTTP_GET(resource="/" + silo +"/datasets/" + item_id +"/manifest.rdf")
+            text_file = open("sample_redis_main_manifest.rdf", "w")
+            text_file.write(respdata)
+            text_file.close()
+            main_graph=rdflib.Graph()
+            try:
+                with open("sample_redis_main_manifest.rdf", 'r') as f:
+                     main_graph.parse(f, base="sample_redis_manifest.rdf")
+            except IOError, e:
+                pass
+            
+            # Get the main dictionary  items to be added into solr
+            main_solr_doc = gather_document(silo , uuid , item_id, main_graph )
+                          
+            # Add the two dictionaries together              
+            main_solr_doc.update(df_solr_doc)
 
-
-            solr_doc =  solr.add(_commit=True, **(solr_doc))
+            print  main_solr_doc
+            solr_doc =  solr.add(_commit=True, **(main_solr_doc))
             solr.commit()

@@ -13,36 +13,23 @@
 
 <div class="row"><h5>Records for review</h5></div>
 
+<div class="row">
 <div class="2 columns">
-	 <select>
-	 	<option> Draft </option>
-	 	<option> Awaiting Review </option>
-	 	<option> Rejected </option>
-	 	<option> Escalated </option>
-	 	<option> Locked for Review </option>
-	 	<option> Published </option>
-	 	<option> Referred to Contributer </option>
+	 <select id="RecordAdminStatus" name="RecordAdminStatus">
+	 	<option value="All" > All </option>
+	 	<option value="Draft" > Draft </option>
+	 	<option value="Awaiting Review" > Awaiting Review </option>
+	 	<option value="Rejected" > Rejected </option>
+	 	<option value="Escalated" > Escalated </option>
+	 	<option value="Locked for Review" > Locked for Review </option>
+	 	<option value="Published" > Published </option>
+	 	<option value="Referred to Contributer" > Referred to Contributer </option>
+	 	<option value="seeking_approval" > seeking_approval </option>
 	</select>
 </div>
 
-<div class="row">
-	<table>
-		<thead>
-			<tr>
-			    <th>Title</th>
-			    <th>Filesize</th>
-			    <th>Date submitted</th>
-			    <th>Last modified</th>
-			    <th>owner</th>
-			    <th>status</th>
-			    <th>action</th>                  
-			</tr>
-		</thead>
-	</table>
+<div class="10 columns"> </div>
 </div>
-
-
-
 <div class="row">
 	<table>
 		<thead>
@@ -58,7 +45,8 @@
 			% for df_record in solr_response['docs']:
 			<tr>
 			    % if 'title' in df_record:
-			    	<td>${df_record['title']}</td>
+			         <% title = df_record['title'][0] %>
+			    	 <td><a href="/search/recordview?id=${title}">${title}</a></td>
 			    % else:
 			    	<td>${df_record['id']} </td>
 			    % endif
@@ -75,7 +63,13 @@
 			    	% else:
 			    	<td> </td>
 			    % endif
-			    <td>review</td>                     
+			    % if 'title' in df_record:
+			         <% title = df_record['title'][0] %>
+			    	 <th><a href="https://datafinder-d2v.bodleian.ox.ac.uk/contribute?id=${title}">review</a></th> 
+			    % else:
+			    	<td>${df_record['id']} </td>
+			    % endif
+			                      
 			</tr>
 			<!-- <tr>
 			    <td>A record</td>
